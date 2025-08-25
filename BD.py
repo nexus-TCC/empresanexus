@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
+import bcrypt
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
@@ -22,14 +23,16 @@ def criar_banco():
 @app.route('/add_usuario', methods=['POST'])
 def add_usuario():
     data = request.get_json()
+    senha_hash = bcrypt.hashpw(data['senha'].encode('utf-8'), bcrypt.gensalt())
     novo_usuario = Usuario(
-        nome=dados['nome'],
-        email=dados['email'],
-        senha=dados['senha']
+        nome=data['nome'],
+        email=data['email'],
+        senha=senha_hash.decode('utf-8')
     )
     db.session.add(novo_usuario)
     db.session.commit()
     return jsonify({"message": "Usuário adicionado com sucesso!"})
+
 
 @app.route('/usuarios', methods=['GET'])
 def listar_usuarios():
@@ -40,8 +43,9 @@ def listar_usuarios():
             'id': usuario.id,
             'nome': usuario.nome,
             'email': usuario.email
-        } for usuario in usuarios)
+        })
     return jsonify(resultado)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
