@@ -2,7 +2,12 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-@app.route('/' , methods=['GET', 'POST'])
+@app.route('/')
+def inicio():
+    return render_template('Inicio.html')
+
+
+@app.route('/entrar' , methods=['GET', 'POST'])
 def entrar():
     if request.method == 'POST':
         email = request.form.get('email')
@@ -19,6 +24,11 @@ def continuarGoogle():
         # Here you would typically handle the login logic, e.g., checking credentials
         return render_template('ContinuarGoogle.html', email=email, senha=senha)
     return render_template('ContinuarGoogle.html')
+
+@app.route('/index')
+def index():
+    return render_template('Index.html')
+
 
 
 

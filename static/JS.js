@@ -1,3 +1,17 @@
+
+// Envia dados para o Python usando fetch
+fetch('/minha-rota', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ chave: 'valor' })
+})
+.then(response => response.json())
+.then(data => {
+    console.log(data); // resposta do Python
+});
+
 function mostrarSenha() {
     const input = document.getElementById("senha");
     const icone = document.getElementById("iconeOlho");
