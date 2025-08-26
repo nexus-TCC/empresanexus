@@ -28,6 +28,93 @@ function mostrarSenha() {
 }
 
 function entrar() {
+    function entrar() {
+    var email = document.getElementById("email").value.trim();
+    var senha = document.getElementById("senha").value.trim();
+
+    if (email === "" || senha === "") {
+        Swal.fire({
+            icon: 'error',
+            title: 'Opa...',
+            text: 'Você precisa preencher todos os campos!',
+            confirmButtonColor: '#0B6265'
+        });
+        return false;
+    }
+
+    fetch('http://localhost:5001/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, senha: senha })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro',
+                text: data.error,
+                confirmButtonColor: '#0B6265'
+            });
+        } else {
+            window.location.href = "Index.html";
+        }
+    });
+    return false;
+}
+function criarConta() {
+    var email = document.getElementById("email").value.trim();
+    var senha = document.getElementById("senha").value.trim();
+
+    if (email === "" || senha === "") {
+        Swal.fire({
+            icon: 'error',
+            title: 'Opa...',
+            text: 'Você precisa preencher todos os campos!',
+            confirmButtonColor: '#0B6265'
+        });
+        return false;
+    }
+
+    fetch('http://localhost:5001/cadastro', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, senha: senha })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erro',
+                text: data.error,
+                confirmButtonColor: '#0B6265'
+            });
+        } else {
+            Swal.fire({
+                icon: 'success',
+                title: 'Conta criada!',
+                text: data.message,
+                confirmButtonColor: '#0B6265'
+            });
+            window.location.href = "Index.html";
+        }
+    });
+    return false;
+    }
+
+
+    window.location.href = "../templates/Index.html";
+    return true;
+}
+
+
+
+    document.getElementById("entrarBotao").addEventListener("click", function () {
+        window.location.href = "ContinuarGoogle.html";
+    });
+
+function criarConta() {
     var email = document.getElementById("email").value.trim();
     var senha = document.getElementById("senha").value.trim();
 
@@ -55,42 +142,6 @@ function entrar() {
 
 
     window.location.href = "../templates/Index.html";
-    return true;
-}
-
-
-
-    document.getElementById("entrarBotao").addEventListener("click", function () {
-        window.location.href = "ContinuarGoogle.html";
-    });
-
-function continuarGoogle() {
-    var senha = document.getElementById("senha").value.trim();
-
-
-    if (senha === "") {
-        Swal.fire({
-            icon: 'error',
-            title: 'Opa...',
-            text: 'Você precisa preencher todos os campos!',
-            confirmButtonColor: '#0B6265'
-        });
-        return false;
-    }
-
-    if (senha !== "123456789") {
-        Swal.fire({
-            icon: 'error',
-            title: 'Opa...',
-            text: 'Senha incorreta!',
-            confirmButtonColor: '#0B6265'
-        });
-        return false;
-    }
-
-
-
-    window.location.href = "Index.html";
     return true;
 }
 

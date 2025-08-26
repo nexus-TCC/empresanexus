@@ -40,7 +40,7 @@
                 <img src="../static/images/olho fechado senha.png" alt="Mostrar senha" id="iconeOlho">
               </button>
           </div><br>
-          <button class="btn btn-primary" type="button" id="botaoEntrar" onclick="entrar()">Entrar</button><br><br>
+          <button class="btn btn-primary" type="button" id="botaoEntrar" onclick="criarConta()">Entrar</button><br><br>
 
           <!-- Botão de Login com Google -->
                     <div id="g_id_onload"
@@ -60,8 +60,7 @@
     </div></div></div></div> <br> 
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="../static/java/JavaScript.js"></script>
-</body>
+<script src="{{ url_for('static', filename='JS.js') }}"></script></body>
 
 </html>
 
