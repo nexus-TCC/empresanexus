@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request, jsonify
-
+from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
+import bcrypt
 
 app = Flask(__name__)
 
@@ -24,7 +24,7 @@ def entrar():
         return render_template('Entrar.html', email=email, senha=senha)
     return render_template('Entrar.html')
     
-@app.route('/CriarConta' , methods=['GET', 'POST'])
+@app.route('/criarConta' , methods=['GET', 'POST'])
 def criar_conta():
     if request.method == 'POST':
         email = request.form.get('email')

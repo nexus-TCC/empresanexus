@@ -1,0 +1,17 @@
+<html>
+<head>
+  <title>Perfil da Empresa</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='Estilo.css') }}">
+</head>
+<body>
+  <h2>Perfil da Empresa</h2>
+  <form method="POST" action="/criar_empresa">
+    <input type="hidden" name="usuario_id" value="{{ user_id }}">
+    <label>Nome da Empresa:</label><input type="text" name="nome_empresa"><br>
+    <label>CNPJ:</label><input type="text" name="cnpj"><br>
+    <label>Descrição:</label><textarea name="descricao"></textarea><br>
+    <label>Site:</label><input type="url" name="site"><br>
+    <button type="submit">Salvar Perfil</button>
+  </form>
+</body>
+</html>
