@@ -18,11 +18,11 @@ function mostrarSenha() {
   
     if (input.type === "password") {
       input.type = "text";
-      icone.src = "../static/images/olho fechado senha.png";
+      icone.src = "../static/images/olho-fechado-senha.png";
       icone.alt = "Ocultar senha";
     } else {
       input.type = "password";
-      icone.src = "../static/images/olho Aberto Senha.png"; 
+      icone.src = "../static/images/olho-Aberto-Senha.png"; 
       icone.alt = "Mostrar senha";
     }
 }
@@ -104,7 +104,6 @@ function criarConta() {
 }
 
     document.getElementById("botaoEntrar").addEventListener("click", function () {
-        window.location.href = "/continuarGoogle"; // Redireciona para a rota do Flask
     });
 
 
@@ -152,4 +151,34 @@ function decodeJWT(token) {
         return false;
     }
     return true;
+}
+
+const searchInput = document.getElementById('search');
+      searchInput.addEventListener('input', (event) => {
+        const value = formatString(event.target.value);
+        const noResults = document.getElementById('no_results');
+        const items = document.querySelectorAll('item-emprego') //Colocar o nome da lista de empregos que vamos criar
+
+        let hasResults = false;
+
+        items.forEach(item =>{
+          //Aqui podemos manipular o item que quisermos da lista
+          if(formatString(item.textContent).indexOf(value) !== -1) {
+            item.style.display = 'flex'
+
+            hasResults = true;
+          } else {
+            item.style.display = 'none'
+          }
+        })
+
+        if (hasResults) {
+          noResults.style.display = 'none';
+        } else{
+          noResults.style.display = 'block';
+        }
+      });
+      
+function formatString(value) {
+   return value.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }

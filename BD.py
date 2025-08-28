@@ -66,7 +66,7 @@ def cadastro():
     )
     db.session.add(novo_usuario)
     db.session.commit()
-    return jsonify({"message": "Usuário cadastrado com sucesso!"})
+    return jsonify({"message": "Usuário cadastrado!"})
 
 @app.route('/criar_banco')
 def criar_banco():

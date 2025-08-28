@@ -1,6 +1,6 @@
 #corpoInicio{
    background-color: white; 
-   background-image: url(../static/images/ELEMENTO\ 1.png);
+   background-image: url(../static/images/ELEMENTO1.png);
    background-size: 100%;
    background-repeat: no-repeat;
    background-position: center;
@@ -118,7 +118,7 @@
 /*PÁGINA ENTRAR*/
 
 #corpoEntrar{
-   background-image: url(images/ELEMENTO\ 3.png);
+   background-image: url(images/ELEMENTO3.png);
    background-size: auto;
    background-repeat: no-repeat;
    background-position: center;
@@ -227,7 +227,7 @@ img#setavoltar{
 }
    /* PÁGINA CONTINUAR COM GOOGLE*/
    #corpoContinuarGoogle{
-   background-image: url(images/ELEMENTO\ 4.png);
+   background-image: url(images/ELEMENTO4.png);
    background-size: auto;
    background-repeat: no-repeat;
    background-position: center;
@@ -270,6 +270,13 @@ img#setavoltar{
 }
 
 #container{
+   width: 300px;
+   align-items: center;
+   margin-left: 800px;
+   margin-bottom: 10px;
+}
+
+#container2{
    width: 300px;
    align-items: center;
    margin-left: 800px;
