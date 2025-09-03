@@ -1,6 +1,6 @@
 #corpoInicio{
    background-color: white; 
-   background-image: url(../static/images/ELEMENTO1.png);
+   background-image: url(../static/images/ELEMENTO\ 1.png);
    background-size: 100%;
    background-repeat: no-repeat;
    background-position: center;
@@ -18,6 +18,7 @@
     width: 10%;
     height: 10%;
     margin-left: 1%;
+    margin-top: 1%;
 }
 #entrarInicio{
     background-color: white;
@@ -118,7 +119,7 @@
 /*PÁGINA ENTRAR*/
 
 #corpoEntrar{
-   background-image: url(images/ELEMENTO3.png);
+   background-image: url(images/ELEMENTO\ 3.png);
    background-size: auto;
    background-repeat: no-repeat;
    background-position: center;
@@ -227,7 +228,7 @@ img#setavoltar{
 }
    /* PÁGINA CONTINUAR COM GOOGLE*/
    #corpoContinuarGoogle{
-   background-image: url(images/ELEMENTO4.png);
+   background-image: url(images/ELEMENTO\ 4.png);
    background-size: auto;
    background-repeat: no-repeat;
    background-position: center;
@@ -269,35 +270,48 @@ img#setavoltar{
    margin-left: 110px;
 }
 
-#container{
-   width: 300px;
-   align-items: center;
-   margin-left: 800px;
-   margin-bottom: 10px;
+#allcontainer {
+  display: flex;            /* coloca os filhos lado a lado */
+  justify-content: center;  /* centraliza no meio da tela */
+  align-items: flex-start;  /* alinha pelo topo */
+  gap: 5px;                 /* espaço entre eles */
+  margin-top: 20px;
 }
 
+#container,
 #container2{
-   width: 300px;
+   width: 350px;
+   height: 50px;
    align-items: center;
-   margin-left: 800px;
-   margin-bottom: 10px;
+   margin-left: 10px;
+   margin-bottom: 0px;
 }
+
 
 .input-icon{
    display: flex;
    align-items: center;
    justify-content: center;
    border-radius: 100%;
-   min-width: 32px;
-   min-height: 32px;
+   min-width: 40px;
+   min-height: 40px;
    color: #1c232e;
    background-color: #0B6265;
+}
+
+#procu, #loca{
+   font-size: 20px;  
 }
 
 .input-field{
    border: none;
    background-color: transparent;
 }
+
+.input-field:focus{
+   outline: none;
+}
+
 
 .input-group{
    display: flex;
@@ -306,4 +320,19 @@ img#setavoltar{
    padding: 8px 16px 8px 8px;
    border-radius: 24px;
    gap: 8px;
+   margin-top: -30px;
 }
+
+#no_results{
+   display: none;
+   text-align: center;
+}
+
+#navIndex{
+   margin-top: 20px;
+   margin-bottom: 20px;
+   width: 100%;
+   font-size: large;
+   font-weight: bold;
+}
+

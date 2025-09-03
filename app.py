@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import bcrypt
 
@@ -11,7 +11,7 @@ def inicio():
 @app.route('/minha-rota', methods=['POST'])
 def minha_rota():
     dados = request.get_json()
-    # Processa os dados recebidos do JS
+    # Processa os dados do JS
     resposta = {'mensagem': 'Dados recebidos!', 'dados': dados}
     return jsonify(resposta)
 
@@ -20,7 +20,6 @@ def entrar():
     if request.method == 'POST':
         email = request.form.get('email')
         senha = request.form.get('senha')
-        # Here you would typically handle the login logic, e.g., checking credentials
         return render_template('Entrar.html', email=email, senha=senha)
     return render_template('Entrar.html')
     
@@ -29,7 +28,6 @@ def criar_conta():
     if request.method == 'POST':
         email = request.form.get('email')
         senha = request.form.get('senha')
-        # Here you would typically handle the account creation logic
         return render_template('CriarConta.html', email=email, senha=senha)
     return render_template('CriarConta.html')
 

@@ -1,28 +1,14 @@
-
-// Envia dados para o Python usando fetch
-fetch('/minha-rota', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ chave: 'valor' })
-})
-.then(response => response.json())
-.then(data => {
-    console.log(data); // resposta do Python
-});
-
 function mostrarSenha() {
     const input = document.getElementById("senha");
     const icone = document.getElementById("iconeOlho");
   
     if (input.type === "password") {
       input.type = "text";
-      icone.src = "../static/images/olho-fechado-senha.png";
+      icone.src = "../static/images/olho fechado senha.png";
       icone.alt = "Ocultar senha";
     } else {
       input.type = "password";
-      icone.src = "../static/images/olho-Aberto-Senha.png"; 
+      icone.src = "../static/images/olho Aberto Senha.png"; 
       icone.alt = "Mostrar senha";
     }
 }
@@ -31,6 +17,7 @@ function entrar() {
     var email = document.getElementById("email").value.trim();
     var senha = document.getElementById("senha").value.trim();
 
+    // Verifica se campos estão vazios
     if (email === "" || senha === "") {
         Swal.fire({
             icon: 'error',
@@ -41,84 +28,20 @@ function entrar() {
         return false;
     }
 
-    fetch('http://localhost:5001/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email, senha: senha })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Erro',
-                text: data.error,
-                confirmButtonColor: '#0B6265'
-            });
-        } else {
-            window.location.href = "/index"; // rota do Flask
-        }
-    });
-    return false;
-}
-function criarConta() {
-    var email = document.getElementById("email").value.trim();
-    var senha = document.getElementById("senha").value.trim();
-
-    if (email === "" || senha === "") {
+    // Verifica se email/senha estão corretos
+    if (email !== "dsmbispo@gmail.com" || senha !== "123456789") {
         Swal.fire({
             icon: 'error',
             title: 'Opa...',
-            text: 'Você precisa preencher todos os campos!',
+            text: 'E-mail ou senha incorretos!',
             confirmButtonColor: '#0B6265'
-        });
+        })
         return false;
     }
 
-    fetch('http://localhost:5001/cadastro', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email, senha: senha })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Erro',
-                text: data.error,
-                confirmButtonColor: '#0B6265'
-            });
-        } else {
-            Swal.fire({
-                icon: 'success',
-                title: 'Conta criada!',
-                text: data.message,
-                confirmButtonColor: '#0B6265'
-            }).then(() => {
-                window.location.href = "/index"; // rota do Flask
-            });
-        }
-    });
-    return false;
-}
-
-    document.getElementById("botaoEntrar").addEventListener("click", function () {
-    });
-
-
-
- // Função callback do login com Google
-        function handleCredentialResponse(response) {
-    console.log("JWT ID Token: ", response.credential);
-    const responsePayload = decodeJWT(response.credential);
-
-    Swal.fire({
-        title: 'Login com Google feito!',
-        text: 'Bem-vindo, ' + responsePayload.name,
-        icon: 'success',
-        confirmButtonText: 'OK'
-    });
+    // Se passou nas validações, redireciona
+    window.location.href = "../templates/Index.html";
+    return true;
 }
 
 
@@ -137,27 +60,28 @@ function decodeJWT(token) {
         return JSON.parse(jsonPayload);
       }
 
-      
+      function handleCredentialResponse(response) {
 
-      function validarFormularioCurriculo() {
-    let nome = document.querySelector("input[name='nome']").value;
-    let telefone = document.querySelector("input[name='telefone']").value;
-    if (nome === "" || telefone === "") {
-        Swal.fire({
-            icon: 'error',
-            title: 'Campos obrigatórios!',
-            text: 'Preencha Nome e Telefone.',
-        });
-        return false;
-    }
-    return true;
-}
+        console.log("Encoded JWT ID token: " + response.credential);
+
+        const responsePayload = decodeJWT(response.credential);
+
+        console.log("Decoded JWT ID token fields:");
+        console.log("  Full Name: " + responsePayload.name);
+        console.log("  Given Name: " + responsePayload.given_name);
+        console.log("  Family Name: " + responsePayload.family_name);
+        console.log("  Unique ID: " + responsePayload.sub);
+        console.log("  Profile image URL: " + responsePayload.picture);
+        console.log("  Email: " + responsePayload.email);
+        console.log("  VerifiedEmail: " + responsePayload.email_verified);
+      }
+
 
 const searchInput = document.getElementById('search');
       searchInput.addEventListener('input', (event) => {
         const value = formatString(event.target.value);
         const noResults = document.getElementById('no_results');
-        const items = document.querySelectorAll('item-emprego') //Colocar o nome da lista de empregos que vamos criar
+        const items = document.querySelectorAll('') //Colocar o nome da lista de empregos que vamos criar
 
         let hasResults = false;
 
@@ -166,7 +90,33 @@ const searchInput = document.getElementById('search');
           if(formatString(item.textContent).indexOf(value) !== -1) {
             item.style.display = 'flex'
 
-            hasResults = true;
+            let hasResults = true;
+          } else {
+            item.style.display = 'none'
+          }
+        })
+
+        if (hasResults) {
+          noResults.style.display = 'none';
+        } else{
+          noResults.style.display = 'block';
+        }
+      });
+
+  const localizationInput = document.getElementById('localizat');
+      searchInput.addEventListener('input', (event) => {
+        const value = formatString(event.target.value);
+        const noResults = document.getElementById('no_results');
+        const items = document.querySelectorAll('') //Colocar o nome da lista de empregos que vamos criar
+
+        let hasResults = false;
+
+        items.forEach(item =>{
+          //Aqui podemos manipular o item que quisermos da lista
+          if(formatString(item.textContent).indexOf(value) !== -1) {
+            item.style.display = 'flex'
+
+            let hasResults = true;
           } else {
             item.style.display = 'none'
           }
@@ -182,3 +132,21 @@ const searchInput = document.getElementById('search');
 function formatString(value) {
    return value.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
+
+
+const euLink = document.getElementById("euLink");
+const submenu = document.getElementById("submenuEu");
+
+  euLink.addEventListener("click", function (e) {
+    e.preventDefault();
+    submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+  });
+
+  // fecha se clicar fora
+  document.addEventListener("click", function (e) {
+    if (!euLink.contains(e.target) && !submenu.contains(e.target)) {
+      submenu.style.display = "none";
+    }
+  });
+   submenu.style.display = "none";
+
