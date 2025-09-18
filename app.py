@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
-from flask_sqlalchemy import SQLAlchemy
-import bcrypt 
+from sqlalchemy import SQLAlchemy
+import bcrypt
 
 app = Flask(__name__)
 
