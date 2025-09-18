@@ -12,12 +12,14 @@
 </head>
 
 <body id="corpoInicio">
-    <header id="cabecalhoInicio" border="5">
+    <header id="cabecalhoInicio">
         <a href="Inicio.html"><img src="{{ url_for('static', filename='images/logo(sem-fundo).png') }}"
-                id="logoheader"></a>z
-        <a class="btn btn-primary" href="/entrar" id="entrarInicio">Entrar</a>
-        <a class="btn btn-primary" href="/criarConta" role="button" id="criarConta">Criar uma Conta</a>
-    </header> <br>
+                id="logoheader"></a>
+        <div class="d-flex gap-2">
+            <a class="btn btn-primary" href="/entrar" id="entrarInicio">Entrar</a>
+            <a class="btn btn-primary" href="/criarConta" role="button" id="criarConta">Criar uma Conta</a>
+        </div>
+    </header> <br><br> <br>
     <div id="areasubtitulo">
         <p id="subtituloarea">Conectando oportunidades, criando futuros.</p>
     </div><br>

@@ -37,16 +37,13 @@
                     <form action="/entrar" method="post">
                         <div class="input-group" id="inputUser">
                             <input type="text" class="form-control" placeholder="E-mail" aria-label="Username"
-                                aria-describedby="visible-addon" id="email">
-                            <input type="text" class="form-control d-none" placeholder="Hidden input"
-                                aria-label="Hidden input" aria-describedby="visible-addon" value="email">
+                                aria-describedby="visible-addon" id="email" name="email">
+
                         </div><br>
                         <p id="textoEntrar">Senha:</p><br>
                         <div class="input-group" id="inputUser">
                             <input type="password" class="form-control" placeholder="Senha" aria-label="Username"
-                                aria-describedby="visible-addon" id="senha">
-                            <input type="password" class="form-control d-none" placeholder="Hidden input"
-                                aria-label="Hidden input" aria-describedby="visible-addon" value="senha">
+                                aria-describedby="visible-addon" id="senha" name="senha">
                             <button class="btn btn-outline-secondary" type="button" id="toggleSenha"
                                 onclick="mostrarSenha()">
                                 <img src="../static/images/olho-fechado-senha.png" alt="Mostrar senha" id="iconeOlho">

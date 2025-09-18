@@ -16,46 +16,35 @@
 
 
 <body id="corpoEntrar">
-
-    <div class="py-15 w-100" style="max-width:500px">
+    <div class="py-5 w-100" style="max-width:500px; margin: auto;">
         <div class="card shadow account-login-card">
-            <div class="card-body account-login-card-body position-relative">
-                <div class="text-center">
-                    <a href="{{ url_for('inicio') }}"><img
-                            src="{{ url_for('static', filename='images/seta(para-a-esquerda).png') }}"
-                            id="setavoltar"></a>
-                    <a href="{{ url_for('inicio') }}">
-                        <img src="{{ url_for('static', filename='images/logo(sem-fundo).png') }}" id="logoNexus"
-                            alt="Nexus">
-                    </a>
+            <div class="card-body text-center">
+                <a href="{{ url_for('inicio') }}"><img src="{{ url_for('static', filename='images/seta(para-a-esquerda).png') }}" id="setavoltar"></a>
+                <img src="{{ url_for('static', filename='images/logo(sem-fundo).png') }}" id="logoNexus" alt="Nexus">
 
-                    <br><br>
+                <p id="tituloEntrar">Crie uma conta</p> <br>
 
-                    <p id="tituloEntrar">Crie uma conta</p>
-                    <p id="textoEntrar">Endereço de e-mail:</p><br>
+                <p id="textoEntrar">Nome completo:</p><br>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Nome" id="nome">
+                </div><br>
 
-                    <form action="/criarConta" method="post">
-                        <div class="input-group" id="inputUser">
-                            <input type="text" class="form-control" placeholder="E-mail" aria-label="Username"
-                                aria-describedby="visible-addon" id="email">
-                            <input type="text" class="form-control d-none" placeholder="Hidden input"
-                                aria-label="Hidden input" aria-describedby="visible-addon" value="email">
-                        </div><br>
-                        <p id="textoEntrar">Senha:</p><br>
-                        <div class="input-group" id="inputUser">
-                            <input type="password" class="form-control" placeholder="Senha" aria-label="Username"
-                                aria-describedby="visible-addon" id="senha">
-                            <input type="password" class="form-control d-none" placeholder="Hidden input"
-                                aria-label="Hidden input" aria-describedby="visible-addon" value="senha">
-                            <button class="btn btn-outline-secondary" type="button" id="toggleSenha"
-                                onclick="mostrarSenha()">
-                                <img src="../static/images/olho-fechado-senha.png" alt="Mostrar senha" id="iconeOlho">
-                            </button>
-                        </div><br>
-                        <button class="btn btn-primary" type="button" id="botaoEntrar"
-                            onclick="criarConta()">Continuar</button><br>
+                <p id="textoEntrar">Endereço de e-mail:</p><br>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="E-mail" id="email">
+                </div><br>
 
-                        <p id="textoEntrar2">ou</p>
+                <p id="textoEntrar">Senha:</p><br>
+                <div class="input-group mb-3">
+                    <input type="password" class="form-control" placeholder="Senha" id="senha">
+                    <button class="btn btn-outline-secondary" type="button" onclick="mostrarSenha()">
+                        <img src="../static/images/olho-fechado-senha.png" alt="Mostrar senha" id="iconeOlho">
+                    </button><br>
+                </div>
+
+                <button class="btn btn-primary w-100" type="button" onclick="criarConta()" id="botaoEntrar">Continuar</button>
+                <p id="textoEntrar2">ou</p>
+
 
                         <!-- Botão de Login com Google -->
                         <div id="g_id_onload"

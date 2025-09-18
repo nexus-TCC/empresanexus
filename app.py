@@ -1,12 +1,12 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
-from sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 import bcrypt
 
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'uma_chave_secreta_muito_segura' # Necessária para usar a sessão
+app.config['SECRET_KEY'] = 'nexus_tcc_etec' 
 
 db = SQLAlchemy(app)
 
@@ -94,7 +94,12 @@ def login():
         return jsonify({"message": "Login realizado com sucesso!"}), 200
     else:
         return jsonify({"error": "E-mail ou senha incorretos"}), 401
-    
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('inicio'))
+
 @app.route('/api/criar_curriculo', methods=['POST'])
 def criar_curriculo():
     data = request.get_json()

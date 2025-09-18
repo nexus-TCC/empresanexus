@@ -4,16 +4,16 @@ function mostrarSenha() {
 
         if (input.type === "password") {
                 input.type = "text";
-                icone.src = "../static/images/olho fechado senha.png";
+                icone.src = "../static/images/olho-fechado-senha.png";
                 icone.alt = "Ocultar senha";
         } else {
                 input.type = "password";
-                icone.src = "../static/images/olho Aberto Senha.png";
+                icone.src = "../static/images/olho-Aberto-Senha.png";
                 icone.alt = "Mostrar senha";
         }
 }
 
-function entrar() {
+async function entrar() {
         var email = document.getElementById("email").value.trim();
         var senha = document.getElementById("senha").value.trim();
 
@@ -29,7 +29,7 @@ function entrar() {
         }
 
         // Verifica se email/senha estão corretos
-        if (email !== "dsmbispo@gmail.com" || senha !== "123456789") {
+        if (email === "" || senha === "") {
                 Swal.fire({
                         icon: 'error',
                         title: 'Opa...',
@@ -38,9 +38,116 @@ function entrar() {
                 })
                 return false;
         }
+        const response = await fetch("/api/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, senha })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+                Swal.fire({ icon: 'success', title: 'Sucesso!', text: data.message, confirmButtonColor: '#0B6265' })
+                        .then(() => window.location.href = "/index");
+        } else {
+                Swal.fire({ icon: 'error', title: 'Erro', text: data.error, confirmButtonColor: '#0B6265' });
+        }
+}
+
+
+
+async function criarConta() {
+        var email = document.getElementById("email").value.trim();
+        var senha = document.getElementById("senha").value.trim();
+
+        // Verifica se campos estão vazios
+        if (email === "" || senha === "") {
+                Swal.fire({
+                        icon: 'error',
+                        title: 'Opa...',
+                        text: 'Você precisa preencher todos os campos!',
+                        confirmButtonColor: '#0B6265'
+                });
+                return false;
+        }
+        const response = await fetch("/api/cadastro", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ nome, email, senha })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+                Swal.fire({ icon: 'success', title: 'Sucesso!', text: data.message, confirmButtonColor: '#0B6265' })
+                        .then(() => window.location.href = "/entrar");
+        } else {
+                Swal.fire({ icon: 'error', title: 'Erro', text: data.error, confirmButtonColor: '#0B6265' });
+        }
+
+        // Verifica se email é válido
+        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+                Swal.fire({
+                        icon: 'error',
+                        title: 'Opa...',
+                        text: 'Por favor, insira um e-mail válido!',
+                        confirmButtonColor: '#0B6265'
+                });
+                return false;
+        }
+
+        // Verifica se senha tem pelo menos 8 caracteres
+        if (senha.length < 8) {
+                Swal.fire({
+                        icon: 'error',
+                        title: 'Opa...',
+                        text: 'A senha deve ter pelo menos 8 caracteres!',
+                        confirmButtonColor: '#0B6265'
+                });
+                return false;
+        }
+
+        //Verifica se senha tem pelo menos um número
+        var numberPattern = /\d/;
+        if (!numberPattern.test(senha)) {
+                Swal.fire({
+                        icon: 'error',
+                        title: 'Opa...',
+                        text: 'A senha deve conter pelo menos um número!',
+                        confirmButtonColor: '#0B6265'
+                });
+                return false;
+        }
+
+        //Verifica se senha tem pelo menos uma letra maiúscula
+        var uppercasePattern = /[A-Z]/;
+        if (!uppercasePattern.test(senha)) {
+                Swal.fire({
+                        icon: 'error',
+                        title: 'Opa...',
+                        text: 'A senha deve conter pelo menos uma letra maiúscula!',
+                        confirmButtonColor: '#0B6265'
+                });
+                return false;
+        }
+
+        //Verifica se senha tem pelo menos uma letra minúscula
+        var lowercasePattern = /[a-z]/;
+        if (!lowercasePattern.test(senha)) {
+                Swal.fire({
+                        icon: 'error',
+                        title: 'Opa...',
+                        text: 'A senha deve conter pelo menos uma letra minúscula!',
+                        confirmButtonColor: '#0B6265'
+                });
+                return false;
+        }
+
+        //Verifica se email já está cadastrado 
 
         // Se passou nas validações, redireciona
-        window.location.href = "../templates/Index.html";
+        window.location.href = "/index";
         return true;
 }
 

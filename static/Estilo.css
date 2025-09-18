@@ -1,9 +1,10 @@
 #corpoInicio{
    background-color: white; 
    background-image: url(../static/images/ELEMENTO1.png);
-   background-size: 100%;
+   background-size: cover;
    background-repeat: no-repeat;
    background-position: center;
+   min-height: 100vh;
 }
 
 #cabecalhoInicio{
@@ -12,94 +13,102 @@
     background-color: white;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     border: solid;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+}
+
+#cabecalhoInicio .d-flex{
+   margin-left: auto;
+   gap: 6px;
+   flex-wrap: wrap;
 }
 
 #logoheader{
-    width: 10%;
-    height: 10%;
-    margin-left: 1%;
-    margin-top: 1%;
+    max-width: 180px;
+    height: auto;
 }
-#entrarInicio{
+#entrarInicio,
+#criarConta {
+    font-size: clamp(0.8rem, 2vw, 1rem);
+    padding: clamp(4px, 1vw, 6px) clamp(8px, 2vw, 12px);
+    padding: 6px 12px;
+    min-width: auto;
+    flex: 1 1 auto;
+    max-width: 200px;
+    text-align: center;
+}
+
+#entrarInicio {
     background-color: white;
     color: #317a7e;
     border-color: #c4c4c4;
-    width: 5%;
-    height: 4.5%;
-    position: relative;
-    margin-left: 85%;
-    margin-right: 0.2%;
-    margin-top: -5%;
-    font-size: large;
-    text-align: center;
-
 }
-#entrarInicio:hover{
+#entrarInicio:hover {
     background-color: #f6f7f7;
-    color: #317a7e;
     border-color: #317a7e;
-    width: 5%;
-    height: 4.5%;
-    position: relative;
-    margin-left: 85%;
-    margin-right: 0.2%;
-    margin-top: -5%;
-    font-size: large;
-    text-align: center;
 }
-#criarConta{
+
+#criarConta {
     color: white;
     background-color: #317a7e;
     border-color: #317a7e;
-    width: 8%;
-    height: 4.5%;
-    margin-top: -5%;
-    position: relative;
-    font-size: large;
-    text-align: center;
-} 
-#criarConta:hover{
-    color: white;
+}
+#criarConta:hover {
     background-color: #205f63;
-    border-color: #205f63;;
-    width: 8%;
-    height: 4.5%;
-    margin-top: -5%;
-    position: relative;
-    font-size: large;
-    text-align: center;
+    border-color: #205f63;
 }
 
 #areasubtitulo{
    background-color: white;
-   width: 800px;
-   margin-left: 50px;
+   max-width: 1000px;
+   margin-left: 40px;
+   text-align: left;
 }
 
  #subtituloarea{
    color: #205f63;
    font-family: Impact;
-   font-size: 1.5cm;
+   font-size: clamp(1.8rem, 4.5vw, 3.2rem);
+   font-weight: bold;
 }
 
  #areaTexto{
    background-color: white;
-   margin-left:80px ;
-   width: 700px;
+   margin-left: 40px;
+   max-width: 850px;
    border-radius: 10px;
    border: solid #c0c0c0;
    padding: 20px;
-   
-   
-
+   text-align: left;
  }     
 
  #textoInicio{
    border-radius: 10px;
    font-family: Verdana;
-   font-size: 0.6cm;
+   font-size: clamp(1rem, 2.5vw, 1.6rem); 
+   line-height: 1.6;
    color: #205e63b7;
-   
+   text-align:justify;
+}
+
+@media (max-width: 768px) {
+   #cabecalhoInicio {
+       flex-direction: column;
+       align-items: flex-start;
+   }
+   #logoheader {
+      max-width: 100px;
+       margin-bottom: 10px;
+   }
+   #entrarInicio, #criarConta {
+       min-width: 100%;
+       margin: 5px 0;
+   }
+   #areasubtitulo, #areaTexto  {
+      max-width: 95%;
+   }
 }
 
 #texto1{
@@ -116,8 +125,6 @@
 }
 
 
-/*PÁGINA ENTRAR*/
-
 #corpoEntrar{
    background-image: url(images/ELEMENTO3.png);
    background-size: auto;
@@ -132,11 +139,12 @@
 
 #areaEntrar{
    background-color:white;
+   max-width: 90%;
    width: 600px;
-   height: 700px;
+   max-height: 90vh;
    box-shadow: 10px, 10px, 10px, #1c232e;
    border-radius: 20px;
-
+   overflow-y: auto;
 }
 
 img#setavoltar{
@@ -228,7 +236,7 @@ img#setavoltar{
 }
    /* PÁGINA CONTINUAR COM GOOGLE*/
    #corpoContinuarGoogle{
-   background-image: url(images/ELEMENTO\ 4.png);
+   background-image: url(images/ELEMENTO4.png);
    background-size: auto;
    background-repeat: no-repeat;
    background-position: center;
@@ -271,10 +279,10 @@ img#setavoltar{
 }
 
 #allcontainer {
-  display: flex;            /* coloca os filhos lado a lado */
-  justify-content: center;  /* centraliza no meio da tela */
-  align-items: flex-start;  /* alinha pelo topo */
-  gap: 5px;                 /* espaço entre eles */
+  display: flex;            
+  justify-content: center; 
+  align-items: flex-start; 
+  gap: 5px;                
   margin-top: 20px;
 }
 
@@ -336,3 +344,13 @@ img#setavoltar{
    font-weight: bold;
 }
 
+#container2 p#span{
+   display: none;
+}
+
+#h2#textv{
+   text-align: center;
+   color: #205f63;
+   margin-top: 20px;
+   margin-bottom: 10px;
+}
