@@ -1,12 +1,16 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
-import bcrypt
+import bcrypt 
+import os
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'chave_dev_insegura')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
+    'DATABASE_URL', 'sqlite:///users.db'
+)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'nexus_tcc_etec' 
+
 
 db = SQLAlchemy(app)
 
@@ -14,7 +18,7 @@ class Usuario(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(150), nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
-    senha = db.Column(db.String(150), nullable=False)
+    senha = db.Column(db.String(200), nullable=False)
     
     def __repr__(self):
         return f'<Usuario {self.email}>'
@@ -71,12 +75,15 @@ def cadastro():
     nome = data.get('nome', '')
     if not all ([email, senha, nome]):
         return jsonify({"error": "Todos os campos são obrigatórios"}), 400
+
     if Usuario.query.filter_by(email=email).first():
         return jsonify({"error": "E-mail já cadastrado"}), 409
+
     hashed_senha = bcrypt.hashpw(senha.encode('utf-8'), bcrypt.gensalt())
     novo_usuario = Usuario(nome=nome, email=email, senha=hashed_senha.decode('utf-8'))
     db.session.add(novo_usuario)
     db.session.commit()
+
     return jsonify({"message": "Usuário cadastrado com sucesso!"}), 201
 
 @app.route('/api/login', methods=['POST'])
@@ -85,26 +92,27 @@ def login():
     email = data.get('email')
     senha = data.get('senha')
     if not all ([email, senha]):
-        return jsonify({"error": "Todos os campos são obrigatórios"}), 400
+        return jsonify({"success": False, "error": "Todos os campos são obrigatórios"}), 400
+
     usuario = Usuario.query.filter_by(email=email).first()
     if not usuario:
         return jsonify({"error": "E-mail ou senha incorretos"}), 401
+
     if bcrypt.checkpw(senha.encode('utf-8'), usuario.senha.encode('utf-8')):
         session['usuario_id'] = usuario.id
-        return jsonify({"message": "Login realizado com sucesso!"}), 200
+        return jsonify({"success": True, "message": "Login realizado com sucesso!"}), 200
     else:
-        return jsonify({"error": "E-mail ou senha incorretos"}), 401
-
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('inicio'))
-
+        return jsonify({"success": False, "error": "E-mail ou senha incorretos"}), 401
+    
 @app.route('/api/criar_curriculo', methods=['POST'])
 def criar_curriculo():
+    usuario_id = session.get('usuario_id')
+    if not usuario_id:
+        return jsonify({"error": "Usuário não autenticado"}), 401
+
     data = request.get_json()
     novo_curriculo = Profissional(
-        usuario_id=data.get('usuario_id'),
+        usuario_id=usuario_id,
         nome=data.get('nome'),
         telefone=data.get('telefone'),
         endereco=data.get('endereco'),
@@ -117,9 +125,13 @@ def criar_curriculo():
 
 @app.route('/api/criar_empresa', methods=['POST'])
 def criar_empresa():
+    usuario_id = session.get('usuario_id')
+    if not usuario_id:
+        return jsonify({"error": "Usuário não autenticado"}), 401
+
     data = request.get_json()
     nova_empresa = Empresa(
-        usuario_id=data.get('usuario_id'),
+        usuario_id=usuario_id,
         nome_empresa=data.get('nome_empresa'),
         descricao=data.get('descricao'),
         site=data.get('site'),
@@ -132,6 +144,7 @@ def criar_empresa():
 @app.route('/criar_banco')
 def criar_banco():
     db.create_all()
+    return "Banco criado"
 
 
 if __name__ == '__main__':

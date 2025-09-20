@@ -13,143 +13,137 @@ function mostrarSenha() {
         }
 }
 
-async function entrar() {
-        var email = document.getElementById("email").value.trim();
-        var senha = document.getElementById("senha").value.trim();
+function Email_Eh_Valido(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+}
 
-        // Verifica se campos estão vazios
-        if (email === "" || senha === "") {
+//LOGIN
+
+async function loginUsuario() {
+        const email = document.getElementById("email").value.trim();
+        const senha = document.getElementById("senha").value.trim();
+
+        if (!email || !senha) {
                 Swal.fire({
                         icon: 'error',
-                        title: 'Opa...',
-                        text: 'Você precisa preencher todos os campos!',
+                        title: 'Campos obrigatórios',
+                        text: 'Preencha todos os campos.',
                         confirmButtonColor: '#0B6265'
                 });
-                return false;
+                return;
         }
 
-        // Verifica se email/senha estão corretos
-        if (email === "" || senha === "") {
+        if (!Email_Eh_Valido(email)) {
                 Swal.fire({
                         icon: 'error',
-                        title: 'Opa...',
-                        text: 'E-mail ou senha incorretos!',
+                        title: 'Email inválido',
+                        text: 'Digite um email válido.',
                         confirmButtonColor: '#0B6265'
-                })
-                return false;
+                });
+                return;
         }
-        const response = await fetch("/api/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, senha })
-        });
 
-        const data = await response.json();
+        try {
+                const resposta = await fetch('http://localhost:5000/api/login', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ email, senha }),
+                });
 
-        if (response.ok) {
-                Swal.fire({ icon: 'success', title: 'Sucesso!', text: data.message, confirmButtonColor: '#0B6265' })
-                        .then(() => window.location.href = "/index");
-        } else {
-                Swal.fire({ icon: 'error', title: 'Erro', text: data.error, confirmButtonColor: '#0B6265' });
+                const dados = await resposta.json();
+
+                if (resposta.ok) {
+                        sessionStorage.setItem('logado', 'true');
+                        Swal.fire({
+                                icon: 'success',
+                                title: 'Login realizado!',
+                                text: dados.message,
+                                timer: 1500,
+                                showConfirmButton: false,
+                        }).then(() => {
+                                window.location.href = '/index';
+                        });
+                } else {
+                        Swal.fire({
+                                icon: 'error',
+                                title: 'Erro',
+                                text: dados.error || 'Erro ao fazer login.',
+                        });
+                }
+
+        } catch (erro) {
+                Swal.fire({
+                        icon: 'error',
+                        title: 'Erro inesperado',
+                        text: erro.message,
+                });
         }
 }
 
 
 
 async function criarConta() {
-        var email = document.getElementById("email").value.trim();
-        var senha = document.getElementById("senha").value.trim();
+        const nome = document.getElementById("nome").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const senha = document.getElementById("senha").value.trim();
 
-        // Verifica se campos estão vazios
-        if (email === "" || senha === "") {
+        if (!nome || !email || !senha) {
                 Swal.fire({
                         icon: 'error',
-                        title: 'Opa...',
-                        text: 'Você precisa preencher todos os campos!',
+                        title: 'Campos obrigatórios',
+                        text: 'Preencha todos os campos.',
                         confirmButtonColor: '#0B6265'
                 });
-                return false;
-        }
-        const response = await fetch("/api/cadastro", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ nome, email, senha })
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-                Swal.fire({ icon: 'success', title: 'Sucesso!', text: data.message, confirmButtonColor: '#0B6265' })
-                        .then(() => window.location.href = "/entrar");
-        } else {
-                Swal.fire({ icon: 'error', title: 'Erro', text: data.error, confirmButtonColor: '#0B6265' });
+                return;
         }
 
-        // Verifica se email é válido
-        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test(email)) {
+        if (!Email_Eh_Valido(email)) {
                 Swal.fire({
                         icon: 'error',
-                        title: 'Opa...',
-                        text: 'Por favor, insira um e-mail válido!',
+                        title: 'Email inválido',
+                        text: 'Digite um email válido.',
                         confirmButtonColor: '#0B6265'
                 });
-                return false;
+                return;
         }
 
-        // Verifica se senha tem pelo menos 8 caracteres
-        if (senha.length < 8) {
+        try {
+                const resposta = await fetch('http://localhost:5000/api/cadastro', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ nome, email, senha }),
+                });
+
+                const dados = await resposta.json();
+
+                if (resposta.ok) {
+                        Swal.fire({
+                                icon: 'success',
+                                title: 'Cadastro realizado!',
+                                text: dados.message,
+                                confirmButtonText: 'Fazer login',
+                        }).then(() => {
+                                window.location.href = '/entrar';
+                        });
+                } else {
+                        Swal.fire({
+                                icon: 'error',
+                                title: 'Erro ao cadastrar',
+                                text: dados.error || 'Tente novamente.',
+                                confirmButtonColor: '#0B6265'
+                        });
+                }
+
+        } catch (erro) {
                 Swal.fire({
                         icon: 'error',
-                        title: 'Opa...',
-                        text: 'A senha deve ter pelo menos 8 caracteres!',
-                        confirmButtonColor: '#0B6265'
+                        title: 'Erro inesperado',
+                        text: erro.message,
                 });
-                return false;
         }
-
-        //Verifica se senha tem pelo menos um número
-        var numberPattern = /\d/;
-        if (!numberPattern.test(senha)) {
-                Swal.fire({
-                        icon: 'error',
-                        title: 'Opa...',
-                        text: 'A senha deve conter pelo menos um número!',
-                        confirmButtonColor: '#0B6265'
-                });
-                return false;
-        }
-
-        //Verifica se senha tem pelo menos uma letra maiúscula
-        var uppercasePattern = /[A-Z]/;
-        if (!uppercasePattern.test(senha)) {
-                Swal.fire({
-                        icon: 'error',
-                        title: 'Opa...',
-                        text: 'A senha deve conter pelo menos uma letra maiúscula!',
-                        confirmButtonColor: '#0B6265'
-                });
-                return false;
-        }
-
-        //Verifica se senha tem pelo menos uma letra minúscula
-        var lowercasePattern = /[a-z]/;
-        if (!lowercasePattern.test(senha)) {
-                Swal.fire({
-                        icon: 'error',
-                        title: 'Opa...',
-                        text: 'A senha deve conter pelo menos uma letra minúscula!',
-                        confirmButtonColor: '#0B6265'
-                });
-                return false;
-        }
-
-        //Verifica se email já está cadastrado 
-
-        // Se passou nas validações, redireciona
-        window.location.href = "/index";
-        return true;
 }
+
 
 
 function decodeJWT(token) {
@@ -184,81 +178,57 @@ function handleCredentialResponse(response) {
 }
 
 
-const searchInput = document.getElementById('search');
-searchInput.addEventListener('input', (event) => {
-        const value = formatString(event.target.value);
-        const noResults = document.getElementById('no_results');
-        const items = document.querySelectorAll('') //Colocar o nome da lista de empregos que vamos criar
-
-        let hasResults = false;
-
-        items.forEach(item => {
-                //Aqui podemos manipular o item que quisermos da lista
-                if (formatString(item.textContent).indexOf(value) !== -1) {
-                        item.style.display = 'flex'
-
-                        let hasResults = true;
-                } else {
-                        item.style.display = 'none'
-                }
-        })
-
-        if (hasResults) {
-                noResults.style.display = 'none';
-        } else {
-                noResults.style.display = 'block';
-        }
-});
-
-const localizationInput = document.getElementById('localizat');
-searchInput.addEventListener('input', (event) => {
-        const value = formatString(event.target.value);
-        const noResults = document.getElementById('no_results');
-        const items = document.querySelectorAll('') //Colocar o nome da lista de empregos que vamos criar
-
-        let hasResults = false;
-
-        items.forEach(item => {
-                //Aqui podemos manipular o item que quisermos da lista
-                if (formatString(item.textContent).indexOf(value) !== -1) {
-                        item.style.display = 'flex'
-
-                        let hasResults = true;
-                } else {
-                        item.style.display = 'none'
-                }
-        })
-
-        if (hasResults) {
-                noResults.style.display = 'none';
-        } else {
-                noResults.style.display = 'block';
-        }
-});
-
 function formatString(value) {
-        return value.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    return value.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
+function filtrarLista(inputId) {
+    const value = formatString(document.getElementById(inputId).value);
+    const noResults = document.getElementById('no_results');
+    const items = document.querySelectorAll('.item-lista');
+    let hasResults = false;
 
+    items.forEach(item => {
+        if (formatString(item.textContent).includes(value)) {
+            item.style.display = 'flex';
+            hasResults = true;
+        } else {
+            item.style.display = 'none';
+        }
+    });
+
+    noResults.style.display = hasResults ? 'none' : 'block';
+}
+
+// Eventos de busca
+const searchInput = document.getElementById('search');
+if (searchInput) {
+    searchInput.addEventListener('input', () => filtrarLista('search'));
+}
+
+const localizationInput = document.getElementById('localizat');
+if (localizationInput) {
+    localizationInput.addEventListener('input', () => filtrarLista('localizat'));
+}
+
+// ------------------------------
+// Submenu "Eu"
+// ------------------------------
 const euLink = document.getElementById("euLink");
 const submenu = document.getElementById("submenuEu");
 
-euLink.addEventListener("click", function (e) {
+if (euLink && submenu) {
+    euLink.addEventListener("click", function (e) {
         e.preventDefault();
         submenu.style.display = submenu.style.display === "block" ? "none" : "block";
-});
+    });
 
-// fecha se clicar fora
-document.addEventListener("click", function (e) {
+    // fecha se clicar fora
+    document.addEventListener("click", function (e) {
         if (!euLink.contains(e.target) && !submenu.contains(e.target)) {
-                submenu.style.display = "none";
+            submenu.style.display = "none";
         }
-});
-submenu.style.display = "none";
+    });
 
-// Para mostrar <p><span> no html 
-document.querySelector('#container2 p').style.display = 'block';
-
-// Para esconder novamente
-document.querySelector('#container2 p').style.display = 'none';
+    submenu.style.display = "none";
+}

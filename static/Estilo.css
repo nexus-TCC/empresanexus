@@ -227,8 +227,9 @@ img#setavoltar{
     text-align: center;
 }
    /* PÁGINA CONTINUAR COM GOOGLE*/
+
    #corpoContinuarGoogle{
-   background-image: url(images/ELEMENTO\ 4.png);
+   background-image: url(images/ELEMENTO4.png);
    background-size: auto;
    background-repeat: no-repeat;
    background-position: center;
@@ -247,18 +248,24 @@ img#setavoltar{
 }
 
 /* PÁGINA INDEX*/
+
 #cabecalhoIndex{
-   background-color: #0B6265;
+   background-color: #268a8d;
    color: white;
    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
    width: 100%;
    border-bottom: 6px solid transparent;
    background-image:
-       linear-gradient(#0B6265, #0B6265),
+       linear-gradient(#278588, #0B6265),
        linear-gradient(to bottom, #0B6265, #ffffff);
    background-origin: padding-box, border-box;
    background-clip: padding-box, border-box;
 }
+
+#barraNavegacao{
+   color: white;
+}
+
 #degradeCabecalhoIndex{
  height: 10px;
  width: 100%;
@@ -295,7 +302,7 @@ img#setavoltar{
    border-radius: 100%;
    min-width: 40px;
    min-height: 40px;
-   color: #1c232e;
+   color: #ffffff;
    background-color: #0B6265;
 }
 
