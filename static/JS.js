@@ -256,3 +256,9 @@ document.addEventListener("click", function (e) {
         }
 });
 submenu.style.display = "none";
+
+// Para mostrar <p><span> no html 
+document.querySelector('#container2 p').style.display = 'block';
+
+// Para esconder novamente
+document.querySelector('#container2 p').style.display = 'none';
