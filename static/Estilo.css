@@ -1,151 +1,187 @@
-#corpoInicio{
-   background-color: white; 
-   background-image: url(../static/images/ELEMENTO1.png);
-   background-size: 100%;
-   background-repeat: no-repeat;
-   background-position: center;
+body{
+    overflow-x: hidden; 
+}
+#corpoInicio {
+    background-color: white;
+    background-image: url(../static/images/ELEMENTO1.png);
+    /* MUDANÇA: 'cover' garante que o fundo cubra a área sem causar overflow */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 100vh;
+
+    /* ALTERAÇÃO CHAVE: Estica a imagem de fundo para 100% da largura e altura da viewport */
+    /* Isso garante que a imagem não seja cortada, mas esticada/comprimida */
+    background-size: 100vw 100vh;
+    
+    /* MANTIDO: Garante que a altura da seção seja pelo menos a altura da tela */
+    min-height: 100vh;
 }
 
-#cabecalhoInicio{
+@media (min-width: 992px) {
+    #logoheader {
+        width: 80px; /* Reduz o tamanho da logo no cabeçalho logado */
+    }
+
+    #cabecalhoInicio #logoheader {
+        width: 150px; /* Mantém a logo maior no cabeçalho não logado */
+    }
+}
+
+/* Estilos do Cabeçalho para as Páginas de Início/Index */
+#cabecalhoInicio {
     width: 100%;
     color: #f4f4f4;
     background-color: white;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     border: solid;
+    /* Adicionado padding para melhor separação dos elementos internos */
+    padding: 10px 0; 
 }
 
-#logoheader{
-    width: 10%;
-    height: 10%;
-    margin-left: 1%;
-    margin-top: 1%;
+#logoheader {
+    /* Ajuste para um tamanho mais visível na página de início (se não for no cabeçalho index) */
+    width: 150px; 
+    height: auto;
+    /* Mantido o auto para fluidez */
 }
-#entrarInicio{
+#entrarInicio, #criarConta {
+    font-size: large;
+    text-align: center;
+}
+
+#entrarInicio {
     background-color: white;
     color: #317a7e;
     border-color: #c4c4c4;
-    width: 5%;
-    height: 4.5%;
-    position: relative;
-    margin-left: 85%;
-    margin-right: 0.2%;
-    margin-top: -5%;
-    font-size: large;
-    text-align: center;
-
 }
-#entrarInicio:hover{
+
+#entrarInicio:hover {
     background-color: #f6f7f7;
     color: #317a7e;
     border-color: #317a7e;
-    width: 5%;
-    height: 4.5%;
-    position: relative;
-    margin-left: 85%;
-    margin-right: 0.2%;
-    margin-top: -5%;
-    font-size: large;
-    text-align: center;
 }
-#criarConta{
+
+#criarConta {
     color: white;
     background-color: #317a7e;
     border-color: #317a7e;
-    width: 8%;
-    height: 4.5%;
-    margin-top: -5%;
-    position: relative;
-    font-size: large;
-    text-align: center;
-} 
-#criarConta:hover{
+}
+
+#criarConta:hover {
     color: white;
     background-color: #205f63;
-    border-color: #205f63;;
-    width: 8%;
-    height: 4.5%;
-    margin-top: -5%;
-    position: relative;
-    font-size: large;
+    border-color: #205f63;
+}
+
+@media (max-width: 575.98px) {
+    #subtituloarea {
+        font-size: 4vw;
+    }
+    
+    #textoInicio {
+        font-size: 3vw;
+    }
+}
+
+#grupamentoTextoInicio{
+    align-items: center;
+    /* Adicionado padding para evitar que encoste nas bordas laterais */
+    padding: 0 15px; 
+    margin-bottom: 50px; /* Espaçamento inferior para separar do rodapé */
+    margin-top: 30px; /* Espaçamento superior para separar do cabeçalho */
+    text-align: center;
+    /* Centraliza o conteúdo horizontalmente */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /*centralizando horinzontalmente na página*/
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#areasubtitulo {
+    max-width: 800px;
+    margin: 0 auto;
+    /* padding para evitar que encoste nas bordas laterais */
+    padding: 0 15px; 
     text-align: center;
 }
 
-#areasubtitulo{
-   background-color: white;
-   width: 800px;
-   margin-left: 50px;
+#subtituloarea {
+    background-color: white;
+    color: #205f63;
+    font-family: Impact;
+    font-size: 5vw;
+    /* Melhor espaçamento entre linhas */
+    line-height: 1.1; 
+    border-radius: 10px;
+    padding: 10px;
+    
 }
 
- #subtituloarea{
-   color: #205f63;
-   font-family: Impact;
-   font-size: 1.5cm;
+#areaTexto {
+    max-width: 800px; 
+    margin: 0 auto;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
 }
 
- #areaTexto{
-   background-color: white;
-   margin-left:80px ;
-   width: 700px;
-   border-radius: 10px;
-   border: solid #c0c0c0;
-   padding: 20px;
-   
-   
-
- }     
-
- #textoInicio{
-   border-radius: 10px;
-   font-family: Verdana;
-   font-size: 0.6cm;
-   color: #205e63b7;
-   
-}
-
-#texto1{
-   font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-   font-size: 200%;
-}
-
-/* PÁGINA ENTRAR */
-
-#textoArea{
-   border-color: #205f63;
-   border-radius: 20px;
-   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+#textoInicio {
+    background-color: white;
+    border-radius: 10px;
+    font-family: Verdana;
+    font-size: 0.6cm;
+    color: #19474bb7;
 }
 
 
-/*PÁGINA ENTRAR*/
+#texto1 {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 200%;
+}
 
-#corpoEntrar{
-   background-image: url(images/ELEMENTO3.png);
-   background-size: auto;
-   background-repeat: no-repeat;
-   background-position: center;
-   height: 100vh;
-   display: flex;
-   justify-content: center;
-   align-items: center;
+/* PÁGINA ENTRAR / CRIAR CONTA (AJUSTES DE RESPONSIVIDADE) */
+
+#textoArea {
+    border-color: #205f63;
+    border-radius: 20px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+#corpoEntrar {
+    background-image: url(images/ELEMENTO3.png);
+    background-size: cover; /* Alterado para 'cover' para melhor responsividade do background */
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
 }
 
 
-#areaEntrar{
-   background-color:white;
-   width: 600px;
-   height: 700px;
-   box-shadow: 10px, 10px, 10px, #1c232e;
-   border-radius: 20px;
-
+#areaEntrar {
+    /* Removido este bloco que tinha largura e altura fixas, o HTML/Bootstrap gerencia o contêiner */
+    background-color: white;
+    width: 600px; /* Mantido apenas para referência se ainda estiver em uso em outras partes */
+    height: auto;
+    box-shadow: 10px, 10px, 10px, #1c232e;
+    border-radius: 20px;
 }
 
-img#setavoltar{
-   width: 30px;
-   height: 30px;
-   margin-left: -180px;
+img#setavoltar {
+    width: 30px;
+    height: 30px;
+    /* Alterado para posicionamento absoluto para ser responsivo e não usar margem fixa */
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
 }
 
-#entrarBotao{
+#entrarBotao {
     background-color: white;
     color: #317a7e;
     border-color: #c4c4c4;
@@ -153,230 +189,314 @@ img#setavoltar{
     position: relative;
     border-radius: 20px;
 }
-#entrarBotao:hover{
-   background-color: #f6f7f7;
-   color: #317a7e;
-   border-color: #317a7e;
-   width: 230px;;
-   border-radius: 20px;
-}
 
-#logoGoogle{
-   width: 35px;
-   height: 35px;
-}
-#tituloEntrar{
-   margin-left: 0px;
-   font-family: Verdana;
-   font-size: x-large;
-   font-weight: bold;
-   color: #317a7e;
-   text-align: center;
-}
-
-
-#textoEntrar{
-   margin-left: 0px;
-   font-family: Verdana;
-   font-size: 0.48cm;
-}
-
-#inputUser{
-   width: 400px;
-   margin-left: 40px;
-}
-
-#logoNexus{
-  width: 136px;
-  height: 70px;
-  margin-left: 30px;
-  margin-right: -120px;
-}
-
-#textoEntrar2{
-   margin-top: -20px;
-   font-family: Verdana;
-   font-size: 0.48cm;
-}
-#iconeOlho{
-   width: 20px;
-   height: 20px;
-}
-#mostrarSenha{
-   width: 40px;
-
-}
-#botaoEntrar{
-    background-color: white;
-    color: #317a7e;
-    border-color: #c4c4c4;
-    width: 120px; 
-    height: 40px;
-    position: relative;
-    font-size: large;
-    text-align: center;
-}
-#botaoEntrar:hover{
+#entrarBotao:hover {
     background-color: #f6f7f7;
     color: #317a7e;
     border-color: #317a7e;
-    width: 120px; 
+    width: 230px;
+    border-radius: 20px;
+}
+
+#logoGoogle {
+    width: 35px;
+    height: 35px;
+}
+
+#tituloEntrar {
+    margin-left: 0px;
+    font-family: Verdana;
+    font-size: x-large;
+    font-weight: bold;
+    color: #317a7e;
+    text-align: center;
+}
+
+#textoEntrar {
+    margin-left: 0px;
+    font-family: Verdana;
+    font-size: 0.48cm;
+}
+
+#inputUser {
+    /* Alterado para largura responsiva e centralização via margin: auto */
+    width: 90%;
+    max-width: 400px; 
+    margin: -3% auto -10%; 
+    margin-bottom: 1rem; /* Adicionado um espaçamento inferior para consistência */
+}
+
+#logoNexus {
+    width: 100px; /* Tamanho ajustado para melhor proporção */
+    height: auto;
+    /* Removidas as margens fixas/negativas para centralizar via 'text-center' do pai */
+    margin: 0 auto 1rem auto;
+}
+
+#textoEntrar2 {
+    margin-top: -30px;
+    margin-bottom: -8%;
+    font-family: Verdana;
+    font-size: 0.48cm;
+}
+
+#iconeOlho {
+    width: 20px;
+    height: 20px;
+}
+
+#mostrarSenha {
+    width: 40px;
+}
+
+#botaoEntrar {
+    /* Alterado para largura responsiva e centralização via margin: auto */
+    background-color: white;
+    color: #317a7e;
+    border-color: #c4c4c4;
+    width: 80%;
+    max-width: 250px;
     height: 40px;
+    display: block; /* Essencial para centralizar com margin: auto */
+    margin: auto;
+    margin-bottom: 3%;
     position: relative;
     font-size: large;
     text-align: center;
 }
-   /* PÁGINA CONTINUAR COM GOOGLE*/
 
-   #corpoContinuarGoogle{
-   background-image: url(images/ELEMENTO4.png);
-   background-size: auto;
-   background-repeat: no-repeat;
-   background-position: center;
-   height: 100vh;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-}
-#tituloContinuarGoogle{
-   margin-left: 0px;
-   font-family: Verdana;
-   font-size: x-large;
-   font-weight: bold;
-   color: #317a7e;
-   text-align: center;
+#botaoEntrar:hover {
+    background-color: #f6f7f7;
+    color: #317a7e;
+    border-color: #317a7e;
+    width: 80%;
+    max-width: 250px;
+    height: 40px;
+    display: block; /* Essencial para centralizar com margin: auto */
+    margin: auto;
+    margin-bottom: 3%;
+    position: relative;
+    font-size: large;
+    text-align: center;
 }
 
-/* PÁGINA INDEX*/
+/* PÁGINA CRIAR CONTA */
 
-#cabecalhoIndex{
-   background-color: #268a8d;
-   color: white;
-   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-   width: 100%;
-   border-bottom: 6px solid transparent;
-   background-image:
-       linear-gradient(#278588, #0B6265),
-       linear-gradient(to bottom, #0B6265, #ffffff);
-   background-origin: padding-box, border-box;
-   background-clip: padding-box, border-box;
+#corpoContinuarGoogle {
+    background-image: url(images/ELEMENTO4.png);
+    /* Aplicando contain para garantir visibilidade do design, se aplicável */
+    background-size: contain; 
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-#barraNavegacao{
-   color: white;
+#tituloContinuarGoogle {
+    margin-left: 0px;
+    font-family: Verdana;
+    font-size: x-large;
+    font-weight: bold;
+    color: #317a7e;
+    text-align: center;
 }
 
-#degradeCabecalhoIndex{
- height: 10px;
- width: 100%;
- background: linear-gradient(to bottom, #317a7e, #ffffff);
+#botaoCriarConta {
+    /* Alterado para largura responsiva e centralização via margin: auto */
+    background-color: white;
+    color: #317a7e;
+    border-color: #c4c4c4;
+    width: 80%;
+    max-width: 250px;
+    height: 40px;
+    display: block; /* Essencial para centralizar com margin: auto */
+    margin: 0 auto 7%;
+    position: relative;
+    font-size: large;
+    text-align: center;
 }
 
-#bot{
-   width: 300px;
-   margin-left: 110px;
+#botaoCriarConta:hover {
+    background-color: #f6f7f7;
+    color: #317a7e;
+    border-color: #317a7e;
+    width: 80%;
+    max-width: 250px;
+    height: 40px;
+    display: block; /* Essencial para centralizar com margin: auto */
+    margin: 0 auto 7%;
+    position: relative;
+    font-size: large;
+    text-align: center;
+}
+
+/* PÁGINA INDEX (MANTIDOS SEUS ESTILOS ORIGINAIS)*/
+
+#cabecalhoIndex {
+    background-color: #268a8d;
+    color: white;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    width: 100%;
+    border-bottom: 6px solid transparent;
+    background-image:
+        linear-gradient(#278588, #0B6265),
+        linear-gradient(to bottom, #0B6265, #ffffff);
+    background-origin: padding-box, border-box;
+    background-clip: padding-box, border-box;
+}
+
+#offcanvas-toggle-container {
+    position: absolute; 
+    top: 15px; 
+    right: 15px;
+    z-index: 1050; 
+}
+
+#offcanvasToggleBtn {
+    /* O botão em si (onde a imagem fica) */
+    background-color: transparent !important; /* Torna o fundo do botão transparente */
+    border: none !important; 
+    box-shadow: none !important; 
+    padding: 0; /* Remove padding interno para o tamanho ser o da imagem */
+    width: auto;
+    height: auto;
+}
+
+/* Remove a linha/sombra ao ser clicado/focado (muito importante) */
+#offcanvasToggleBtn:focus {
+    outline: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+/* 3. ESTILIZAÇÃO DA IMAGEM */
+#menuImage {
+    /* Defina o tamanho da sua imagem aqui */
+    width: 90px; 
+    height: 70px;
+    display: block; /* Garante que a imagem se comporte bem dentro do botão */
+    /* Se a imagem for transparente, ela aparecerá perfeitamente. */
+}
+
+/* Ajuste para o botão do menu em telas de celular */
+@media (max-width: 575.98px) {
+    #menuImage {
+        width: 45px; /* Reduza para um tamanho mais adequado ao celular */
+        height: 35px; /* Mantenha a proporção, ou ajuste para o tamanho ideal */
+    }
+    
+    /* Opcional: Ajuste o posicionamento se a imagem for menor */
+    #offcanvas-toggle-container {
+        top: 10px; 
+        right: 10px;
+    }
+}
+
+#barraNavegacao {
+    color: white;
+}
+
+#degradeCabecalhoIndex {
+    height: 10px;
+    width: 100%;
+    background: linear-gradient(to bottom, #317a7e, #ffffff);
+}
+
+#bot {
+    /* Estilos para o botão "Continuar com o Google" */
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto; /* Centraliza o botão */
+}
+
+#bot > div {
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* Garante que o iframe do Google não tenha borda */
+#bot iframe {
+    border: none !important;
+    box-shadow: none !important;
 }
 
 #allcontainer {
-  display: flex;            /* coloca os filhos lado a lado */
-  justify-content: center;  /* centraliza no meio da tela */
-  align-items: flex-start;  /* alinha pelo topo */
-  gap: 5px;                 /* espaço entre eles */
-  margin-top: 20px;
+    display: flex; 
+    justify-content: center;
+    align-items: flex-start;
+    gap: 5px;
+    margin-top: 20px;
 }
 
-#container,
-#container2{
-   width: 350px;
-   height: 50px;
-   align-items: center;
-   margin-left: 10px;
-   margin-bottom: 0px;
+#container {
+    width: 100%;
+    max-width: 450px;
+    height: 50px;
+    align-items: center;
+    margin-left: 0; 
+    margin-bottom: 0px;
 }
-
-
-.input-icon{
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   border-radius: 100%;
-   min-width: 40px;
-   min-height: 40px;
-   color: #ffffff;
-   background-color: #0B6265;
-}
-
-#procu, #loca{
-   font-size: 20px;  
-}
-
-.input-field{
-   border: none;
-   background-color: transparent;
-}
-
-.input-field:focus{
-   outline: none;
+#container2 {
+    width: 350px;
+    height: 50px;
+    align-items: center;
+    margin-left: 10px;
+    margin-bottom: 0px;
 }
 
 
-.input-group{
-   display: flex;
-   align-items: center;
-   background-color: #ffffff;
-   padding: 8px 16px 8px 8px;
-   border-radius: 24px;
-   gap: 8px;
-   margin-top: -30px;
+.input-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    min-width: 40px;
+    min-height: 40px;
+    color: #ffffff;
+    background-color: #0B6265;
 }
 
-#no_results{
-   display: none;
-   text-align: center;
+#procu,
+#loca {
+    font-size: 20px;
 }
 
-#navIndex{
-   margin-top: 20px;
-   margin-bottom: 20px;
-   width: 100%;
-   font-size: large;
-   font-weight: bold;
+.input-field {
+    border: none;
+    background-color: transparent;
 }
 
-p#span{
-   display: none;
+.input-field:focus {
+    outline: none;
 }
 
-#h2#textv{
-   text-align: center;
-   position: center;
-   color: #205f63;
-   margin-top: 20px;
-   margin-bottom: 10px;
+.input-group {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 8px 16px 8px 8px;
+    border-radius: 24px;
+    gap: 8px;
+    /* Ajustado para centralizar verticalmente na área de busca */
+    margin-top: 0; 
 }
 
-#card1{
-   margin-left: 300px;
-   margin-bottom: 20px;
-   height: 150px;
-   width: 400px;
+#card1, #card2, #card3 {
+    width: auto; 
+    margin-left: 0; 
+    height: 100%;
+    /*definir um comprimento máximo para os cards*/
+    max-width: 350px;
+    /*centralizar horizontalmente*/
+    margin: 0 auto;
+    /*espaçamento entre os cards*/
+    margin-bottom: 20px;
 }
 
-#bordercard{
-   border-radius: 1rem;
-   background-color:#c7dadb;
-}
-
-#card2{
-   margin-left: 20px;
-   margin-bottom: 20px;
-   height: 150px;
-   width: 400px;
-}
-
-#card3{
-   margin-left: 20px;
-   margin-bottom: 20px;
-   height: 150px;
-   width: 400px;
+#bordercard {
+    border-radius: 1rem;
+    background-color: #c7dadb;
 }

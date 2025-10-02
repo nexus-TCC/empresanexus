@@ -19,48 +19,96 @@
     <div class="py-5 w-100" style="max-width:500px; margin: auto;">
         <div class="card shadow account-login-card">
             <div class="card-body text-center">
-                <a href="{{ url_for('inicio') }}"><img src="{{ url_for('static', filename='images/seta(para-a-esquerda).png') }}" id="setavoltar"></a>
-                <img src="{{ url_for('static', filename='images/logo(sem-fundo).png') }}" id="logoNexus" alt="Nexus">
+                <a href="{{ url_for('inicio') }}"><img
+                        src="{{ url_for('static', filename='images/seta(para-a-esquerda).png') }}" id="setavoltar"></a>
+                <a href="{{ url_for('inicio') }}"><img src="{{ url_for('static', filename='images/logo(sem-fundo).png') }}" id="logoNexus" alt="Nexus"></a>
 
                 <p id="tituloEntrar">Crie uma conta</p> <br>
 
-                <p id="textoEntrar">Nome completo:</p><br>
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Nome" id="nome">
-                </div><br>
-
-                <p id="textoEntrar">Endereço de e-mail:</p><br>
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="E-mail" id="email">
-                </div><br>
-
-                <p id="textoEntrar">Senha:</p><br>
-                <div class="input-group mb-3">
-                    <input type="password" class="form-control" placeholder="Senha" id="senha">
-                    <button class="btn btn-outline-secondary" type="button" onclick="mostrarSenha()">
-                        <img src="../static/images/olho-fechado-senha.png" alt="Mostrar senha" id="iconeOlho">
-                    </button><br>
+            <form class="row g-3">
+                <div class="col-12">
+                    <label for="inputAddress" class="form-label">Nome completo:</label>
+                    <input type="text" class="form-control" id="inputAddress" placeholder="Nome e sobrenome">
                 </div>
+                <div class="col-md-6">
+                    <label for="inputEmail4" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="inputEmail4" placeholder="E-mail">
+                </div>
+                <div class="col-md-6">
+                    <label for="inputPassword4" class="form-label">Senha</label>
+                    <input type="password" class="form-control" id="inputPassword4" placeholder="Senha">
+                </div>
+                <div class="col-12">
+                    <label for="inputAddress2" class="form-label">Endereço</label>
+                    <input type="text" class="form-control" id="inputAddress2" placeholder="Rua, número, apartamento, etc.">
+                </div>
+                <div class="col-md-6">
+                    <label for="inputCity" class="form-label">Cidade</label>
+                    <input type="text" class="form-control" id="inputCity">
+                </div>
+                <div class="col-md-4">
+                    <label for="inputState" class="form-label">Estado</label>
+                    <select id="inputState" class="form-select">
+                    <option selected></option>
+                    <option>AC</option>
+                    <option>AL</option>
+                    <option>AP</option>
+                    <option>AM</option>
+                    <option>BA</option>
+                    <option>CE</option>
+                    <option>DF</option>
+                    <option>ES</option>
+                    <option>GO</option>
+                    <option>MA</option>
+                    <option>MT</option>
+                    <option>MS</option>
+                    <option>MG</option>
+                    <option>PA</option>
+                    <option>PB</option>
+                    <option>PR</option>
+                    <option>PE</option>
+                    <option>PI</option>
+                    <option>RJ</option>
+                    <option>RN</option>
+                    <option>RS</option>
+                    <option>RO</option>
+                    <option>RR</option>
+                    <option>SC</option>
+                    <option>SP</option>
+                    <option>SE</option>
+                    <option>TO</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="inputZip" class="form-label">CEP</label>
+                    <input type="text" class="form-control" id="inputZip">
+                </div>
+            </form>
 
-                <button class="btn btn-primary w-100" type="button" onclick="criarConta()" id="botaoEntrar">Continuar</button>
+                <button class="btn btn-primary w-100" type="button" onclick="criarConta()"
+                    id="botaoCriarConta">Continuar</button>
                 <p id="textoEntrar2">ou</p>
 
 
-                        <!-- Botão de Login com Google -->
+                <!-- Botão de Login com Google -->
+                <div class="py-5 w-100 mx-auto" style="max-width:500px">
+                    <div class="text-center">
                         <div id="g_id_onload"
                             data-client_id="767274472831-8fgrh0mguchu4sivg30b8hgkgkvt645v.apps.googleusercontent.com"
                             data-callback="handleCredentialResponse" data-auto_prompt="false">
                         </div>
 
-
-                        <div id="bot" class="g_id_signin" data-theme="filled_blue" data-text="signup_with"></div>
-
-
-
+                        <div id="bot" class="g_id_signin mx-auto" data-theme="filled_white" data-text="signup_with">
+                        </div>
+                    </div>
                 </div>
             </div>
+
+
+
         </div>
     </div>
+
     <br>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

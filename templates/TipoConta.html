@@ -1,0 +1,66 @@
+<html>
+
+<head>
+    <title>Nexus</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../static/Estilo.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link rel="icon" href="../static/images/logo (Só-o-desenho).png" type="image/png" id="iconeaba">
+
+    <!-- SDK do Google Identity -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+</head>
+
+
+<body id="corpoEntrar">
+    <div class="py-5 w-100" style="max-width:500px; margin: auto;">
+        <div class="card shadow account-login-card">
+            <div class="card-body text-center">
+                <a href="{{ url_for('inicio') }}"><img
+                        src="{{ url_for('static', filename='images/seta(para-a-esquerda).png') }}" id="setavoltar"></a>
+                <a href="{{ url_for('inicio') }}"><img src="{{ url_for('static', filename='images/logo(sem-fundo).png') }}" id="logoNexus" alt="Nexus"></a>
+
+                <p id="tituloEntrar">Escolha seu tipo de conta</p> <br>
+
+
+                <div class="min-h-screen flex items-center justify-center bg-gray-100 p-6">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl w-full">
+    
+    <!-- Card Cliente -->
+    <div class="bg-white shadow-lg rounded-2xl overflow-hidden hover:shadow-2xl transition cursor-pointer">
+      <img src="cliente.jpg" alt="Cliente" class="w-full h-48 object-cover">
+      <div class="p-6 text-center">
+        <h2 class="text-xl font-bold mb-2">Conta Cliente</h2>
+        <p class="text-gray-600 mb-4">Ideal para quem deseja comprar produtos e acompanhar seus pedidos.</p>
+        <button class="bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 transition">
+          Criar Conta Cliente
+        </button>
+      </div>
+    </div>
+
+    <!-- Card Empresa -->
+    <div class="bg-white shadow-lg rounded-2xl overflow-hidden hover:shadow-2xl transition cursor-pointer">
+      <img src="empresa.jpg" alt="Empresa" class="w-full h-48 object-cover">
+      <div class="p-6 text-center">
+        <h2 class="text-xl font-bold mb-2">Conta Empresa</h2>
+        <p class="text-gray-600 mb-4">Perfeita para quem deseja vender, gerenciar produtos e acompanhar vendas.</p>
+        <button class="bg-green-500 text-white px-4 py-2 rounded-xl hover:bg-green-600 transition">
+          Criar Conta Empresa
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+            
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static', filename='JS.js') }}"></script>
+</body>
+
+</html>

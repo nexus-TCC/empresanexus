@@ -32,7 +32,7 @@
                     <br><br>
 
                     <p id="tituloEntrar">Entre com uma conta</p>
-                    <p id="textoEntrar">Endereço de e-mail:</p><br>
+                    <p id="textoEntrar">Endereço de e-mail:</p>
 
                     <form action="/entrar" method="post">
                         <div class="input-group" id="inputUser">
@@ -40,7 +40,7 @@
                                 aria-describedby="visible-addon" id="email" name="email">
 
                         </div><br>
-                        <p id="textoEntrar">Senha:</p><br>
+                        <p id="textoEntrar">Senha:</p>
                         <div class="input-group" id="inputUser">
                             <input type="password" class="form-control" placeholder="Senha" aria-label="Username"
                                 aria-describedby="visible-addon" id="senha" name="senha">
@@ -48,20 +48,26 @@
                                 onclick="mostrarSenha()">
                                 <img src="../static/images/olho-fechado-senha.png" alt="Mostrar senha" id="iconeOlho">
                             </button>
-                        </div><br>
+                        </div><br> 
                         <button class="btn btn-primary" type="button" id="botaoEntrar"
                             onclick="entrar()">Entrar</button><br>
 
                         <p id="textoEntrar2">ou</p>
 
                         <!-- Botão de Login com Google -->
-                        <center><div id="g_id_onload"
-                            data-client_id="767274472831-8fgrh0mguchu4sivg30b8hgkgkvt645v.apps.googleusercontent.com"
-                            data-callback="handleCredentialResponse" data-auto_prompt="false">
-                        </div>
+                        <div class="py-5 w-100 mx-auto" style="max-width:500px">
+							<div class="text-center">
+								<div id="g_id_onload"
+									data-client_id="767274472831-8fgrh0mguchu4sivg30b8hgkgkvt645v.apps.googleusercontent.com"
+									data-callback="handleCredentialResponse" data-auto_prompt="false">
+								</div>
+
+								<div id="bot" class="g_id_signin mx-auto" data-theme="filled_white"
+									data-text="signup_with"></div>
+							</div>
+						</div>
 
 
-                        <div id="bot" class="g_id_signin" data-theme="filled_blue" data-text="signup_with"></div></center>
 
 
 
