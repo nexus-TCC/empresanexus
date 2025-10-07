@@ -1,0 +1,228 @@
+<html>
+
+<head>
+    <title>Index</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+        integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="../static/Estilo.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="icon" href="../static/images/logo (Só-o-desenho).png" type="image/png" id="iconeaba">
+</head>
+
+<body id="corpoInicio">
+    <header id="cabecalhoIndex">
+        <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/logo-branco.png') }}"
+                id="logoheader"></a>
+
+        <!-- Barra de navegação Offcanvas -->
+        <div id="offcanvas-toggle-container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+                aria-controls="offcanvasNavbar" aria-label="Toggle navigation" id="offcanvasToggleBtn">
+
+                <img src="{{ url_for('static', filename='images/Menu-Hamburguer-Branco.png') }}" alt="Menu" id="menuImage">
+
+            </button>
+        </div>
+
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Eu
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Meu Perfil</a></li>
+                            <li><a class="dropdown-item" href="#">Currículo</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#">Sair</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Minhas vagas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Configurações</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+        <!-- Barra de navegação Simples -->
+
+        <nav class="navbar navbar-expand-lg" id="navIndex">
+            <div class="container-fluid">
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavContent" aria-controls="navbarNavContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNavContent">
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0" id="barraNavegacao">
+                        <li class="nav-item dropdown">
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Empresas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Procurar Vagas</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div id="allcontainer" class="d-flex justify-content-center p-3">
+            <div id="container" class="w-100" style="max-width: 450px;">
+                <div class="input-group">
+                    <div class="input-icon">
+                        <i class="fa-solid fa-magnifying-glass" id="procu"></i>
+                    </div>
+                    <input type="text" id="search" class="input-field" placeholder="Pesquisar">
+                </div>
+            </div>
+        </div>
+
+        <p id="span" class="text-center"><span>Nenhum resultado encontrado</span></p>
+        <div id="degradeCabecalhoIndex"></div>
+    </header> <br><br>
+
+    <form method="Post">
+
+        <div class="text-center">
+            <h2 class="font-weight-bold mb-16" id="textv">Vagas que podem te interessar</h2>
+        </div>
+        <div id="SuggestedVacanciesCarousel" class="carousel slide js_carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item js_carouselItem active">
+                    <div class="row px-4">
+
+                        <div class="col-12 col-sm-6 col-md-4 my-3" id="card1">
+                            <a href="#"
+                                class="card card-shadow card-shadow-hover cursor-pointer h-100 text-decoration-none"
+                                id="bordercard">
+                                <div class="card-body py-20 px-24 text-body">
+                                    <h3 class="font-weight-bold mb-8">Estoquista</h3>
+                                    <div class="mb-4 d-flex align-items-center">
+                                        RHF TALENTOS - São Paulo/Freguesia do Ó-SP
+                                    </div>
+                                    <p class="small text-medium mb-0">São Paulo - SP</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-md-4 my-3" id="card2">
+                            <a href="/vaga-de-assistente-comercial-em-sao-paulo__10725931.aspx"
+                                class="card card-shadow card-shadow-hover cursor-pointer h-100 text-decoration-none"
+                                id="bordercard">
+                                <div class="card-body py-20 px-24 text-body">
+                                    <h3 class="font-weight-bold mb-8">Ana Barros</h3>
+                                    <div class="mb-4 d-flex align-items-center">
+                                        <div class="mr-8">
+
+                                            <div class="text-nowrap" style="line-height:24px;font-size:16px">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="small text-medium mb-0">São Paulo - SP</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-md-4 my-3" id="card3">
+                            <a href="/vaga-de-assistente-rh-em-sao-paulo__10930714.aspx"
+                                class="card card-shadow card-shadow-hover cursor-pointer h-100 text-decoration-none"
+                                id="bordercard">
+                                <div class="card-body py-20 px-24 text-body">
+                                    <h3 class="font-weight-bold mb-8">Pedro Machado</h3>
+                                    <div class="mb-4 d-flex align-items-center">
+                                        Apertize soluções em obras
+                                    </div>
+                                    <p class="small text-medium mb-0">Barueri - SP</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-md-4 my-3" id="card1">
+                            <a href="/vaga-de-oficial-manutencao-predial-sorocabasp-em-sao-paulo__10940216.aspx"
+                                class="card card-shadow card-shadow-hover cursor-pointer h-100 text-decoration-none"
+                                id="bordercard">
+                                <div class="card-body py-20 px-24 text-body">
+                                    <h3 class="font-weight-bold mb-8">José Rodrigues</h3>
+                                    <div class="mb-4 d-flex align-items-center">
+                                        <div class="mr-8">
+
+                                            <div class="text-nowrap" style="line-height:24px;font-size:16px">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="small text-medium mb-0">Sorocaba - SP</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-md-4 my-3" id="card2">
+                            <a href="/vaga-de-analista-dho-treinamento-cultura-em-sao-paulo__10940208.aspx"
+                                class="card card-shadow card-shadow-hover cursor-pointer h-100 text-decoration-none"
+                                id="bordercard">
+                                <div class="card-body py-20 px-24 text-body">
+                                    <h3 class="font-weight-bold mb-8">Maria da Silva</h3>
+                                    <div class="mb-4 d-flex align-items-center">
+                                        <div class="mr-8">
+
+                                            <div class="text-nowrap" style="line-height:24px;font-size:16px">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <p class="small text-medium mb-0">São Paulo - SP</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-md-4 my-3" id="card3">
+                            <a href="/vaga-de-controlador-acesso-vila-leopoldina-12x36-diurno-em-sao-paulo__10940210.aspx"
+                                class="card card-shadow card-shadow-hover cursor-pointer h-100 text-decoration-none"
+                                id="bordercard">
+                                <div class="card-body py-20 px-24 text-body">
+                                    <h3 class="font-weight-bold mb-8">João Oliveira
+                                    </h3>
+                                    <div class="mb-4 d-flex align-items-center">
+                                        <div class="mr-8">
+
+                                            <div class="text-nowrap" style="line-height:24px;font-size:16px">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <p class="small text-medium mb-0">São Paulo - SP</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static', filename='JS.js') }}"></script>
+
+</body>
+
+</html>

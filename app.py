@@ -3,22 +3,25 @@ from flask_sqlalchemy import SQLAlchemy
 import bcrypt 
 import os
 
+
 app = Flask(__name__)
 
+# Configurações do Aplicativo
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'chave_dev_insegura')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
     'DATABASE_URL', 'sqlite:///users.db'
 )
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-
 db = SQLAlchemy(app)
 
+# --- Modelos SQLAlchemy ---
 class Usuario(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(150), nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
     senha = db.Column(db.String(200), nullable=False)
+    tipo_conta = db.Column(db.String(20), nullable=False) 
     
     def __repr__(self):
         return f'<Usuario {self.email}>'
@@ -51,6 +54,8 @@ class Vaga(db.Model):
     local = db.Column(db.String(150))
     empresa = db.relationship('Empresa', backref='vagas')
 
+# --- Rotas de Navegação (Views) ---
+
 @app.route('/')
 def inicio():
     return render_template('Inicio.html')
@@ -58,39 +63,69 @@ def inicio():
 @app.route('/entrar' , methods=['GET', 'POST'])
 def mostrar_login():
     return render_template('Entrar.html')
+
+@app.route('/tipoConta' , methods=['GET', 'POST'])
+def mostrar_tipo_conta():
+    return render_template('TipoConta.html')
     
-@app.route('/criarConta' , methods=['GET', 'POST'])
-def mostrar_cadastro():
-    return render_template('CriarConta.html')
+# Rota para o formulário de Cadastro de Profissional
+@app.route('/criarContaProfissional' , methods=['GET', 'POST'])
+def mostrar_cadastro_profissional():
+    # Passa o tipo de conta para o HTML
+    return render_template('CriarContaProfissional.html', tipo_conta='profissional')
+
+# Rota para o formulário de Cadastro de Empresa
+@app.route('/criarContaEmpresa' , methods=['GET', 'POST'])
+def mostrar_cadastro_empresa():
+    # Passa o tipo de conta para o HTML
+    return render_template('CriarContaEmpresa.html', tipo_conta='empresa')
 
 @app.route('/index')
 def index():
-    return render_template('Index.html')
+    if 'usuario_id' not in session:
+        return redirect(url_for('Index.html'))
+
+# Rotas API
 
 @app.route('/api/cadastro', methods=['POST'])
 def cadastro():
     data = request.get_json()
-    email =  data.get('email')
+    email = data.get('email')
     senha = data.get('senha')
     nome = data.get('nome', '')
-    if not all ([email, senha, nome]):
+    tipo_conta = data.get('tipo_conta') 
+    
+    if not all ([email, senha, nome, tipo_conta]):
         return jsonify({"error": "Todos os campos são obrigatórios"}), 400
+
+    if tipo_conta not in ['profissional', 'empresa']:
+        return jsonify({"error": "Tipo de conta inválido"}), 400
 
     if Usuario.query.filter_by(email=email).first():
         return jsonify({"error": "E-mail já cadastrado"}), 409
 
     hashed_senha = bcrypt.hashpw(senha.encode('utf-8'), bcrypt.gensalt())
-    novo_usuario = Usuario(nome=nome, email=email, senha=hashed_senha.decode('utf-8'))
+    novo_usuario = Usuario(
+        nome=nome, 
+        email=email, 
+        senha=hashed_senha.decode('utf-8'), 
+        tipo_conta=tipo_conta
+    )
+
     db.session.add(novo_usuario)
     db.session.commit()
+    
+    session['usuario_id'] = novo_usuario.id 
+    session['tipo_conta'] = novo_usuario.tipo_conta # Armazena na sessão
 
-    return jsonify({"message": "Usuário cadastrado com sucesso!"}), 201
+    return jsonify({"message": "Usuário cadastrado com sucesso!", "tipo_conta": novo_usuario.tipo_conta}), 201
 
 @app.route('/api/login', methods=['POST'])
 def login():
     data = request.get_json()
     email = data.get('email')
     senha = data.get('senha')
+
     if not all ([email, senha]):
         return jsonify({"success": False, "error": "Todos os campos são obrigatórios"}), 400
 
@@ -103,12 +138,24 @@ def login():
         return jsonify({"success": True, "message": "Login realizado com sucesso!"}), 200
     else:
         return jsonify({"success": False, "error": "E-mail ou senha incorretos"}), 401
-    
+
 @app.route('/api/criar_curriculo', methods=['POST'])
 def criar_curriculo():
     usuario_id = session.get('usuario_id')
+    tipo_conta = session.get('tipo_conta')
+
+    # Se não está logado, 401 (Não Autorizado/Não Autenticado)
     if not usuario_id:
         return jsonify({"error": "Usuário não autenticado"}), 401
+        
+    # Se o tipo de conta não é 'profissional' para esta rota, 403 (Proibido)
+    if tipo_conta != 'profissional':
+        return jsonify({"error": "Acesso negado. Apenas para profissionais."}), 403
+    
+    if Profissional.query.filter_by(usuario_id=usuario_id).first():
+        return jsonify({"error": "Perfil de profissional já existe para este usuário"}), 409
+    
+    
 
     data = request.get_json()
     novo_curriculo = Profissional(
@@ -125,9 +172,15 @@ def criar_curriculo():
 
 @app.route('/api/criar_empresa', methods=['POST'])
 def criar_empresa():
+
     usuario_id = session.get('usuario_id')
+    if not usuario_id or session.get('tipo_conta') != 'empresa':
+        return jsonify({"error": "Acesso negado ou usuário não autenticado"}), 403
     if not usuario_id:
         return jsonify({"error": "Usuário não autenticado"}), 401
+    
+    if Empresa.query.filter_by(usuario_id=usuario_id).first():
+        return jsonify({"error": "Perfil de empresa já existe para este usuário"}), 409
 
     data = request.get_json()
     nova_empresa = Empresa(

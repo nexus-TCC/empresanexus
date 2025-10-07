@@ -19,36 +19,36 @@
     <div class="py-5 w-100" style="max-width:500px; margin: auto;">
         <div class="card shadow account-login-card">
             <div class="card-body text-center">
-                <a href="{{ url_for('inicio') }}"><img
+                <a href="{{ url_for('mostrar_tipo_conta') }}"><img
                         src="{{ url_for('static', filename='images/seta(para-a-esquerda).png') }}" id="setavoltar"></a>
                 <a href="{{ url_for('inicio') }}"><img src="{{ url_for('static', filename='images/logo(sem-fundo).png') }}" id="logoNexus" alt="Nexus"></a>
 
-                <p id="tituloEntrar">Crie uma conta</p> <br>
+                <p id="tituloEntrar">Conta Empresarial</p> <br>
 
-            <form class="row g-3">
+            <form class="row g-3" method='post'>
                 <div class="col-12">
-                    <label for="inputAddress" class="form-label">Nome completo:</label>
-                    <input type="text" class="form-control" id="inputAddress" placeholder="Nome e sobrenome">
+                    <label for="inputAddress" class="form-label">Nome da Empresa</label>
+                    <input type="text" class="form-control" id="nome" placeholder="Nome da empresa">
                 </div>
                 <div class="col-md-6">
-                    <label for="inputEmail4" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="inputEmail4" placeholder="E-mail">
+                    <label for="inputEmail4" class="form-label">Email corporativo</label>
+                    <input type="email" class="form-control" id="email" placeholder="nome@suaempresa.com.br">
                 </div>
                 <div class="col-md-6">
                     <label for="inputPassword4" class="form-label">Senha</label>
-                    <input type="password" class="form-control" id="inputPassword4" placeholder="Senha">
+                    <input type="password" class="form-control" id="senha" placeholder="Senha">
                 </div>
                 <div class="col-12">
                     <label for="inputAddress2" class="form-label">Endereço</label>
-                    <input type="text" class="form-control" id="inputAddress2" placeholder="Rua, número, apartamento, etc.">
+                    <input type="text" class="form-control" id="endereço" placeholder="Rua, número, apartamento, etc.">
                 </div>
                 <div class="col-md-6">
                     <label for="inputCity" class="form-label">Cidade</label>
-                    <input type="text" class="form-control" id="inputCity">
+                    <input type="text" class="form-control" id="cidade">
                 </div>
                 <div class="col-md-4">
                     <label for="inputState" class="form-label">Estado</label>
-                    <select id="inputState" class="form-select">
+                    <select id="estado" class="form-select">
                     <option selected></option>
                     <option>AC</option>
                     <option>AL</option>
@@ -81,8 +81,9 @@
                 </div>
                 <div class="col-md-2">
                     <label for="inputZip" class="form-label">CEP</label>
-                    <input type="text" class="form-control" id="inputZip">
+                    <input type="text" class="form-control" id="cep">
                 </div>
+                <input type="hidden" id="tipo_conta" value="{{ tipo_conta }}">
             </form>
 
                 <button class="btn btn-primary w-100" type="button" onclick="criarConta()"

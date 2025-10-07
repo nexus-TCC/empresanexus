@@ -1,0 +1,119 @@
+<html>
+
+<head>
+    <title>Nexus</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../static/Estilo.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link rel="icon" href="../static/images/logo (Só-o-desenho).png" type="image/png" id="iconeaba">
+
+    <!-- SDK do Google Identity -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+</head>
+
+
+<body id="corpoEntrar">
+    <div class="py-5 w-100" style="max-width:500px; margin: auto;">
+        <div class="card shadow account-login-card">
+            <div class="card-body text-center">
+                <a href="{{ url_for('mostrar_tipo_conta') }}"><img
+                        src="{{ url_for('static', filename='images/seta(para-a-esquerda).png') }}" id="setavoltar"></a>
+                <a href="{{ url_for('inicio') }}"><img src="{{ url_for('static', filename='images/logo(sem-fundo).png') }}" id="logoNexus" alt="Nexus"></a>
+
+                <p id="tituloEntrar">Conta de Profissional</p> <br>
+
+            <form class="row g-3" method="post">
+                <div class="col-12">
+                    <label for="inputAddress" class="form-label">Nome completo:</label>
+                    <input type="text" class="form-control" id="nome" placeholder="Nome e sobrenome">
+                </div>
+                <div class="col-md-6">
+                    <label for="inputEmail4" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" placeholder="E-mail">
+                </div>
+                <div class="col-md-6">
+                    <label for="inputPassword4" class="form-label">Senha</label>
+                    <input type="password" class="form-control" id="senha" placeholder="Senha">
+                </div>
+                <div class="col-12">
+                    <label for="inputAddress2" class="form-label">Endereço</label>
+                    <input type="text" class="form-control" id="endereço" placeholder="Rua, número, apartamento, etc.">
+                </div>
+                <div class="col-md-6">
+                    <label for="inputCity" class="form-label">Cidade</label>
+                    <input type="text" class="form-control" id="cidade">
+                </div>
+                <div class="col-md-4">
+                    <label for="inputState" class="form-label">Estado</label>
+                    <select id="estado" class="form-select">
+                    <option selected></option>
+                    <option>AC</option>
+                    <option>AL</option>
+                    <option>AP</option>
+                    <option>AM</option>
+                    <option>BA</option>
+                    <option>CE</option>
+                    <option>DF</option>
+                    <option>ES</option>
+                    <option>GO</option>
+                    <option>MA</option>
+                    <option>MT</option>
+                    <option>MS</option>
+                    <option>MG</option>
+                    <option>PA</option>
+                    <option>PB</option>
+                    <option>PR</option>
+                    <option>PE</option>
+                    <option>PI</option>
+                    <option>RJ</option>
+                    <option>RN</option>
+                    <option>RS</option>
+                    <option>RO</option>
+                    <option>RR</option>
+                    <option>SC</option>
+                    <option>SP</option>
+                    <option>SE</option>
+                    <option>TO</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="inputZip" class="form-label">CEP</label>
+                    <input type="text" class="form-control" id="cep">
+                </div>
+                <input type="hidden" id="tipo_conta" value="{{ tipo_conta }}">
+            </form>
+
+                <button class="btn btn-primary w-100" type="button" onclick="criarConta()"
+                    id="botaoCriarConta">Continuar</button>
+                <p id="textoEntrar2">ou</p>
+
+
+                <!-- Botão de Login com Google -->
+                <div class="py-5 w-100 mx-auto" style="max-width:500px">
+                    <div class="text-center">
+                        <div id="g_id_onload"
+                            data-client_id="767274472831-8fgrh0mguchu4sivg30b8hgkgkvt645v.apps.googleusercontent.com"
+                            data-callback="handleCredentialResponse" data-auto_prompt="false">
+                        </div>
+
+                        <div id="bot" class="g_id_signin mx-auto" data-theme="filled_white" data-text="signup_with">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <br>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static', filename='JS.js') }}"></script>
+</body>
+
+</html>

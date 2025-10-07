@@ -47,7 +47,7 @@ async function loginUsuario() {
         try {
                 const resposta = await fetch('http://localhost:5000/api/login', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: {'Content-Type': 'application/json'},
                         body: JSON.stringify({ email, senha }),
                 });
 
@@ -111,7 +111,7 @@ async function criarConta() {
         try {
                 const resposta = await fetch('http://localhost:5000/api/cadastro', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: {'Content-Type': 'application/json'},
                         body: JSON.stringify({ nome, email, senha }),
                 });
 
@@ -175,43 +175,40 @@ function handleCredentialResponse(response) {
         console.log("  URL da imagem do perfil: " + responsePayload.picture);
         console.log("  E-mail: " + responsePayload.email);
         console.log("  E-mail verificado: " + responsePayload.email_verified);
-
-        // Redireciona para a página seguinte do seu SPA/site
-        window.location.href = '/index';
 }
 
 
 function formatString(value) {
-        return value.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    return value.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
 function filtrarLista(inputId) {
-        const value = formatString(document.getElementById(inputId).value);
-        const noResults = document.getElementById('no_results');
-        const items = document.querySelectorAll('.item-lista');
-        let hasResults = false;
+    const value = formatString(document.getElementById(inputId).value);
+    const noResults = document.getElementById('no_results');
+    const items = document.querySelectorAll('.item-lista');
+    let hasResults = false;
 
-        items.forEach(item => {
-                if (formatString(item.textContent).includes(value)) {
-                        item.style.display = 'flex';
-                        hasResults = true;
-                } else {
-                        item.style.display = 'none';
-                }
-        });
+    items.forEach(item => {
+        if (formatString(item.textContent).includes(value)) {
+            item.style.display = 'flex';
+            hasResults = true;
+        } else {
+            item.style.display = 'none';
+        }
+    });
 
-        noResults.style.display = hasResults ? 'none' : 'block';
+    noResults.style.display = hasResults ? 'none' : 'block';
 }
 
 // Eventos de busca
 const searchInput = document.getElementById('search');
 if (searchInput) {
-        searchInput.addEventListener('input', () => filtrarLista('search'));
+    searchInput.addEventListener('input', () => filtrarLista('search'));
 }
 
 const localizationInput = document.getElementById('localizat');
 if (localizationInput) {
-        localizationInput.addEventListener('input', () => filtrarLista('localizat'));
+    localizationInput.addEventListener('input', () => filtrarLista('localizat'));
 }
 
 // ------------------------------
@@ -221,17 +218,17 @@ const euLink = document.getElementById("euLink");
 const submenu = document.getElementById("submenuEu");
 
 if (euLink && submenu) {
-        euLink.addEventListener("click", function (e) {
-                e.preventDefault();
-                submenu.style.display = submenu.style.display === "block" ? "none" : "block";
-        });
+    euLink.addEventListener("click", function (e) {
+        e.preventDefault();
+        submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+    });
 
-        // fecha se clicar fora
-        document.addEventListener("click", function (e) {
-                if (!euLink.contains(e.target) && !submenu.contains(e.target)) {
-                        submenu.style.display = "none";
-                }
-        });
+    // fecha se clicar fora
+    document.addEventListener("click", function (e) {
+        if (!euLink.contains(e.target) && !submenu.contains(e.target)) {
+            submenu.style.display = "none";
+        }
+    });
 
-        submenu.style.display = "none";
+    submenu.style.display = "none";
 }
