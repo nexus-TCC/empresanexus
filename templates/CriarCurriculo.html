@@ -1,0 +1,116 @@
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cadastrar Currículo | Nexus</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='Estilo.css') }}">
+</head>
+<body id="corpoInicio">
+    <header id="cabecalhoIndex2">
+        <a href="{{ url_for('index') }}">
+            <img id="logoheader2" src="{{ url_for('static', filename='images/logo-branco.png') }}" alt="Logo Nexus">
+        </a>
+    </header>
+    <div id="degradeCabecalhoIndex2"></div>
+    <main class="container my-5" id="main2">
+        <h1 class="titulo-pagina text-center mb-4">Cadastrar Currículo</h1>
+
+
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8">
+
+
+                <div class="alert alert-light border mb-4" role="alert" id="instrucaoBox">
+                    Preencha os dados abaixo e anexe o seu currículo em PDF (opcional). Você pode preencher os campos
+                    para que possamos criar um perfil mais completo.
+                </div>
+
+
+                <!-- FORMULÁRIO: envia para rota /enviar_curriculo (POST) -->
+                <!-- Caso use Flask-WTF ou outra, adapte os names/ids conforme necessário -->
+                <form id="formCurriculo" method="POST" action="{{ url_for('criar_curriculo') }}" enctype="multipart/form-data" novalidate>
+
+
+                    <div class="row g-3">
+
+
+                        <div class="col-md-6">
+                            <label for="nome" class="form-label">Nome completo</label>
+                            <input type="text" class="form-control campo-nexus" id="nome" name="nome" placeholder="Seu nome completo" required>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">E-mail</label>
+                            <input type="email" class="form-control campo-nexus" id="email" name="email" placeholder="seu@email.com" required>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <label for="telefone" class="form-label">Telefone</label>
+                            <input type="tel" class="form-control campo-nexus" id="telefone" name="telefone" placeholder="(00) 9 0000-0000">
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <label for="area" class="form-label">Área / Cargo de interesse</label>
+                            <input type="text" class="form-control campo-nexus" id="area" name="area" placeholder="Ex.: Desenvolvimento, Marketing, Administração">
+                        </div>
+
+
+                        <div class="col-12">
+                            <label for="resumo" class="form-label">Resumo profissional (breve)</label>
+                            <textarea class="form-control campo-nexus" id="resumo" name="resumo" rows="3" placeholder="Resumo sobre sua experiência e objetivos"></textarea>
+                        </div>
+
+
+                        <div class="col-12">
+                            <label for="experiencia" class="form-label">Experiência (últimos empregos / projetos)</label>
+                            <textarea class="form-control campo-nexus" id="experiencia" name="experiencia" rows="4" placeholder="Descreva suas experiências mais relevantes"></textarea>
+                        </div>
+
+
+                        <div class="col-12">
+                            <label for="habilidades" class="form-label">Habilidades / Competências</label>
+                            <input type="text" class="form-control campo-nexus" id="habilidades" name="habilidades" placeholder="Separe por vírgula: Ex.: Python, HTML, CSS, Excel">
+                        </div>
+
+
+                        <div class="col-md-8">
+                            <label for="arquivo" class="form-label">Anexar currículo (PDF) — opcional</label>
+                            <input class="form-control campo-nexus" type="file" id="arquivo" name="arquivo" accept=".pdf,application/pdf">
+                            <div class="form-text">Máx. 5MB. Formato preferencial: PDF.</div>
+                        </div>
+
+
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button type="submit" class="btn btn-enviar w-100">Enviar Currículo</button>
+                        </div>
+
+
+                    </div>
+                </form>
+
+
+                {% if mensagem %}
+                <div class="alert alert-info mt-4 text-center">{{ mensagem }}</div>
+                {% endif %}
+
+
+            </div>
+        </div>
+    </main>
+
+
+    <footer id="rodapeInicio">
+        <p id="textoRodapeInicio">&copy; 2025 Nexus. Todos os direitos reservados.</p>
+    </footer>
+
+
+    <!-- Bootstrap JS (mantive) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static', filename='JS.js') }}"></script>
+</body>
+</html>

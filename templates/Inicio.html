@@ -1,45 +1,92 @@
-<html>
-<head>
-    <title>Nexus</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='Estilo.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
-        integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
-    <link rel="icon" href="{{ url_for('static', filename='images/logo (Só-o-desenho).png') }}" type="image/png"
-        id="iconeaba">
-</head>
+    <html>
 
-<body id="corpoInicio">
-    <header id="cabecalhoInicio" class="d-flex justify-content-between align-items-center p-3">
-        <a href="/"><img src="{{ url_for('static', filename='images/logo(sem-fundo).png') }}"
-                id="logoheader" alt="Logo Nexus"></a>
-        
-        <div class="d-flex gap-2 ms-auto">
-            <a class="btn btn-primary" href="/entrar" id="entrarInicio">Entrar</a>
-            <a class="btn btn-primary" href="/tipoConta" role="button" id="criarConta">Criar uma Conta</a>
+    <head>
+        <title>Nexus</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', filename='Estilo.css') }}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
+            integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+        <link rel="icon" href="{{ url_for('static', filename='images/logo (Só-o-desenho).png') }}" type="image/png"
+            id="iconeaba">
+    </head>
+
+    <body id="corpoInicio">
+        <header id="cabecalhoInicio"> 
+            <a href="Inicio.html"><img src="{{ url_for('static', filename='images/logo(sem-fundo).png') }}"
+                    id="logoheader"></a>
+            <div class="d-flex gap-2 ms-auto">
+                <a class="btn btn-primary" href="/entrar" id="entrarInicio">Entrar</a>
+                <a class="btn btn-primary" href="/tipoConta" role="button" id="criarConta">Criar uma Conta</a>
+            </div>
+        </header> <br><br> <br>
+        <div class="container mx-auto p-3" style="max-width: 900px;" id="grupamentoTextoInicio">
+            <div id="areasubtitulo">
+                <p id="subtituloarea">Conectando oportunidades, criando futuros.</p>
+            </div>
+            <br>
+            
+            <div id="areaTexto">
+                <p id="textoInicio">Somos a <b>NEXUS</b>, a ponte entre talentos e empresas. Nossa plataforma conecta
+                    profissionais às melhores oportunidades de emprego, facilitando o recrutamento de forma rápida e eficiente.
+                    Encontre hoje mesmo a vaga ideal para você!</p>
+            </div> 
+        </div> <br>
+
+        <form method="Post"></form>
+
+<!-- SEÇÃO DO GRUPO DO TCC -->
+<section class="container text-center my-5" id="grupoTCC">
+    <h2 class="mb-4">Nosso Grupo de TCC</h2>
+    <div class="row justify-content-center g-4">
+        <div class="col-md-3 col-sm-6">
+            <div class="card shadow-sm">
+                <img src="{{ url_for('static', filename='images/Ana Laura.jpeg') }}" class="foto-grupo" alt="Ana Laura">
+                <div class="card-body">
+                    <h5 class="card-title">Ana Laura</h5>
+                    <p class="card-text">Responsável pelo design e estrutura visual do projeto.</p>
+                </div>
+            </div>
         </div>
-    </header> 
-    
-    <br>
-    
-    <div class="container mx-auto p-3" style="max-width: 900px;" id="grupamentoTextoInicio">
-        <div id="areasubtitulo">
-            <p id="subtituloarea">Conectando oportunidades, criando futuros.</p>
+
+        <div class="col-md-3 col-sm-6">
+            <div class="card shadow-sm">
+                <img src="{{ url_for('static', filename='images/Bia.jpeg') }}" class="foto-grupo" alt="Ana Beatriz">
+                <div class="card-body">
+                    <h5 class="card-title">Ana Beatriz</h5>
+                    <p class="card-text">Desenvolvedora e responsável pela integração do sistema.</p>
+                </div>
+            </div>
         </div>
-        <br>
-        
-        <div id="areaTexto">
-            <p id="textoInicio">Somos a <b>NEXUS</b>, a ponte entre talentos e empresas. Nossa plataforma conecta
-                profissionais às melhores oportunidades de emprego, facilitando o recrutamento de forma rápida e eficiente.
-                Encontre hoje mesmo a vaga ideal para você!</p>
-        </div> 
+
+        <div class="col-md-3 col-sm-6">
+            <div class="card shadow-sm">
+                <img src="{{ url_for('static', filename='images/Débora.jpeg') }}" class="foto-grupo" alt="Débora Sarah">
+                <div class="card-body">
+                    <h5 class="card-title">Débora Sarah</h5>
+                    <p class="card-text">Desenvolvedora e responsável pelo banco de dados e lógica.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6">
+            <div class="card shadow-sm">
+                <img src="{{ url_for('static', filename='images/Eduarda.jpeg') }}" class="foto-grupo" alt="Eduarda Sanches">
+                <div class="card-body">
+                    <h5 class="card-title">Eduarda Sanches</h5>
+                    <p class="card-text">Responsável pela documentação e pesquisa.</p>
+                </div>
+            </div>
+        </div>
     </div>
-    
-    <br>
+</section>
+<!-- FIM DA SEÇÃO DO GRUPO -->
 
-    <form method="Post"></form>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-      <script src="{{ url_for('static', filename='JS.js') }}"></script>
-</body>
-</html>
+        <footer id="rodapeInicio">
+            <p id="textoRodapeInicio">&copy; 2025 Nexus. Todos os direitos reservados.</p>
+        </footer>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="{{ url_for('static', filename='JS.js') }}"></script>
+    </body>
+
+    </html>

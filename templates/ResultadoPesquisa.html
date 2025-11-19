@@ -1,0 +1,140 @@
+<html lang="pt-br">
+<head>
+    <title>Resultados da Pesquisa</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLMDJc5fS1X7uP9pnhs0G8m+iV0Vv1l+b/aX8v9M+d8d8d8g==" 
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="{{ url_for('static', filename='Estilo.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="icon" href="{{ url_for('static', filename='images/logo (Só-o-desenho).png') }}" type="image/png"
+        id="iconeaba">
+</head>
+
+<body id="corpoInicio">
+    <header id="cabecalhoIndex">
+        <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/logo-branco.png') }}"
+                id="logoheader" alt="Logo Nexus"></a>
+
+        <div id="offcanvas-toggle-container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+                aria-controls="offcanvasNavbar" aria-label="Toggle navigation" id="offcanvasToggleBtn">
+                <img src="{{ url_for('static', filename='images/Menu-Hamburguer-Branco.png') }}" alt="Menu" id="menuImage">
+            </button>
+        </div>
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+             <div class="offcanvas-body">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Eu</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Meu Perfil</a></li>
+                            <li><a class="dropdown-item" href="#">{{ 'Criar Currículo' if tipo_conta == 'profissional' else 'Criar Vaga' }}</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" onclick="logout()">Sair</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"> <a class="nav-link active" aria-current="page" href="#">Minhas Conexões</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="#">Configurações</a> </li>
+                </ul>
+            </div>
+        </div>
+
+        <nav class="navbar navbar-expand-lg" id="navIndex">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="navbarNavContent">
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0" id="barraNavegacao">
+                         <li class="nav-item">
+                            {% if tipo_conta == 'profissional' %}
+                            <a class="nav-link text-white" href="#">Empresas</a>
+                            {% elif tipo_conta == 'empresa' %}
+                            <a class="nav-link text-white" href="#">Profissionais</a>
+                            {% endif %}
+                        </li>
+                        <li class="nav-item">
+                            {% if tipo_conta == 'profissional' %}
+                            <a class="nav-link text-white" href="/VagasECurriculos">Procurar Vagas</a>
+                            {% elif tipo_conta == 'empresa' %}
+                            <a class="nav-link text-white" href="/VagasECurriculos">Procurar Profissionais</a>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div id="allcontainer" class="d-flex justify-content-center p-3">
+            <div class="search-container w-100" style="max-width: 500px;">
+                <div class="input-group shadow-lg rounded-pill">
+                    <span class="input-group-text bg-white border-0 rounded-start-pill ps-3">
+                        <i class="fa-solid fa-magnifying-glass text-secondary" style="cursor: pointer;"></i>
+                    </span>
+                    <input type="text" id="search" class="form-control border-0 rounded-end-pill"
+                        placeholder="Pesquisar vagas, empresas ou pessoas..." value="{{ termo_pesquisa or '' }}"> 
+                </div>
+                <ul id="suggestions" class="list-group position-absolute mt-2 w-100 shadow-sm" style="z-index: 10;"></ul> 
+            </div>
+        </div>
+
+
+        <p id="span" class="text-center" style="display: none;"><span id="span">Nenhum resultado encontrado</span></p>
+        <div id="degradeCabecalhoIndex"></div>
+    </header>
+
+    <div class="container mt-5 pt-3">
+        <h2 class="text-black mb-4">{{ titulo_secao }}</h2> 
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="cards-container">
+
+            {% for card in cards %}
+            <div class="col item-lista">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title text-primary">{{ card.titulo }}</h5>
+
+                        <p class="card-text text-secondary mb-3">{{ card.descricao | truncate(150, True) }}</p>
+
+                        {% if tipo_conta == 'profissional' %}
+                        <p class="mb-1"><small>Empresa: <strong>{{ card.detalhes.empresa }}</strong></small></p>
+                        <p class="mb-1"><small>Local: {{ card.detalhes.local }}</small></p>
+                        <p class="mb-1"><small>Requisitos: {{ card.detalhes.requisitos | truncate(80, True) }}</small></p>
+                        {% elif tipo_conta == 'empresa' %}
+                        <p class="mb-1"><small>Experiência: {{ card.detalhes.experiencia | truncate(80, True) }}</small>
+                        </p>
+                        <p class="mb-1"><small>Habilidades: <strong>{{ card.detalhes.habilidades | truncate(80, True) }}</strong></small>
+                        </p>
+                        <p class="mb-1"><small>Cidade: {{ card.detalhes.cidade or 'Não Informada' }}</small></p>
+                        {% endif %}
+
+                        <div class="mt-auto pt-3">
+                            <a href="#" class="btn btn-sm btn-outline-primary w-100">
+                                Ver Detalhes
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            {% if not cards %}
+            <div class="col-12 mt-5">
+                <div class="alert alert-warning text-center" role="alert">
+                    <i class="fa-solid fa-triangle-exclamation me-2"></i>
+                    Ops! Nenhum resultado encontrado para o termo **"{{ termo_pesquisa }}"**.
+                    <br>Tente refinar sua busca com palavras-chave mais genéricas ou verifique a ortografia.
+                    <br><a href="{{ url_for('index') }}" class="alert-link mt-2 d-inline-block">Voltar para a página principal</a>.
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ url_for('static', filename='JS.js') }}"></script>
+</body>
+
+</html>

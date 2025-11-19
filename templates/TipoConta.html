@@ -1,10 +1,11 @@
 <html>
 
 <head>
+
   <title>Nexus</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="../static/Estilo.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='Estilo.css') }}">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
   <link rel="icon" href="../static/images/logo (Só-o-desenho).png" type="image/png" id="iconeaba">
@@ -12,11 +13,13 @@
   <!-- SDK do Google Identity -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
+
 </head>
 
 
 <body id="corpoEntrar">
-  <div class="py-5 w-100" style="max-width:500px; margin: auto;">
+
+  <div class="py-5 w-100" style="max-width:1000px; margin: auto;">
     <div class="card shadow account-login-card">
       <div class="card-body text-center">
         <a href="{{ url_for('inicio') }}"><img
@@ -26,47 +29,38 @@
 
         <p id="tituloEntrar">Escolha seu tipo de conta</p> <br>
 
-
-        <div class="min-h-screen flex items-center justify-center bg-gray-100 p-6">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl w-full">
-
-            <!-- Card Profissional -->
-            <a id="botaoCriarProfissional" href="{{ url_for('mostrar_cadastro_profissional') }}">
-              <div >
-
-                <div>
-                  <img src="../static/images/imagem-usuario.jpg" alt="Cliente" 
-                  id="imagemProfissional">
-                  <h2 class="text-xl font-bold mb-2">Conta de Profissional</h2>
+        <div class="cards-layout">
+          <div class="container p-0">
+            <div class="row g-4 justify-content-center">
+              <!-- Card Profissional -->
+              <a id="botaoCriarProfissional" href="{{ url_for('mostrar_cadastro_profissional') }}">
+                <div class="conteudo-conta">
+                  <img src="../static/images/imagem-usuario.jpg" alt="Cliente" id="imagemProfissional">
+                  <h2 class="text-xl font-bold mb-2">Conta Profissional</h2>
                   <p class="text-gray-600 mb-4">Ideal para quem deseja encontrar as melhores oportunidades de trabalho.
                   </p>
-            
-
-          </div>
-        </div>
-      </a><br>
-
-        <!-- Card Empresa -->
-        <a id="botaoCriarEmpresa" href="{{ url_for('mostrar_cadastro_empresa') }}">
-          <div>
-            <div >
-              <img src="../static/images/imagem-empresa.jpg" alt="Empresa"
-              id="imagemEmpresa">
-               <h2 class="text-xl font-bold mb-2">Conta Empresarial</h2>
-              <p class="text-gray-600 mb-4">Perfeita para quem está à procura de novos profissionais.</p>
+                </div>
+              </a>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <!-- Card Empresa -->
+              <a id="botaoCriarEmpresa" href="{{ url_for('mostrar_cadastro_empresa') }}">
+                <div class="conteudo-conta">
+                  <img src="../static/images/imagem-empresa.png" alt="Empresa" id="imagemEmpresa">
+                  <h2 class="text-xl font-bold mb-2">Conta Empresarial</h2>
+                  <p class="text-gray-600 mb-4">Perfeita para quem está à procura de novos profissionais.</p>
+                </div>
+              </a>
 
             </div>
           </div>
-        </a>
-
+        </div>
       </div>
     </div>
+  </div>
 
 
-
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{ url_for('static', filename='JS.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="{{ url_for('static', filename='JS.js') }}"></script>
 </body>
 
 </html>

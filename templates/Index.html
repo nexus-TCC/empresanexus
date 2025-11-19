@@ -1,32 +1,29 @@
-<html>
 
+<html>
 <head>
     <title>Index</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
-        integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link href="../static/Estilo.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="{{ url_for('static', filename='Estilo.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="icon" href="../static/images/logo (Só-o-desenho).png" type="image/png" id="iconeaba">
+    <link rel="icon" href="{{ url_for('static', filename='images/logo (Só-o-desenho).png') }}" type="image/png"
+        id="iconeaba">
 </head>
-
 
 <body id="corpoInicio">
     <header id="cabecalhoIndex">
         <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/logo-branco.png') }}"
-                id="logoheader"></a>
+                id="logoheader" alt="Logo Nexus"></a>
 
-                <!-- Barra de navegação Offcanvas -->
         <div id="offcanvas-toggle-container">
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
                 aria-controls="offcanvasNavbar" aria-label="Toggle navigation" id="offcanvasToggleBtn">
-
-                <img src="{{ url_for('static', filename='images/Menu-Hamburguer-Branco.png') }}" alt="Menu" id="menuImage">
-
+                <img src="{{ url_for('static', filename='images/Menu-Hamburguer-Branco.png') }}" alt="Menu"
+                    id="menuImage">
             </button>
         </div>
 
@@ -43,12 +40,12 @@
                             Eu
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Meu Perfil</a></li>
-                            <li><a class="dropdown-item" href="#">Currículo</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('meu_perfil') }}">Meu Perfil</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('criar_curriculo') }}">Currículo</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="#">Sair</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('logout') }}">Sair</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -62,26 +59,16 @@
         </div>
 
 
-        <!-- Barra de navegação Simples -->
-
         <nav class="navbar navbar-expand-lg" id="navIndex">
             <div class="container-fluid">
-
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarNavContent" aria-controls="navbarNavContent" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
                 <div class="collapse navbar-collapse" id="navbarNavContent">
                     <ul class="navbar-nav mx-auto mb-2 mb-lg-0" id="barraNavegacao">
-                        <li class="nav-item dropdown">
-
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Empresas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Procurar Vagas</a>
+                            {% if tipo_conta == 'profissional' %}
+                            <a class="nav-link text-white" href="#">Empresas</a>
+                            {% elif tipo_conta == 'empresa' %}
+                            <a class="nav-link text-white" href="#">Profissionais</a>
+                            {% endif %}
                         </li>
                     </ul>
                 </div>
@@ -89,141 +76,84 @@
         </nav>
 
         <div id="allcontainer" class="d-flex justify-content-center p-3">
-            <div id="container" class="w-100" style="max-width: 450px;">
-                <div class="input-group">
-                    <div class="input-icon">
-                        <i class="fa-solid fa-magnifying-glass" id="procu"></i>
-                    </div>
-                    <input type="text" id="search" class="input-field" placeholder="Pesquisar">
+            <div class="search-container w-100" style="max-width: 500px;">
+                <div class="input-group shadow-lg rounded-pill">
+                    <span class="input-group-text bg-white border-0 rounded-start-pill ps-3">
+                        <i class="fa-solid fa-magnifying-glass text-secondary"></i>
+                    </span>
+                    <input type="text" id="search" class="form-control border-0 rounded-end-pill"
+                        placeholder="Pesquisar vagas, empresas ou pessoas..." value="{{ termo_pesquisa or '' }}">
                 </div>
+                <ul id="suggestions" class="list-group position-absolute mt-2 w-100 shadow-sm"></ul>
             </div>
         </div>
 
-        <p id="span" class="text-center"><span>Nenhum resultado encontrado</span></p>
+
+        <p id="span" class="text-center" style="display: none;"><span id="span">Nenhum resultado encontrado</span></p>
         <div id="degradeCabecalhoIndex"></div>
     </header> <br><br>
 
-    <form method="Post">
+    <div class="container mt-4">
+        <h2 class="col-12 text-black mb-4">{{ titulo_secao }}</h2>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="cards-container">
 
-        <div class="text-center">
-            <h2 class="font-weight-bold mb-16" id="textv">Vagas que podem te interessar</h2>
-        </div>
+            {% for card in cards %}
+            <div class="col item-lista">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title text-primary">{{ card.titulo }}</h5>
 
+                        <p class="card-text text-secondary mb-3">{{ card.descricao }}</p>
 
-    <div id="SuggestedVacanciesCarousel" class="carousel slide js_carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item js_carouselItem active">
-                <div class="row px-4">
+                        {% if tipo_conta == 'profissional' %}
+                        <p class="mb-1"><small>Empresa: <strong>{{ card.detalhes.empresa }}</strong></small></p>
+                        <p class="mb-1"><small>Local: {{ card.detalhes.local }}</small></p>
+                        <p class="mb-1"><small>Requisitos: {{ card.detalhes.requisitos | truncate(80) }}</small></p>
+                        {% elif tipo_conta == 'empresa' %}
+                        <p class="mb-1"><small>Experiência: {{ card.detalhes.experiencia | truncate(80) }}</small></p>
+                        <p class="mb-1"><small>Habilidades: {{ card.detalhes.habilidades | truncate(80) }}</small></p>
+                        <p class="mb-1"><small>Telefone: {{ card.detalhes.telefone }}</small></p>
+                        {% endif %}
 
-                    <div class="col-12 col-sm-6 col-md-4 my-3" id="card1">
-                        <a href="#" class="card card-shadow card-shadow-hover cursor-pointer h-100 text-decoration-none"
-                            id="bordercard">
-                            <div class="card-body py-20 px-24 text-body">
-                                <h3 class="font-weight-bold mb-8">Estoquista</h3>
-                                <div class="mb-4 d-flex align-items-center">
-                                    RHF TALENTOS - São Paulo/Freguesia do Ó-SP
-                                </div>
-                                <p class="small text-medium mb-0">São Paulo - SP</p>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col-12 col-sm-6 col-md-4 my-3" id="card2">
-                        <a href="/vaga-de-assistente-comercial-em-sao-paulo__10725931.aspx"
-                            class="card card-shadow card-shadow-hover cursor-pointer h-100 text-decoration-none"
-                            id="bordercard">
-                            <div class="card-body py-20 px-24 text-body">
-                                <h3 class="font-weight-bold mb-8">Assistente Comercial</h3>
-                                <div class="mb-4 d-flex align-items-center">
-                                    <div class="mr-8">
-
-                                        <div class="text-nowrap" style="line-height:24px;font-size:16px">
-                                        </div>
-                                    </div>
-                                </div>
-                                <p class="small text-medium mb-0">São Paulo - SP</p>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col-12 col-sm-6 col-md-4 my-3" id="card3">
-                        <a href="/vaga-de-assistente-rh-em-sao-paulo__10930714.aspx"
-                            class="card card-shadow card-shadow-hover cursor-pointer h-100 text-decoration-none"
-                            id="bordercard">
-                            <div class="card-body py-20 px-24 text-body">
-                                <h3 class="font-weight-bold mb-8">Assistente De RH</h3>
-                                <div class="mb-4 d-flex align-items-center">
-                                    Apertize soluções em obras
-                                </div>
-                                <p class="small text-medium mb-0">Barueri - SP</p>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col-12 col-sm-6 col-md-4 my-3" id="card1">
-                        <a href="/vaga-de-oficial-manutencao-predial-sorocabasp-em-sao-paulo__10940216.aspx"
-                            class="card card-shadow card-shadow-hover cursor-pointer h-100 text-decoration-none"
-                            id="bordercard">
-                            <div class="card-body py-20 px-24 text-body">
-                                <h3 class="font-weight-bold mb-8">Oficial De Manutençao Predial - Sorocaba/SP</h3>
-                                <div class="mb-4 d-flex align-items-center">
-                                    <div class="mr-8">
-
-                                        <div class="text-nowrap" style="line-height:24px;font-size:16px">
-                                        </div>
-                                    </div>
-                                </div>
-                                <p class="small text-medium mb-0">Sorocaba - SP</p>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col-12 col-sm-6 col-md-4 my-3" id="card2">
-                        <a href="/vaga-de-analista-dho-treinamento-cultura-em-sao-paulo__10940208.aspx"
-                            class="card card-shadow card-shadow-hover cursor-pointer h-100 text-decoration-none"
-                            id="bordercard">
-                            <div class="card-body py-20 px-24 text-body">
-                                <h3 class="font-weight-bold mb-8">Analista De DHO - Treinamento E Cultura</h3>
-                                <div class="mb-4 d-flex align-items-center">
-                                    <div class="mr-8">
-
-                                        <div class="text-nowrap" style="line-height:24px;font-size:16px">
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <p class="small text-medium mb-0">São Paulo - SP</p>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="col-12 col-sm-6 col-md-4 my-3" id="card3">
-                        <a href="/vaga-de-controlador-acesso-vila-leopoldina-12x36-diurno-em-sao-paulo__10940210.aspx"
-                            class="card card-shadow card-shadow-hover cursor-pointer h-100 text-decoration-none"
-                            id="bordercard">
-                            <div class="card-body py-20 px-24 text-body">
-                                <h3 class="font-weight-bold mb-8">CONTROLADOR DE ACESSO - VILA LEOPOLDINA - 12X36 DIURNO
-                                </h3>
-                                <div class="mb-4 d-flex align-items-center">
-                                    <div class="mr-8">
-
-                                        <div class="text-nowrap" style="line-height:24px;font-size:16px">
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <p class="small text-medium mb-0">São Paulo - SP</p>
-                            </div>
-                        </a>
+                        <div class="mt-auto pt-3">
+                            <a href="#" class="btn btn-sm btn-outline-primary w-100">
+                                Ver Detalhes
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
+            {% endfor %}
+
+            <div class="col-12" id="no_results" style="display: none;">
+                <div class="alert alert-info text-center" role="alert">
+                    Parece que não há resultados para exibir no momento.<br>
+                    {% if tipo_conta == 'profissional' %}
+                    Relaxe, novas vagas surgem a todo instante!
+                    {% else %}
+                    Nenhum profissional encontrado.
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if not cards and not request.args.get('search') %}
+            <div class="col-12">
+                <div class="alert alert-info text-center" role="alert">
+                    Parece que não há resultados para exibir no momento.<br>
+                    {% if tipo_conta == 'profissional' %}
+                    Relaxe, novas vagas surgem a todo instante!
+                    {% else %}
+                    Nenhum profissional encontrado.
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="../static/java/JavaScript.js"></script>
-
+    <script src="{{ url_for('static', filename='JS.js') }}"></script>
 </body>
 
 </html>
