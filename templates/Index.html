@@ -1,5 +1,5 @@
-
 <html>
+
 <head>
     <title>Index</title>
     <meta charset="UTF-8">
@@ -28,32 +28,33 @@
         </div>
 
         <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Eu
-                        </a>
+                            aria-expanded="false">Meu Perfil</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ url_for('meu_perfil') }}">Meu Perfil</a></li>
-                            <li><a class="dropdown-item" href="{{ url_for('criar_curriculo') }}">Currículo</a></li>
+                                <a class="dropdown-item"
+                                    href="{% if tipo_conta == 'profissional' %} {{ url_for('criar_curriculo') }} {% else %} {{ url_for('minhas_vagas') }} {% endif %}">
+                                    {% if tipo_conta == 'profissional' %}Currículo{% else %}Minhas vagas{% endif %}
+                                </a>
+                            </li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="{{ url_for('logout') }}">Sair</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('logout') }}" id="logoutLink">Sair</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Minhas vagas</a>
+                        <!-- CORREÇÃO: Usa as rotas de página corretas que não exigem parâmetros -->
+                        <a class="nav-link active" aria-current="page"
+                            href="{% if tipo_conta == 'profissional' %}{{ url_for('minhas_candidaturas') }}{% endif %}">
+                            {% if tipo_conta == 'profissional' %}
+                            Minhas Candidaturas
+                            {% endif %}
+                        </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Configurações</a>
-                    </li>
+                    <li class="nav-item"> <a class="nav-link" href="#">Configurações</a> </li>
                 </ul>
             </div>
         </div>
@@ -76,18 +77,20 @@
         </nav>
 
         <div id="allcontainer" class="d-flex justify-content-center p-3">
-            <div class="search-container w-100" style="max-width: 500px;">
+            <form action="/resultado_pesquisa" method="GET" class="search-container w-100" style="max-width: 500px;">
                 <div class="input-group shadow-lg rounded-pill">
-                    <span class="input-group-text bg-white border-0 rounded-start-pill ps-3">
-                        <i class="fa-solid fa-magnifying-glass text-secondary"></i>
-                    </span>
-                    <input type="text" id="search" class="form-control border-0 rounded-end-pill"
+                    <button type="submit" class="input-group-text bg-white border-0 rounded-start-pill ps-3"
+                        style="border: none;">
+                        <img src="{{ url_for('static', filename='images/lupa-de-pesquisa.png') }}" alt="Lupa"
+                            style="width: 20px; height: 20px; cursor: pointer;">
+                    </button>
+                    <input type="text" name="search" id="search" class="form-control border-0 rounded-end-pill"
                         placeholder="Pesquisar vagas, empresas ou pessoas..." value="{{ termo_pesquisa or '' }}">
                 </div>
-                <ul id="suggestions" class="list-group position-absolute mt-2 w-100 shadow-sm"></ul>
-            </div>
+                <ul id="suggestions" class="list-group position-absolute mt-2 w-100 shadow-sm" style="z-index: 10;">
+                </ul>
+            </form>
         </div>
-
 
         <p id="span" class="text-center" style="display: none;"><span id="span">Nenhum resultado encontrado</span></p>
         <div id="degradeCabecalhoIndex"></div>
@@ -99,24 +102,35 @@
 
             {% for card in cards %}
             <div class="col item-lista">
-                <div class="card h-100 shadow-sm border-0">
+                <div class="card h-100 card-nexus">
                     <div class="card-body d-flex flex-column">
-                        <h5 class="card-title text-primary">{{ card.titulo }}</h5>
+                        <h5 class="card-title text-dark">{{ card.titulo }}</h5>
 
-                        <p class="card-text text-secondary mb-3">{{ card.descricao }}</p>
+                        <p class="card-text text-secondary mb-3">{{ card.descricao | default('') }}</p>
 
                         {% if tipo_conta == 'profissional' %}
-                        <p class="mb-1"><small>Empresa: <strong>{{ card.detalhes.empresa }}</strong></small></p>
-                        <p class="mb-1"><small>Local: {{ card.detalhes.local }}</small></p>
-                        <p class="mb-1"><small>Requisitos: {{ card.detalhes.requisitos | truncate(80) }}</small></p>
+                        <p class="mb-1"><small>Empresa: <strong>{{ card.detalhes.empresa | default('Não Informado')
+                                    }}</strong></small></p>
+                        <p class="mb-1"><small>Local: {{ card.detalhes.local | default('Não Informado') }}</small></p>
+                        <p class="mb-1"><small>Requisitos: {{ card.detalhes.requisitos | default('Sem requisitos
+                                listados') | truncate(80) }}</small></p>
+
                         {% elif tipo_conta == 'empresa' %}
-                        <p class="mb-1"><small>Experiência: {{ card.detalhes.experiencia | truncate(80) }}</small></p>
-                        <p class="mb-1"><small>Habilidades: {{ card.detalhes.habilidades | truncate(80) }}</small></p>
-                        <p class="mb-1"><small>Telefone: {{ card.detalhes.telefone }}</small></p>
+                        <p class="mb-1">
+                            <small>
+                                Experiência:
+                                {{ card.detalhes.experiencia | default('Nenhuma informação') | truncate(80) }}
+                            </small>
+                        </p>
+                        <p class="mb-1"><small>Habilidades: {{ card.detalhes.habilidades | default('Não listadas') |
+                                truncate(80) }}</small></p>
+                        <p class="mb-1"><small>Telefone: {{ card.detalhes.telefone | default('Não informado') }}</small>
+                        </p>
                         {% endif %}
 
                         <div class="mt-auto pt-3">
-                            <a href="#" class="btn btn-sm btn-outline-primary w-100">
+                            <a href="{% if tipo_conta == 'profissional' %}{{ url_for('detalhe', tipo='vaga', id=card.id) }}{% else %}{{ url_for('detalhe', tipo='profissional', id=card.id) }}{% endif %}"
+                                class="btn btn-sm btn-outline-success w-100">
                                 Ver Detalhes
                             </a>
                         </div>
@@ -153,6 +167,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <script src="{{ url_for('static', filename='JS.js') }}"></script>
 </body>
 

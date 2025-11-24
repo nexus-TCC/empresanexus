@@ -15,35 +15,64 @@
     <header id="cabecalhoIndex3">
         <img id="logoheader3" src="{{ url_for('static', filename='images/logo-branco.png') }}" alt="Logo Nexus">
     </header>
-    <div id="degradeCabecalhoIndex3"></div>
+    <div id="degradeCabecalhoIndex3">
 
-    <form method="POST" action="{{ url_for('criar_vaga') }}" class="p-4 bg-light rounded shadow-sm">
-        <h2 class="mb-4">Cadastrar Nova Vaga</h2>
+        <br><br><br>
 
-        <div class="mb-3">
-            <label for="titulo" class="form-label">Título da Vaga</label>
-            <input type="text" class="form-control" id="titulo" name="titulo" required>
-        </div>
-        <div class="mb-3">
-            <label for="descricao" class="form-label">Descrição da Vaga</label>
-            <textarea class="form-control" id="descricao" name="descricao" rows="3" required></textarea>
-        </div>
-        <div class="mb-3">
-            <label for="requisitos" class="form-label">Requisitos</label>
-            <textarea class="form-control" id="requisitos" name="requisitos" rows="3" required></textarea>
-        </div>
-        <div class="mb-3">
-            <label for="local" class="form-label">Local</label>
-            <input type="text" class="form-control" id="local" name="local" placeholder="Ex: Remoto, São Paulo - SP"
-                required>
-        </div>
+        <div class="container form-container">
+            <form method="POST" action="{{ url_for('criar_vaga') }}">
+                <a href="javascript:history.back()" class="btn btn-outline-dark mb-4">
+                    <i class="fa-solid fa-arrow-left"></i> Voltar
+                </a>
 
-        <button type="submit" class="btn btn-primary w-100">Salvar Vaga</button>
-    </form>
 
-    <footer id="rodapeInicio">
-        <p>© 2025 Nexus - Todos os direitos reservados.</p>
-    </footer>
+                <h1 class="titulo-pagina text-center">Cadastrar Vaga</h1>
+
+                <div class="row g-3" id="areaFormVaga">
+                    <div class="col-md-6">
+                        <label for="nome" class="form-label" id="titleItem">Empresa</label>
+                        <input type="text" class="form-control campo-nexus" id="empresa" name="Empresa"
+                            placeholder="Nome da sua empresa" required>
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <label for="email" class="form-label">Título da Empresa</label>
+                        <input type="email" class="form-control campo-nexus" id="titulo" name="titulo"
+                            placeholder="Título da sua empresa" required>
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <label for="area" class="form-label">Requisitos da Vaga</label>
+                        <input type="text" class="form-control campo-nexus" id="requisitos" name="requisitos"
+                            placeholder="Ex: Experiência em Python, Fluência em Inglês (avançado), Conhecimento em SQL.">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="experiencia" class="form-label">Salário</label>
+                        <input class="form-control campo-nexus" id="salario" name="salario"
+                            placeholder="Ex: R$ 4.000 a R$ 6.000 ou A Combinar">
+                    </div>
+
+                    <div class="col-12">
+                        <label for="resumo" class="form-label">Descrição</label>
+                        <textarea type="text" class="form-control campo-nexus" id="descricao" name="descricao"></textarea>
+                    </div>
+
+
+                    <div class="col-12">
+                        <label for="resumo" class="form-label">Local da Vaga</label>
+                        <textarea class="form-control campo-nexus" id="local" name="local"
+                            placeholder="Ex: Remoto, Híbrido (São Paulo - SP), Presencial (Recife - PE)"></textarea>
+                    </div>
+
+
+                    <button type="submit" class="btn btn-success w-100">Salvar Vaga</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 </body>
 

@@ -1,6 +1,8 @@
 from db import db
+from sqlalchemy import func, UniqueConstraint
+from flask_login import UserMixin
 
-class Usuario(db.Model):
+class Usuario(db.Model, UserMixin):
     __tablename__ = 'usuarios'
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(150), nullable=False)
@@ -8,6 +10,15 @@ class Usuario(db.Model):
     senha = db.Column(db.String(200), nullable=False)
     tipo_conta = db.Column(db.String(20), nullable=False) 
     
+    def get_id(self):
+        return str(self.id)
+    def is_active(self):
+        return True
+    def is_authenticated(self):
+        return True
+    def is_anonymous(self):
+        return False
+        
     def __repr__(self):
         return f'<Usuario {self.email}>'
     
@@ -49,3 +60,25 @@ class Vaga(db.Model):
     requisitos = db.Column(db.Text)
     local = db.Column(db.String(150))
     salario = db.Column(db.Numeric(10,2))
+
+class Candidatura(db.Model):
+    __tablename__ = 'candidaturas'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    
+    # Chave Estrangeira: Referência ao Profissional que se candidatou
+    profissional_id = db.Column(db.Integer, db.ForeignKey('profissionais.id'), nullable=False)
+    
+    # Chave Estrangeira: Referência à Vaga para a qual se candidatou
+    vaga_id = db.Column(db.Integer, db.ForeignKey('vagas.id'), nullable=False)
+    
+    # Campos Adicionais
+    data_candidatura = db.Column(db.DateTime, default=db.func.current_timestamp())
+    status = db.Column(db.String(50), default='Pendente', nullable=False) # Ex: Pendente, Visualizada, Aceita, Rejeitada
+    
+    # Relacionamentos (opcional, mas recomendado)
+    profissional = db.relationship('Profissional', backref='candidaturas')
+    vaga = db.relationship('Vaga', backref='candidaturas')
+    
+    def __repr__(self):
+        return f"<Candidatura id={self.id} Status={self.status}>"
