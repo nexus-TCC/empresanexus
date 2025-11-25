@@ -154,6 +154,9 @@ def mostrar_vaga():
     if session.get('tipo_conta') == 'empresa':
         return redirect(url_for('criar_vaga'))
     return redirect(url_for('index'))
+@app.route('/sobre-tcc')
+def sobre_tcc():
+    return render_template('SobreTCC.html')
 
 @app.route('/api/search_data', methods=['GET'])
 def search_data():

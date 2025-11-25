@@ -13,10 +13,10 @@
         id="iconeaba">
 </head>
 
-<body id="corpoInicio">
-    <header id="cabecalhoIndex2">
+<body id="corpoInicio2">
+    <header id="cabecalhoIndex">
         <a href="{{ url_for('index') }}">
-            <img id="logoheader2" src="{{ url_for('static', filename='images/logo-branco.png') }}" alt="Logo Nexus">
+            <img id="logoheader" src="{{ url_for('static', filename='images/logo-branco.png') }}" alt="Logo Nexus">
         </a>
     </header>
     <div id="degradeCabecalhoIndex2"></div>
@@ -26,7 +26,7 @@
             <i class="fa-solid fa-arrow-left"></i> Voltar
         </a>
 
-        <div class="row">
+        <div class="row" id="detalheVaga">
             <div class="col-lg-8">
                 <h1 class="display-5 mb-3">{{ item.titulo }}</h1>
                 <p class="lead text-muted"><strong>Empresa:</strong> {{ item.empresa.nome_empresa if item.empresa else

@@ -13,6 +13,13 @@
    background-repeat: no-repeat;
    background-position: center;
 }
+#corpoInicio3{
+   background-color: white; 
+   background-image: url(../static/images/ELEMENTO3.png);
+   background-size: 100%;
+   background-repeat: no-repeat;
+   background-position: center;
+}
 
 #cabecalhoInicio{
     width: 100%;
@@ -280,7 +287,7 @@ img#setavoltar {
 }
      /* PÁGINA CONTINUAR COM GOOGLE*/
 
-     #corpoContinuarGoogle{
+#corpoContinuarGoogle{
      background-image: url(images/ELEMENTO4.png);
      background-size: auto;
      background-repeat: no-repeat;
@@ -684,6 +691,13 @@ img#setavoltar {
      align-items: center;
      justify-content: flex-start;
 }
+#cabecalhoIndex3 {
+     background-color: white;
+     padding: 10px 20px;
+     display: flex;
+     align-items: center;
+     justify-content: flex-start;
+}
 
 #logoheader2 {
      height: 50px;
@@ -979,4 +993,136 @@ img#setavoltar {
      background-color: #f6f7f7;
      color: #317a7e;
      border-color: #317a7e;
+}
+#detalheVaga{
+     background-color: #d8fdfd;
+     border-radius: 20px;
+}
+.card-nexus {
+    border: 1px solid #c3dede; /* Borda clara e sutil */
+    border-radius: 15px; /* Bordas arredondadas */
+    overflow: hidden; /* Garante que o conteúdo não vaze */
+    box-shadow: 0 6px 16px rgba(49, 122, 126, 0.15); /* Sombra inspirada no hover do vaga-card */
+}
+
+/* Fundo da primeira seção (Introdução e Problema) */
+.bg-light-subtle {
+    /* Cor de fundo próxima do seu #d8fdfd ou #c7dadb, mas mais suave */
+    background-color: #f7fbfb !important; 
+}
+
+/* Fundo da segunda seção (Solução e Nexus) */
+.bg-info-subtle {
+    /* Um toque de cor mais visível, mas ainda claro */
+    background-color: #d8fdfd !important; /* Usando sua cor de mainProfissional */
+}
+
+/* Estilo para os títulos principais dentro dos cards */
+.card-body h2 {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #043d3d; /* Um tom bem escuro do seu verde/azul */
+}
+
+/* Estilo para os subtítulos (Desafios, Solução) */
+.card-body h4 {
+    font-weight: 600;
+    color: #205f63; /* Cor mais forte do seu tema */
+}
+
+/* Linha divisória customizada */
+.card-body hr.border-success {
+    border-top: 3px solid #317a7e !important; /* Usando sua cor primária */
+    opacity: 0.5;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+.card-body hr.border-primary {
+    border-top: 3px solid #0B6265 !important; /* Usando seu verde mais escuro */
+    opacity: 0.5;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+
+/* Estilo para os ícones */
+.fa-3x {
+    color: #317a7e; /* Ícones grandes na cor principal do tema */
+}
+
+/* Texto de introdução em destaque (lead) */
+.lead {
+    font-weight: 500;
+    color: #19474bb7; /* Cor próxima ao seu textoInicio */
+}
+
+/* Ajuste de responsividade para telas menores */
+@media (max-width: 768px) {
+    .card-body p, .card-body .lead {
+        font-size: 1rem;
+    }
+}
+
+/* Container Principal - Aplica o fundo escuro e a imagem ELEMENTO3 */
+#corpoSobreTCC {
+    background-color: #043d3d; /* Fundo escuro coeso com o tema */
+    background-image: url(../static/images/ELEMENTO3.png);
+    background-size: cover; 
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 100vh; /* Garante que preencha a tela */
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+/* Card Principal: Ajuste para modo escuro */
+.card-nexus-dark {
+    border: 1px solid #5eb6b9; /* Borda clara para contraste */
+    border-radius: 15px; 
+    overflow: hidden; 
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5); /* Sombra mais escura */
+    background-color: #0f4f4f; /* Fundo do card em tom escuro do ciano */
+    color: #f8f9fa; /* Texto claro por padrão */
+}
+
+/* Títulos dentro dos cards em modo escuro */
+.card-nexus-dark h2, .card-nexus-dark h4, .card-nexus-dark .titulo-pagina {
+    color: #d8fdfd !important; /* Cor bem clara para destaque */
+}
+
+/* Estilo para os ícones */
+.card-nexus-dark .fa-3x {
+    color: #5eb6b9; /* Ícones grandes na cor secundária clara do tema */
+}
+
+/* Linha divisória customizada (mais clara) */
+.card-nexus-dark hr.border-success-dark {
+    border-top: 3px solid #317a7e !important;
+    opacity: 0.8;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+.card-nexus-dark hr.border-primary-dark {
+    border-top: 3px solid #5eb6b9 !important;
+    opacity: 0.8;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+.card-nexus-dark .lead, .card-nexus-dark p {
+    color: #c3dede !important; /* Texto levemente escuro para contraste */
+}
+
+/* Botão voltar ajustado para modo escuro */
+.btn-outline-light-nexus {
+    color: #c3dede !important;
+    border-color: #c3dede !important;
+    transition: all 0.25s ease;
+    background-color: transparent !important;
+}
+.btn-outline-light-nexus:hover {
+    background-color: #317a7e !important;
+    color: white !important;
+    border-color: #317a7e !important;
 }

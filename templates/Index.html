@@ -42,7 +42,10 @@
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a class="dropdown-item" href="{{ url_for('logout') }}" id="logoutLink">Sair</a></li>
+                    <li>
+                        <a class="dropdown-item" href="{{ url_for('logout') }}" id="logoutLink"
+                            onclick="return logout();">Sair</a>
+                    </li>
                 </ul>
                 </li>
                 <li class="nav-item">
@@ -52,6 +55,11 @@
                         {% if tipo_conta == 'profissional' %}
                         Minhas Candidaturas
                         {% endif %}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('sobre_tcc') }}">
+                        Sobre nós
                     </a>
                 </li>
                 <li class="nav-item"> <a class="nav-link" href="#">Configurações</a> </li>
@@ -96,18 +104,20 @@
                         <p class="mb-1"><small>Empresa: <strong>{{ card.detalhes.empresa | default('Não Informado')
                                     }}</strong></small></p>
                         <p class="mb-1"><small>Local: {{ card.detalhes.local | default('Não Informado') }}</small></p>
-                        <p class="mb-1"><small>Requisitos: {{ card.detalhes.requisitos | truncate(80) | default('Sem requisitos listados') }}</small></p>
+                        <p class="mb-1"><small>Requisitos: {{ card.detalhes.requisitos | truncate(80) | default('Sem
+                                requisitos listados') }}</small></p>
 
                         {% elif tipo_conta == 'empresa' %}
                         <p class="mb-1">
                             <small>
                                 Experiência:
-                                {{ card.detalhes.experiencia  | truncate(80)  | default('Nenhuma informação') }}
+                                {{ card.detalhes.experiencia | truncate(80) | default('Nenhuma informação') }}
                             </small>
                         </p>
                         <p class="mb-1"><small>Habilidades: {{ card.detalhes.habilidades | default('Não listadas') |
                                 truncate(80) }}</small></p>
-                        <p class="mb-1"><small>Telefone: {{ card.detalhes.telefone | truncate(80) | default('Não informado') }}</small>
+                        <p class="mb-1"><small>Telefone: {{ card.detalhes.telefone | truncate(80) | default('Não
+                                informado') }}</small>
                         </p>
                         {% endif %}
 
