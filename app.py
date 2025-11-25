@@ -17,6 +17,12 @@ db.init_app(app)
 
 # Filtro customizado para truncar strings no template Jinja2
 def truncate_filter(s, length=255, killwords=False, end='...'):
+    # CORREÇÃO: Garante que 's' é uma string antes de chamar len()
+    if s is None:
+        return ""
+    if not isinstance(s, str):
+        s = str(s) # Converte para string caso seja um número, etc.
+        
     if len(s) <= length:
         return s
     
@@ -37,6 +43,7 @@ def truncate_filter(s, length=255, killwords=False, end='...'):
 
 # Registra o filtro no ambiente Jinja2 do Flask
 app.jinja_env.filters['truncate'] = truncate_filter
+
 
 @app.after_request
 def add_security_headers(response):
@@ -193,14 +200,18 @@ def index():
     titulo_secao = "Destaques" 
 
     if tipo_conta == 'profissional':
-        vagas = Vaga.query.order_by(Vaga.id.desc()).limit(10).all() or []
-        cards = formatar_cards_vagas(vagas) or []
+        vagas = Vaga.query.order_by(Vaga.id.desc()).limit(10).all() 
+        cards = formatar_cards_vagas(vagas) or [] 
         titulo_secao = "Vagas em Destaque"
         
     elif tipo_conta == 'empresa':
-        perfis = Profissional.query.order_by(Profissional.id.desc()).limit(10).all() or []
-        cards = formatar_cards_profissionais(perfis) or []
+        perfis = Profissional.query.order_by(Profissional.id.desc()).limit(10).all() 
+        cards = formatar_cards_profissionais(perfis) or [] 
         titulo_secao = "Profissionais Recentes"
+        
+    if cards is None:
+        print("ALERTA: 'cards' é None! Forçando para lista vazia.")
+        cards = []
         
     return render_template('Index.html', tipo_conta=tipo_conta, cards=cards, titulo_secao=titulo_secao, termo_pesquisa='')
 
@@ -379,7 +390,8 @@ def candidatos_por_vaga(vaga_id):
     
     empresa = Empresa.query.filter_by(usuario_id=session['usuario_id']).first()
     if vaga.empresa_id != empresa.id:
-        return abort(403) 
+        # A empresa não é dona da vaga, acesso negado
+        abort(403) 
     
     candidaturas = Candidatura.query.filter_by(vaga_id=vaga_id).all()
     
@@ -388,16 +400,67 @@ def candidatos_por_vaga(vaga_id):
         candidato_perfil = Profissional.query.get(c.profissional_id)
         candidatos.append({
             'perfil': candidato_perfil,
+            'candidatura_id': c.id, # Adicionado ID da candidatura para a API de status
             'data_candidatura': c.data_candidatura,
             'status': c.status
         })
     
+    # Lista de status possíveis para o dropdown no frontend
+    status_possiveis = ['Pendente', 'Visualizada', 'Em Entrevista', 'Aprovado', 'Rejeitado']
+    
     return render_template(
-        'CandidatosVaga.html',
+        'CandidatosVaga.html', # Você precisará atualizar este template
         vaga=vaga,
         candidatos=candidatos,
-        tipo_conta='empresa'
+        tipo_conta='empresa',
+        status_possiveis=status_possiveis
     )
+
+
+# ROTA NOVA: API para a Empresa atualizar o status do candidato
+@app.route('/api/atualizar_status_candidatura', methods=['POST'])
+def api_atualizar_status_candidatura():
+    # 1. Verificação de Autenticação e Tipo
+    if session.get('tipo_conta') != 'empresa':
+        return jsonify({"success": False, "error": "Acesso negado. Apenas empresas podem alterar o status."}), 403
+    
+    usuario_id = session.get('usuario_id')
+    data = request.get_json()
+    
+    candidatura_id = data.get('candidatura_id')
+    novo_status = data.get('novo_status')
+    
+    if not all([candidatura_id, novo_status]):
+        return jsonify({"success": False, "error": "ID da candidatura e novo status são obrigatórios."}), 400
+
+    try:
+        # 2. Encontra a Candidatura
+        candidatura = Candidatura.query.get(candidatura_id)
+        if not candidatura:
+            return jsonify({"success": False, "error": "Candidatura não encontrada."}), 404
+
+        # 3. Verifica a Propriedade da Vaga
+        vaga = Vaga.query.get(candidatura.vaga_id)
+        empresa = Empresa.query.filter_by(usuario_id=usuario_id).first()
+        
+        # Garante que a empresa logada é a dona da vaga
+        if not empresa or vaga.empresa_id != empresa.id:
+            return jsonify({"success": False, "error": "Você não tem permissão para gerenciar esta candidatura."}), 403
+
+        # 4. Atualiza o Status
+        candidatura.status = novo_status
+        db.session.commit()
+        
+        return jsonify({
+            "success": True, 
+            "message": "Status da candidatura atualizado com sucesso!",
+            "novo_status": novo_status
+        }), 200
+
+    except Exception as e:
+        db.session.rollback()
+        print(f"Erro ao atualizar status da candidatura: {e}")
+        return jsonify({"success": False, "error": "Erro interno ao atualizar o status."}), 500
 
 # ------------------ ROTAS DE AUTENTICAÇÃO E PERFIL (ORIGINAIS) ------------------
 
@@ -487,7 +550,6 @@ def login():
             session['tipo_conta'] = usuario.tipo_conta
             session['nome'] = usuario.nome
 
-            flash(f"Bem-vindo(a), {usuario.nome.split()[0]}!", 'info')
             return jsonify({"success": True, "message": "Login realizado com sucesso!"}), 200
         else:
             return jsonify({"success": False, "error": "E-mail ou senha incorretos"}), 401

@@ -14,7 +14,7 @@
         id="iconeaba">
 </head>
 
-<body id="corpoInicio">
+<body id="corpoInicio2">
     <header id="cabecalhoIndex">
         <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/logo-branco.png') }}"
                 id="logoheader" alt="Logo Nexus"></a>
@@ -34,47 +34,31 @@
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">Meu Perfil</a>
                         <ul class="dropdown-menu">
-                                <a class="dropdown-item"
-                                    href="{% if tipo_conta == 'profissional' %} {{ url_for('criar_curriculo') }} {% else %} {{ url_for('minhas_vagas') }} {% endif %}">
-                                    {% if tipo_conta == 'profissional' %}Currículo{% else %}Minhas vagas{% endif %}
-                                </a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="{{ url_for('logout') }}" id="logoutLink">Sair</a></li>
-                        </ul>
+                            <a class="dropdown-item"
+                                href="{% if tipo_conta == 'profissional' %} {{ url_for('criar_curriculo') }} {% else %} {{ url_for('minhas_vagas') }} {% endif %}">
+                                {% if tipo_conta == 'profissional' %}Currículo{% else %}Minhas vagas{% endif %}
+                            </a>
                     </li>
-                    <li class="nav-item">
-                        <!-- CORREÇÃO: Usa as rotas de página corretas que não exigem parâmetros -->
-                        <a class="nav-link active" aria-current="page"
-                            href="{% if tipo_conta == 'profissional' %}{{ url_for('minhas_candidaturas') }}{% endif %}">
-                            {% if tipo_conta == 'profissional' %}
-                            Minhas Candidaturas
-                            {% endif %}
-                        </a>
+                    <li>
+                        <hr class="dropdown-divider">
                     </li>
-                    <li class="nav-item"> <a class="nav-link" href="#">Configurações</a> </li>
+                    <li><a class="dropdown-item" href="{{ url_for('logout') }}" id="logoutLink">Sair</a></li>
+                </ul>
+                </li>
+                <li class="nav-item">
+                    <!-- CORREÇÃO: Usa as rotas de página corretas que não exigem parâmetros -->
+                    <a class="nav-link active" aria-current="page"
+                        href="{% if tipo_conta == 'profissional' %}{{ url_for('minhas_candidaturas') }}{% endif %}">
+                        {% if tipo_conta == 'profissional' %}
+                        Minhas Candidaturas
+                        {% endif %}
+                    </a>
+                </li>
+                <li class="nav-item"> <a class="nav-link" href="#">Configurações</a> </li>
                 </ul>
             </div>
         </div>
 
-
-        <nav class="navbar navbar-expand-lg" id="navIndex">
-            <div class="container-fluid">
-                <div class="collapse navbar-collapse" id="navbarNavContent">
-                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0" id="barraNavegacao">
-                        <li class="nav-item">
-                            {% if tipo_conta == 'profissional' %}
-                            <a class="nav-link text-white" href="#">Empresas</a>
-                            {% elif tipo_conta == 'empresa' %}
-                            <a class="nav-link text-white" href="#">Profissionais</a>
-                            {% endif %}
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
 
         <div id="allcontainer" class="d-flex justify-content-center p-3">
             <form action="/resultado_pesquisa" method="GET" class="search-container w-100" style="max-width: 500px;">
@@ -97,7 +81,7 @@
     </header> <br><br>
 
     <div class="container mt-4">
-        <h2 class="col-12 text-black mb-4">{{ titulo_secao }}</h2>
+        <h2 class="col-12 text-black mb-4" id="tituloSecao">{{ titulo_secao }}</h2>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="cards-container">
 
             {% for card in cards %}
@@ -112,19 +96,18 @@
                         <p class="mb-1"><small>Empresa: <strong>{{ card.detalhes.empresa | default('Não Informado')
                                     }}</strong></small></p>
                         <p class="mb-1"><small>Local: {{ card.detalhes.local | default('Não Informado') }}</small></p>
-                        <p class="mb-1"><small>Requisitos: {{ card.detalhes.requisitos | default('Sem requisitos
-                                listados') | truncate(80) }}</small></p>
+                        <p class="mb-1"><small>Requisitos: {{ card.detalhes.requisitos | truncate(80) | default('Sem requisitos listados') }}</small></p>
 
                         {% elif tipo_conta == 'empresa' %}
                         <p class="mb-1">
                             <small>
                                 Experiência:
-                                {{ card.detalhes.experiencia | default('Nenhuma informação') | truncate(80) }}
+                                {{ card.detalhes.experiencia  | truncate(80)  | default('Nenhuma informação') }}
                             </small>
                         </p>
                         <p class="mb-1"><small>Habilidades: {{ card.detalhes.habilidades | default('Não listadas') |
                                 truncate(80) }}</small></p>
-                        <p class="mb-1"><small>Telefone: {{ card.detalhes.telefone | default('Não informado') }}</small>
+                        <p class="mb-1"><small>Telefone: {{ card.detalhes.telefone | truncate(80) | default('Não informado') }}</small>
                         </p>
                         {% endif %}
 
@@ -167,7 +150,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
+
     <script src="{{ url_for('static', filename='JS.js') }}"></script>
 </body>
 

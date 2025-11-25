@@ -1,5 +1,4 @@
-from models import Vaga, Profissional, Empresa
-from cards import Card, criar_card_vaga, criar_card_profissional, criar_card_empresa
+from models import Vaga, Profissional, Empresa, Candidatura
 
 class MockVaga:
     def __init__(self, titulo, descricao, requisitos, local, empresa):
@@ -20,17 +19,17 @@ class MockProfissional:
 class MockEmpresa:
     def __init__(self, nome_empresa):
         self.nome_empresa = nome_empresa
-# Remova estas classes Mock quando seus modelos reais estiverem importados.
 
-# Exemplo de importação real (se você tiver um arquivo models.py):
-# from .models import Vaga, Profissional, Empresa
 def formatar_cards_vagas(vagas):
-    """Formata uma lista de objetos Vaga em dicionários para exibição nos cards."""
+    if vagas is None:
+        return [] 
+        
     cards_formatados = []
     for vaga in vagas:
-        # Busca o nome da empresa através do relacionamento
         nome_empresa = vaga.empresa.nome_empresa if vaga.empresa else "Empresa Desconhecida"
         
+        salario = getattr(vaga, 'salario', 'Não Informado')
+
         cards_formatados.append({
             'id': vaga.id,
             'titulo': vaga.titulo,
@@ -39,20 +38,23 @@ def formatar_cards_vagas(vagas):
                 'empresa': nome_empresa,
                 'local': vaga.local,
                 'requisitos': vaga.requisitos,
-                'salario': vaga.salario,
+                'salario': salario,
             }
         })
     return cards_formatados
 
+
 def formatar_cards_profissionais(profissionais):
-    """
-    Formata uma lista de objetos Profissional em dicionários para exibição nos cards,
-    incluindo a cidade para a pesquisa.
-    """
+    
+    if profissionais is None:
+        return [] 
+
     cards_formatados = []
     for perfil in profissionais:
-        # Usa o nome do profissional ou o nome do usuário como fallback
-        nome_titulo = perfil.nome_profissional if perfil.nome_profissional else (perfil.usuario.nome if perfil.usuario else "Profissional")
+        
+        nome_usuario_fallback = getattr(perfil, 'usuario', None)
+        nome_usuario = nome_usuario_fallback.nome if nome_usuario_fallback else "Profissional"
+        nome_titulo = perfil.nome_profissional if perfil.nome_profissional else nome_usuario
 
         cards_formatados.append({
             'id': perfil.id,

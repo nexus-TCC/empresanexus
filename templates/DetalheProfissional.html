@@ -20,13 +20,13 @@
     </header>
     <div id="degradeCabecalhoIndex2"></div>
 
-    <main class="container my-5">
+    <main class="container my-5" id="mainProfissional" style="max-width: 700px;">
         <a href="javascript:history.back()" class="btn btn-outline-dark mb-4">
             <i class="fa-solid fa-arrow-left"></i> Voltar
         </a>
 
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-8" id="classItens">
                 <h1 class="display-5 mb-3">{{ item.nome_profissional }}</h1>
                 <p class="lead text-muted">{{ item.cidade }}, {{ item.estado }} | {{ item.telefone or 'Telefone não informado' }}</p>
 
@@ -42,7 +42,7 @@
 
                 {% if item.arquivo_pdf %}
                 <a href="{{ url_for('static', filename='curriculos/' + item.arquivo_pdf) }}" target="_blank" class="btn btn-primary w-100 mb-3">
-                    <i class="fa-solid fa-file-pdf"></i> Ver Currículo em PDF
+                    <i class="fa-solid fa-file-pdf"></i> Ver Currículo em PDF 
                 </a>
                 {% endif %}
             </div>

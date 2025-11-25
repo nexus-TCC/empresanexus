@@ -232,15 +232,8 @@ async function handleCredentialResponse(response) {
 
         const loginData = await loginResponse.json();
         if (loginData.success) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Login com Google realizado!',
-                text: 'Você será redirecionado.',
-                showConfirmButton: false,
-                timer: 100
-            }).then(() => {
                 window.location.href = '/index';
-            });
+           
         } else {
             Swal.fire('Erro', 'Não foi possível fazer o login com Google.', 'error');
         }
@@ -320,20 +313,56 @@ function executarPesquisa() {
     }
 }
 
+window.logout = function () {
+    // Verifica se SweetAlert2 está carregado
+    if (typeof Swal === 'undefined') {
+        console.error("SweetAlert2 não está carregado. Redirecionando diretamente.");
+        window.location.href = '/logout';
+        return false;
+    }
 
-// --- DOMContentLoaded Principal (Com a nova lógica do Enter) ---
+    Swal.fire({
+        title: 'Tem certeza?',
+        text: "Você será desconectado da sua conta.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#0B6265', // Mantido o padrão da sua aplicação
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sim, sair!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Se o usuário confirmar, redireciona para a rota de logout
+            window.location.href = '/logout';
+        }
+    });
+
+    // CRÍTICO: Retorna false para o manipulador de eventos 'onclick'
+    // no HTML, impedindo que o navegador siga o 'href' do link.
+    return false;
+};
+
 document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.getElementById('search');
-    const searchIcon = document.querySelector('#allcontainer .fa-magnifying-glass');
+    const localizationInput = document.getElementById('localiza');
+    // Busca o ícone de submit (assumindo que seja a lupa)
+    // O seletor foi adaptado para ser mais genérico.
+    const searchIcon = document.querySelector('.search-container .fa-magnifying-glass');
 
+    // 1. Lógica de Pesquisa e Filtragem (Index/Resultados)
     if (searchInput) {
+        // Filtro em tempo real (para a página index/listagem)
+        searchInput.addEventListener('input', () => filtrarLista('search'));
+
+        // Executar pesquisa ao pressionar ENTER
         searchInput.addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 executarPesquisa();
-                e.preventDefault();
+                e.preventDefault(); // Impede o envio de formulário HTML padrão
             }
         });
 
+        // Preencher o input de busca se houver um termo na URL
         const params = new URLSearchParams(window.location.search);
         const termoURL = params.get('search');
         if (termoURL) {
@@ -342,69 +371,73 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if (searchIcon) {
+        // Executar pesquisa ao clicar no ícone de busca
+        searchIcon.style.cursor = 'pointer'; // Adiciona cursor para indicar que é clicável
         searchIcon.addEventListener('click', executarPesquisa);
     }
 
-    // --- LOGOUT ---
-    function logout() {
-        // Função para tratar o logout com confirmação
-        // (Requer a biblioteca SweetAlert2 - <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>)
-        Swal.fire({
-            title: 'Tem certeza?',
-            text: "Você será desconectado da sua conta.",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sim, sair!',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = '/logout';
-            }
-        });
+    if (localizationInput) {
+        localizationInput.addEventListener('input', () => filtrarLista('localiza'));
     }
 
-    // --- NOVA FUNCIONALIDADE: LOGIN COM ENTER ---
+    // 2. Lógica de Submenu "Eu"
+    const euLink = document.getElementById("euLink");
+    const submenu = document.getElementById("submenuEu");
+
+    if (euLink && submenu) {
+        euLink.addEventListener("click", function (e) {
+            e.preventDefault();
+            // Alterna o display entre "none" e "block"
+            submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+        });
+
+        // Esconde o submenu se o usuário clicar fora
+        document.addEventListener("click", function (e) {
+            if (!euLink.contains(e.target) && !submenu.contains(e.target)) {
+                submenu.style.display = "none";
+            }
+        });
+        // Garante que o submenu comece escondido
+        submenu.style.display = "none";
+    }
+
+    // 3. Lógica de Login com a tecla ENTER
     const inputEmailLogin = document.getElementById("email");
     const inputSenhaLogin = document.getElementById("senha");
+    // ID do botão de login
     const botaoEntrarLogin = document.getElementById("botaoEntrar");
 
     function acionarEnterLogin(event) {
         if (event.key === "Enter") {
-            event.preventDefault(); // Evita reload do form
-            if (botaoEntrarLogin) {
-                botaoEntrarLogin.click(); // Clica no botão
+            event.preventDefault();
+            // Garante que o loginUsuario só será chamado se os campos existirem
+            if (inputEmailLogin && inputSenhaLogin) {
+                loginUsuario();
             }
         }
     }
 
-    // Aplica o ouvinte apenas se os elementos existirem na tela (evita erros em outras páginas)
+    // Adiciona listener de keypress (ENTER) para os campos de login
     if (inputEmailLogin) {
         inputEmailLogin.addEventListener("keypress", acionarEnterLogin);
     }
     if (inputSenhaLogin) {
         inputSenhaLogin.addEventListener("keypress", acionarEnterLogin);
     }
-});
 
-document.addEventListener("DOMContentLoaded", function () {
+    // 4. Lógica do Offcanvas (Bootstrap)
     var myOffcanvas = document.getElementById('offcanvasNavbar');
     var toggleBtn = document.getElementById('offcanvasToggleBtn');
 
-    // Verifica se os elementos existem para evitar erros
     if (myOffcanvas && toggleBtn) {
-
-        // Evento disparado imediatamente quando o método show é chamado
+        // Oculta o botão ao mostrar o Offcanvas
         myOffcanvas.addEventListener('show.bs.offcanvas', function () {
-            toggleBtn.style.visibility = 'hidden'; // Oculta o botão, mas mantem o alinhamento
-            // Se preferir que ele suma totalmente e libere espaço, use: toggleBtn.style.display = 'none';
+            toggleBtn.style.visibility = 'hidden';
         });
 
-        // Evento disparado imediatamente quando o método hide é chamado
+        // Mostra o botão ao esconder o Offcanvas
         myOffcanvas.addEventListener('hide.bs.offcanvas', function () {
-            toggleBtn.style.visibility = 'visible'; // Mostra o botão novamente
-            // Se usou display 'none' acima, use: toggleBtn.style.display = '';
+            toggleBtn.style.visibility = 'visible';
         });
     }
 });

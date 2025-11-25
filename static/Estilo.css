@@ -6,6 +6,14 @@
    background-position: center;
 }
 
+#corpoInicio2{
+   background-color: white; 
+   background-image: url(../static/images/ELEMENTO2.png);
+   background-size: 100%;
+   background-repeat: no-repeat;
+   background-position: center;
+}
+
 #cabecalhoInicio{
     width: 100%;
     color: #f4f4f4;
@@ -23,13 +31,11 @@
     /* Ajustado para um tamanho mais previsível e flexível */
     width: auto; /* Deixa a largura automática */
     height: auto; /* Deixa a altura automática */
-    max-height: 50px; /* Define uma altura máxima razoável para a logo */
+    max-height: 100px; /* Define uma altura máxima razoável para a logo */
     margin: 0; /* Remove margens fixas */
 }
 
-/* Removemos os estilos de largura, altura e margem fixas dos botões, 
-   pois o Bootstrap cuida da largura do contêiner e a altura é definida 
-   pelo padding do botão. */
+
 #entrarInicio{
     background-color: white;
     color: #317a7e;
@@ -336,6 +342,10 @@ img#setavoltar {
           linear-gradient(to bottom, #0B6265, #ffffff);
      background-origin: padding-box, border-box;
      background-clip: padding-box, border-box;
+}
+
+#tituloSecao{
+     background-color: white;
 }
 
 #offcanvas-toggle-container {
@@ -949,4 +959,24 @@ img#setavoltar {
 
 #offcanvasToggleBtn {
     transition: opacity 0.3s ease;
+}
+
+#mainProfissional{
+    max-width: 700px;     
+    background-color: #d8fdfd; 
+    border-radius: 15px;  
+    box-shadow: 30px 30px 30px rgba(0,0,0,0.1); 
+    padding: 40px; 
+    margin-left: auto;     
+    margin-right: auto;    
+}
+
+#classItens{
+     margin-right: 50px;
+     max-width: 600px;
+}
+#botoesVerDetalhes{
+     background-color: #f6f7f7;
+     color: #317a7e;
+     border-color: #317a7e;
 }
