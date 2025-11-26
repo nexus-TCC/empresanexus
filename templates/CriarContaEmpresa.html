@@ -1,14 +1,14 @@
 <html>
 
 <head>
-    <title>Nexus</title>
+    <title>Crie sua conta | Nexus</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../static/Estilo.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
-    <link rel="icon" href="../static/images/logo (Só-o-desenho).png" type="image/png" id="iconeaba">
-
+    <link rel="icon" href="{{ url_for('static', filename='images/logo (Só-o-desenho).png') }}" type="image/png"
+    id="iconeaba">
 </head>
 
 
@@ -35,13 +35,14 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Senha</label>
-                            <div class="input-group">
-                                <input type="password" class="form-control" id="senha" placeholder="Senha">
-                                <button class="btn btn-outline-secondary" type="button" id="toggleSenha" onclick="mostrarSenha()">
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="senha" placeholder="Senha">
+                            <button class="btn btn-outline-secondary" type="button" id="toggleSenha"
+                                onclick="mostrarSenha()">
                                 <img src="{{ url_for('static', filename='images/olho-fechado-senha.png') }}"
                                     alt="Mostrar senha" id="iconeOlho" style="width:20px; height:20px;">
-                                </button>
-                            </div>
+                            </button>
+                        </div>
                     </div>
                     <div class="col-12">
                         <label for="inputAddress2" class="form-label">Endereço</label>

@@ -975,9 +975,9 @@ img#setavoltar {
     transition: opacity 0.3s ease;
 }
 
-#mainProfissional{
+#mainPRofissional{
     max-width: 700px;     
-    background-color: #d8fdfd; 
+    background-color: #96cdcf; 
     border-radius: 15px;  
     box-shadow: 30px 30px 30px rgba(0,0,0,0.1); 
     padding: 40px; 
@@ -1140,8 +1140,45 @@ img#setavoltar {
 }
 
 #buttonVoltar{
-     margin-top: 5px;
-     margin-bottom: 0px;
-     margin-right: 140px;
-     margin-left: -230px;
+     margin-top: 30px;
+     margin-left: 300px;
+}
+
+#titlesecao{
+     margin-top: -60px;
+}
+
+#botaoPublicar {
+    color: white;
+    background-color: #317a7e;
+    border-color: #317a7e;
+    /* width, height, margin-top, position removidos */
+    font-size: large;
+    text-align: center;
+}
+#botaoPublicar:hover{
+     color: white;
+     background-color: #205f63;
+     border-color: #205f63;
+}
+#botaoDetalhesVaga {
+     background-color: white;
+     color: #317a7e;
+     border-color: #c4c4c4;
+     position: relative;
+}
+
+#botaoDetalhesVaga:hover {
+     background-color: #317a7e;
+     color: white;
+     border-color: #317a7e;
+}
+
+#status{
+     
+}
+
+#spanStatus{
+     font-size: 0.9em;
+     color: #317a7e;
 }

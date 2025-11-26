@@ -4,6 +4,7 @@ from models import Usuario, Profissional, Empresa, Vaga, Candidatura
 from utils import formatar_cards_vagas, formatar_cards_profissionais
 import bcrypt
 import os
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -147,7 +148,7 @@ def mostrar_cadastro_empresa():
 
 @app.route('/curriculo')
 def criar_curriculo():
-    return render_template('CriarCurriculo.html')
+    return redirect(url_for('acompanhamento_curriculo'))
 
 @app.route('/vaga')
 def mostrar_vaga():
@@ -344,17 +345,28 @@ def minhas_candidaturas():
     profissional = Profissional.query.filter_by(usuario_id=session['usuario_id']).first()
     
     if not profissional:
-        return redirect(url_for('index'))
+        # Se o perfil profissional não existir (o que não deve ocorrer se o cadastro for completo)
+        return redirect(url_for('index')) 
 
-    vagas_candidatadas = Vaga.query.join(Candidatura).filter(
+    # Buscar todas as candidaturas feitas por este profissional
+    candidaturas = Candidatura.query.filter(
         Candidatura.profissional_id == profissional.id
-    ).all()
+    ).order_by(Candidatura.data_candidatura.desc()).all()
+    
+    # Criar uma lista de dicionários contendo a vaga e os dados da candidatura
+    candidaturas_data = []
+    for c in candidaturas:
+        vaga = Vaga.query.get(c.vaga_id)
+        if vaga:
+            candidaturas_data.append({
+                'vaga': vaga,
+                'status': c.status,
+                'data_candidatura': c.data_candidatura
+            })
 
-    cards = formatar_cards_vagas(vagas_candidatadas)
-
-    return render_template(
+    return render_template( 
         'VagasCandidatos.html',
-        cards=cards,
+        candidaturas=candidaturas_data,
         tipo_conta='profissional',
         titulo_secao="Minhas Candidaturas"
     )
@@ -419,6 +431,121 @@ def candidatos_por_vaga(vaga_id):
         status_possiveis=status_possiveis
     )
 
+@app.route('/cancelar_candidatura/<int:vaga_id>', methods=['POST'])
+def cancelar_candidatura(vaga_id):
+    if session.get('tipo_conta') != 'profissional':
+        flash("Acesso não autorizado.", 'error')
+        return redirect(url_for('index'))
+    
+    profissional = Profissional.query.filter_by(usuario_id=session['usuario_id']).first()
+    
+    if not profissional:
+        flash("Perfil de profissional não encontrado.", 'error')
+        return redirect(url_for('index'))
+
+    # 1. Encontrar a candidatura
+    candidatura = Candidatura.query.filter(
+        Candidatura.profissional_id == profissional.id,
+        Candidatura.vaga_id == vaga_id
+    ).first()
+
+    if candidatura:
+        try:
+            # 2. Deletar a candidatura
+            db.session.delete(candidatura)
+            db.session.commit()
+            flash("Candidatura cancelada com sucesso.", 'success')
+        except Exception as e:
+            db.session.rollback()
+            print(f"Erro ao cancelar candidatura: {e}")
+            flash("Erro ao cancelar candidatura. Tente novamente.", 'error')
+    else:
+        flash("Candidatura não encontrada ou você não tem permissão para cancelá-la.", 'error')
+        
+    # Redirecionar de volta para a página de candidaturas
+    return redirect(url_for('minhas_candidaturas'))
+
+@app.route('/acompanhamento_curriculo')
+def acompanhamento_curriculo():
+    # 1. Verifica autenticação
+    usuario_id = session.get('usuario_id')
+    if not usuario_id or session.get('tipo_conta') != 'profissional':
+        flash('Acesso negado. Apenas profissionais podem acessar esta página.', 'error')
+        return redirect(url_for('index'))
+
+    # 2. Busca o perfil do profissional e candidaturas
+    perfil = Profissional.query.filter_by(usuario_id=usuario_id).first()
+    
+    # Se o perfil não existir (erro na criação da conta), redireciona para o formulário
+    if perfil is None:
+        flash('Seu perfil profissional não foi encontrado. Por favor, complete seu cadastro.', 'warning')
+        return redirect(url_for('editar_curriculo')) 
+
+    # 3. Conta o número de candidaturas
+    num_candidaturas = Candidatura.query.filter_by(profissional_id=perfil.id).count()
+
+    # 4. Renderiza a tela de acompanhamento
+    return render_template(
+        'AcompanhamentoCurriculo.html', 
+        perfil=perfil, 
+        session_nome=session.get('nome'),
+        num_candidaturas=num_candidaturas
+    )
+
+
+# ROTA NOVA: Exibir o formulário de cadastro/edição (FormularioCurriculo.html)
+@app.route('/editar_curriculo', methods=['GET'])
+def editar_curriculo():
+    usuario_id = session.get('usuario_id')
+    if not usuario_id or session.get('tipo_conta') != 'profissional':
+        flash('Acesso negado.', 'error')
+        return redirect(url_for('index'))
+    
+    # 1. Busca o perfil existente
+    perfil = Profissional.query.filter_by(usuario_id=usuario_id).first()
+    usuario = Usuario.query.get(usuario_id)
+
+    if perfil is None:
+        # Cria um perfil profissional se não existir (após cadastro inicial, por exemplo)
+        perfil = Profissional(usuario_id=usuario_id, nome_profissional=usuario.nome if usuario else '')
+        db.session.add(perfil)
+        db.session.commit()
+    
+    # 2. Renderiza o formulário (seu FormularioCurriculo.html)
+    return render_template(
+        'FormularioCurriculo.html', 
+        perfil=perfil, 
+        session_nome=usuario.nome if usuario else ''
+    )
+
+# ROTA DE EXCLUSÃO DO CURRÍCULO (Deve retornar JSON)
+@app.route('/excluir_curriculo', methods=['POST'])
+def excluir_curriculo():
+    usuario_id = session.get('usuario_id')
+    if not usuario_id or session.get('tipo_conta') != 'profissional':
+        return jsonify({"success": False, "error": "Acesso negado."}), 403
+
+    perfil = Profissional.query.filter_by(usuario_id=usuario_id).first()
+    
+    if perfil:
+        try:
+            # Lógica para "limpar" os campos do currículo no banco de dados
+            perfil.nome_profissional = Profissional.query.filter_by(usuario_id=usuario_id).first().usuario.nome 
+            perfil.telefone = None
+            perfil.cidade = None
+            perfil.experiencia = None
+            perfil.habilidades = None
+            db.session.commit()
+            
+            # RETORNO JSON: ESSENCIAL PARA O SWEETALERT NO FRONT-END
+            return jsonify({"success": True, "message": "Currículo deletado com sucesso (campos limpos)."}), 200
+
+        except Exception as e:
+            db.session.rollback()
+            print(f"Erro ao excluir currículo: {e}")
+            return jsonify({"success": False, "error": "Erro ao tentar limpar os campos do currículo."}), 500
+            
+    return jsonify({"success": False, "error": "Currículo não encontrado."}), 404
 
 # ROTA NOVA: API para a Empresa atualizar o status do candidato
 @app.route('/api/atualizar_status_candidatura', methods=['POST'])
@@ -600,37 +727,50 @@ def verificar_email():
         print(f"ERRO CRÍTICO NA ROTA /api/verificar_email: {e}")
         return jsonify({"error": "Erro interno ao verificar e-mail. Consulte os logs do servidor."}), 500
 
-@app.route('/api/criar_curriculo', methods=['POST'])
-def api_curriculo():
+@app.route('/salvar_curriculo', methods=['POST'])
+def salvar_curriculo():
     usuario_id = session.get('usuario_id')
-    tipo_conta = session.get('tipo_conta')
-
-    if not usuario_id or tipo_conta != 'profissional':
-        return jsonify({"error": "Acesso negado."}), 403
-        
-    data = request.get_json()
-    profissional = Profissional.query.filter_by(usuario_id=usuario_id).first()
-
-    if not profissional:
-        return jsonify({"error": "Profissional não encontrado."}), 404
+    if not usuario_id or session.get('tipo_conta') != 'profissional':
+        flash('Acesso negado.', 'error')
+        return redirect(url_for('index'))
     
+    perfil = Profissional.query.filter_by(usuario_id=usuario_id).first()
     usuario = Usuario.query.get(usuario_id)
+    
+    if not perfil:
+        flash('Perfil profissional não encontrado para salvar.', 'error')
+        return redirect(url_for('index'))
 
-    try:
-        usuario.nome = data.get('nome', usuario.nome)
-        profissional.telefone = data.get('telefone', profissional.telefone)
-        profissional.endereco = data.get('endereco', profissional.endereco)
-        profissional.experiencia = data.get('experiencia', profissional.experiencia)
-        profissional.habilidades = data.get('habilidades', profissional.habilidades)
-        profissional.nome_profissional = data.get('nome_profissional', profissional.nome_profissional)
+    # 1. Coleta os dados do formulário
+    nome_profissional = request.form.get('nome_profissional')
+    telefone = request.form.get('telefone')
+    cidade = request.form.get('cidade')
+    experiencia = request.form.get('experiencia')
+    habilidades = request.form.get('habilidades')
+    
+    # 2. Atualiza o objeto Profissional
+    perfil.nome_profissional = nome_profissional
+    perfil.telefone = telefone
+    perfil.cidade = cidade # Certifique-se que o modelo Profissional tem o campo 'cidade'
+    perfil.experiencia = experiencia
+    perfil.habilidades = habilidades
+    
+    # Opcional: Atualizar o nome do usuário principal se for o caso
+    if usuario and usuario.nome != nome_profissional:
+        usuario.nome = nome_profissional
         
+    try:
         db.session.commit()
-        return jsonify({"message": "Currículo atualizado com sucesso!"}), 200
-
+        # REQUISITO: Exibe o alerta após salvar
+        flash('currículo criado com sucesso', 'success') 
+        # Redireciona para a tela de acompanhamento
+        return redirect(url_for('acompanhamento_curriculo'))
+    
     except Exception as e:
         db.session.rollback()
-        print(f"Erro ao atualizar currículo: {e}")
-        return jsonify({"error": "Erro ao salvar currículo."}), 500
+        print(f"Erro ao salvar currículo: {e}")
+        flash("Erro ao salvar currículo. Tente novamente.", 'error')
+        return redirect(url_for('editar_curriculo'))
 
 @app.route('/api/criar_empresa', methods=['POST'])
 def criar_empresa():
@@ -676,10 +816,7 @@ def meu_perfil():
         return redirect(url_for('mostrar_login'))
     
     if tipo_conta == 'profissional':
-        perfil = Profissional.query.filter_by(usuario_id=usuario_id).first()
-        if perfil is None:
-            return redirect(url_for('index'))
-        return render_template('FormularioCurriculo.html', profissional=perfil)
+        return redirect(url_for('acompanhamento_curriculo'))
 
     elif tipo_conta == 'empresa':
         empresa = Empresa.query.filter_by(usuario_id=usuario_id).first()

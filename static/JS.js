@@ -400,4 +400,46 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+    function confirmarExclusao(urlExclusao, urlRedirecionamento) {
+    Swal.fire({
+        title: 'Tem certeza?',
+        text: "Você irá excluir permanentemente seu currículo. Seus dados de experiência e habilidades serão apagados, mas sua conta será mantida.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#0B6265', // Sua cor Nexus Teal
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sim, excluir!',
+        cancelButtonText: 'Cancelar',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Se confirmado, faz a requisição para a rota Flask de exclusão
+            fetch(urlExclusao, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Alerta de sucesso de exclusão
+                    Swal.fire({
+                        title: 'Deletado!',
+                        text: 'currículo deletado.',
+                        icon: 'success',
+                        confirmButtonText: 'Ok'
+                    }).then(() => {
+                        window.location.href = urlRedirecionamento;
+                    });
+                } else {
+                    Swal.fire('Erro!', 'Erro ao tentar limpar os campos do currículo: ' + data.error, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Erro de rede:', error);
+                Swal.fire('Erro!', 'Erro de comunicação com o servidor ao deletar currículo.', 'error');
+            });
+        }
+    })
+}
 });
