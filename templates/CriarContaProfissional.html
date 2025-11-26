@@ -9,14 +9,11 @@
         integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
     <link rel="icon" href="../static/images/logo (Só-o-desenho).png" type="image/png" id="iconeaba">
 
-    <!-- SDK do Google Identity -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-
 </head>
 
 
 <body id="corpoEntrar">
-    <div class="py-5 w-100" style="max-width:500px; margin: auto;">
+    <div class="py-5 w-100" style="max-width:600px; margin: auto;">
         <div class="card shadow account-login-card">
             <div class="card-body text-center">
                 <a href="{{ url_for('mostrar_tipo_conta') }}"><img
@@ -37,12 +34,16 @@
                         <input type="email" class="form-control" id="email" placeholder="E-mail">
                     </div>
                     <div class="col-md-6">
-                        <label for="inputPassword4" class="form-label">Senha</label>
-                        <input type="password" class="form-control" id="senha" placeholder="Senha">
-                        <button class="btn btn-outline" type="button" id="toggleSenha" onclick="mostrarSenha()">
-                            <img src="{{ url_for('static', filename='images/olho-fechado-senha.png') }}"
-                                alt="Mostrar senha" id="iconeOlho"> </button>
+                        <label class="form-label">Senha</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="senha" placeholder="Senha">
+                                <button class="btn btn-outline-secondary" type="button" id="toggleSenha" onclick="mostrarSenha()">
+                                <img src="{{ url_for('static', filename='images/olho-fechado-senha.png') }}"
+                                    alt="Mostrar senha" id="iconeOlho" style="width:20px; height:20px;">
+                                </button>
+                             </div>
                     </div>
+
                     <div class="col-12">
                         <label for="inputAddress2" class="form-label">Endereço</label>
                         <input type="text" class="form-control" id="endereco"
@@ -52,7 +53,7 @@
                         <label for="inputCity" class="form-label">Cidade</label>
                         <input type="text" class="form-control" id="cidade" placeholder="cidade">
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label for="inputState" class="form-label">Estado</label>
                         <select id="estado" class="form-select">
                             <option selected></option>
@@ -85,12 +86,14 @@
                             <option>TO</option>
                         </select>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <label for="inputZip" class="form-label">CEP</label>
                         <input type="text" class="form-control" id="cep">
                     </div>
                     <input type="hidden" id="tipo_conta" value="{{ tipo_conta }}">
                 </form>
+
+                <br>
 
                 <button class="btn btn-primary w-100" type="button" onclick="criarConta()"
                     id="botaoCriarConta">Continuar</button>

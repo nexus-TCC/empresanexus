@@ -1126,3 +1126,22 @@ img#setavoltar {
     color: white !important;
     border-color: #317a7e !important;
 }
+
+#toggleSenha {
+    border-radius: 0 8px 8px 0 !important;
+    margin-top: -8px;
+    margin-bottom: 2px;
+}
+
+#senha {
+    border-radius: 8px 0 0 8px !important;
+    margin-top: -8px;
+    margin-bottom: 2px;
+}
+
+#buttonVoltar{
+     margin-top: 5px;
+     margin-bottom: 0px;
+     margin-right: 140px;
+     margin-left: -230px;
+}

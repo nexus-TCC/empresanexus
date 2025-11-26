@@ -34,7 +34,7 @@ async function verificarEmailNoBanco(email) {
     }
 }
 
-// LOGIN
+// --- LOGIN ---
 async function loginUsuario() {
     const email = document.getElementById("email").value.trim();
     const senha = document.getElementById("senha").value.trim();
@@ -101,7 +101,7 @@ async function loginUsuario() {
     }
 }
 
-// CADASTRO
+// --- CADASTRO ---
 async function criarConta() {
     const nome = document.getElementById("nome").value.trim();
     const email = document.getElementById("email").value.trim();
@@ -183,7 +183,7 @@ async function criarConta() {
     }
 }
 
-// GOOGLE LOGIN AUXILIARES
+// --- GOOGLE LOGIN ---
 function decodeJWT(token) {
     let base64Url = token.split(".")[1];
     let base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
@@ -232,8 +232,7 @@ async function handleCredentialResponse(response) {
 
         const loginData = await loginResponse.json();
         if (loginData.success) {
-                window.location.href = '/index';
-           
+            window.location.href = '/index';
         } else {
             Swal.fire('Erro', 'Não foi possível fazer o login com Google.', 'error');
         }
@@ -249,7 +248,7 @@ async function handleCredentialResponse(response) {
     }
 }
 
-// FILTRAGEM
+// --- UTILITÁRIOS (Filtros, Logout, etc) ---
 function formatString(value) {
     return value.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
@@ -274,34 +273,6 @@ function filtrarLista(inputId) {
     }
 }
 
-// Eventos de busca e input
-const searchInput = document.getElementById('search');
-if (searchInput) {
-    searchInput.addEventListener('input', () => filtrarLista('search'));
-}
-
-const localizationInput = document.getElementById('localiza');
-if (localizationInput) {
-    localizationInput.addEventListener('input', () => filtrarLista('localiza'));
-}
-
-// Submenu "Eu"
-const euLink = document.getElementById("euLink");
-const submenu = document.getElementById("submenuEu");
-
-if (euLink && submenu) {
-    euLink.addEventListener("click", function (e) {
-        e.preventDefault();
-        submenu.style.display = submenu.style.display === "block" ? "none" : "block";
-    });
-    document.addEventListener("click", function (e) {
-        if (!euLink.contains(e.target) && !submenu.contains(e.target)) {
-            submenu.style.display = "none";
-        }
-    });
-    submenu.style.display = "none";
-}
-
 function executarPesquisa() {
     const searchInput = document.getElementById('search');
     const termo = searchInput.value.trim();
@@ -314,9 +285,7 @@ function executarPesquisa() {
 }
 
 window.logout = function () {
-    // Verifica se SweetAlert2 está carregado
     if (typeof Swal === 'undefined') {
-        console.error("SweetAlert2 não está carregado. Redirecionando diretamente.");
         window.location.href = '/logout';
         return false;
     }
@@ -326,118 +295,109 @@ window.logout = function () {
         text: "Você será desconectado da sua conta.",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#0B6265', // Mantido o padrão da sua aplicação
+        confirmButtonColor: '#0B6265',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Sim, sair!',
         cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
-            // Se o usuário confirmar, redireciona para a rota de logout
             window.location.href = '/logout';
         }
     });
-
-    // CRÍTICO: Retorna false para o manipulador de eventos 'onclick'
-    // no HTML, impedindo que o navegador siga o 'href' do link.
     return false;
 };
 
+// =========================================================================
+// BLOCO PRINCIPAL DE INICIALIZAÇÃO (ENTER KEY, PESQUISA, OFFCANVAS)
+// =========================================================================
+
 document.addEventListener('DOMContentLoaded', function () {
+    
+    // 1. Pesquisa e Offcanvas
     const searchInput = document.getElementById('search');
     const localizationInput = document.getElementById('localiza');
-    // Busca o ícone de submit (assumindo que seja a lupa)
-    // O seletor foi adaptado para ser mais genérico.
     const searchIcon = document.querySelector('.search-container .fa-magnifying-glass');
 
-    // 1. Lógica de Pesquisa e Filtragem (Index/Resultados)
     if (searchInput) {
-        // Filtro em tempo real (para a página index/listagem)
         searchInput.addEventListener('input', () => filtrarLista('search'));
-
-        // Executar pesquisa ao pressionar ENTER
         searchInput.addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 executarPesquisa();
-                e.preventDefault(); // Impede o envio de formulário HTML padrão
+                e.preventDefault();
             }
         });
-
-        // Preencher o input de busca se houver um termo na URL
         const params = new URLSearchParams(window.location.search);
         const termoURL = params.get('search');
         if (termoURL) {
             searchInput.value = termoURL;
         }
     }
-
     if (searchIcon) {
-        // Executar pesquisa ao clicar no ícone de busca
-        searchIcon.style.cursor = 'pointer'; // Adiciona cursor para indicar que é clicável
+        searchIcon.style.cursor = 'pointer';
         searchIcon.addEventListener('click', executarPesquisa);
     }
-
     if (localizationInput) {
         localizationInput.addEventListener('input', () => filtrarLista('localiza'));
     }
 
-    // 2. Lógica de Submenu "Eu"
+    var myOffcanvas = document.getElementById('offcanvasNavbar');
+    var toggleBtn = document.getElementById('offcanvasToggleBtn');
+    if (myOffcanvas && toggleBtn) {
+        myOffcanvas.addEventListener('show.bs.offcanvas', function () {
+            toggleBtn.style.visibility = 'hidden';
+        });
+        myOffcanvas.addEventListener('hide.bs.offcanvas', function () {
+            toggleBtn.style.visibility = 'visible';
+        });
+    }
+
     const euLink = document.getElementById("euLink");
     const submenu = document.getElementById("submenuEu");
-
     if (euLink && submenu) {
         euLink.addEventListener("click", function (e) {
             e.preventDefault();
-            // Alterna o display entre "none" e "block"
             submenu.style.display = submenu.style.display === "block" ? "none" : "block";
         });
-
-        // Esconde o submenu se o usuário clicar fora
         document.addEventListener("click", function (e) {
             if (!euLink.contains(e.target) && !submenu.contains(e.target)) {
                 submenu.style.display = "none";
             }
         });
-        // Garante que o submenu comece escondido
         submenu.style.display = "none";
     }
 
-    // 3. Lógica de Login com a tecla ENTER
-    const inputEmailLogin = document.getElementById("email");
-    const inputSenhaLogin = document.getElementById("senha");
-    // ID do botão de login
-    const botaoEntrarLogin = document.getElementById("botaoEntrar");
+    // 2. LÓGICA DO "ENTER" (Unificada para Login e Cadastro)
+    
+    const btnEntrar = document.getElementById("botaoEntrar");     // Botão na tela de Login
+    const btnCriar = document.getElementById("botaoCriarConta");  // Botão nas telas de Cadastro
 
-    function acionarEnterLogin(event) {
+    // Função que aciona o clique do botão quando a tecla Enter é pressionada
+    function acionarBotaoNoEnter(event, botao) {
         if (event.key === "Enter") {
-            event.preventDefault();
-            // Garante que o loginUsuario só será chamado se os campos existirem
-            if (inputEmailLogin && inputSenhaLogin) {
-                loginUsuario();
-            }
+            event.preventDefault(); // Impede recarregamento padrão
+            botao.click();          // Simula o clique
         }
     }
 
-    // Adiciona listener de keypress (ENTER) para os campos de login
-    if (inputEmailLogin) {
-        inputEmailLogin.addEventListener("keypress", acionarEnterLogin);
+    // A. Configuração para Tela de LOGIN
+    if (btnEntrar) {
+        const inputEmail = document.getElementById("email");
+        const inputSenha = document.getElementById("senha");
+
+        if (inputEmail) inputEmail.addEventListener("keypress", (e) => acionarBotaoNoEnter(e, btnEntrar));
+        if (inputSenha) inputSenha.addEventListener("keypress", (e) => acionarBotaoNoEnter(e, btnEntrar));
     }
-    if (inputSenhaLogin) {
-        inputSenhaLogin.addEventListener("keypress", acionarEnterLogin);
-    }
 
-    // 4. Lógica do Offcanvas (Bootstrap)
-    var myOffcanvas = document.getElementById('offcanvasNavbar');
-    var toggleBtn = document.getElementById('offcanvasToggleBtn');
+    // B. Configuração para Telas de CADASTRO (Empresa e Profissional)
+    if (btnCriar) {
+        // IDs comuns nos formulários de cadastro
+        const camposCadastro = ["nome", "email", "senha", "endereco", "cidade", "estado", "cep"];
 
-    if (myOffcanvas && toggleBtn) {
-        // Oculta o botão ao mostrar o Offcanvas
-        myOffcanvas.addEventListener('show.bs.offcanvas', function () {
-            toggleBtn.style.visibility = 'hidden';
-        });
-
-        // Mostra o botão ao esconder o Offcanvas
-        myOffcanvas.addEventListener('hide.bs.offcanvas', function () {
-            toggleBtn.style.visibility = 'visible';
+        camposCadastro.forEach(id => {
+            const elemento = document.getElementById(id);
+            if (elemento) {
+                elemento.addEventListener("keypress", (e) => acionarBotaoNoEnter(e, btnCriar));
+            }
         });
     }
 });

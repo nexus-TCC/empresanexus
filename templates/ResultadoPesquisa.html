@@ -61,16 +61,16 @@
             </div>
         </div>
 
-       <a href="javascript:history.back()" class="btn btn-outline-dark mb-4">
+        <div id="allcontainer" class="d-flex justify-content-center p-3">
+        <a href="javascript:history.back()" class="btn btn-outline-dark mb-4" id="buttonVoltar">
             <i class="fa-solid fa-arrow-left"></i> Voltar
         </a>
-
-        <div id="allcontainer" class="d-flex justify-content-center p-3">
             <form action="/resultado-pesquisa" method="GET" class="search-container w-100" style="max-width: 500px;">
                 <div class="input-group shadow-lg rounded-pill">
                     <button type="submit" class="input-group-text bg-white border-0 rounded-start-pill ps-3"
                         style="border: none;">
-                        <i class="fa-solid fa-magnifying-glass text-secondary" style="cursor: pointer;"></i>
+                        <img src="{{ url_for('static', filename='images/lupa-de-pesquisa.png') }}" alt="Lupa"
+                            style="width: 20px; height: 20px; cursor: pointer;">
                     </button>
                     <input type="text" **name="search" ** id="search" class="form-control border-0 rounded-end-pill"
                         placeholder="Pesquisar vagas, empresas ou pessoas..." value="{{ termo_pesquisa or '' }}">
