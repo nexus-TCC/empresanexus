@@ -873,6 +873,51 @@ def criar_vaga():
         
     return render_template('FormularioVaga.html')
 
+@app.route('/excluir_vaga/<int:vaga_id>', methods=['POST'])
+def excluir_vaga(vaga_id):
+    # 1. Verificar se o usuário é uma empresa e está logado
+    if session.get('tipo_conta') != 'empresa':
+        flash("Acesso não autorizado.", 'error')
+        return redirect(url_for('index'))
+    
+    # 2. Obter o perfil da empresa
+    empresa = Empresa.query.filter_by(usuario_id=session['usuario_id']).first()
+    
+    if not empresa:
+        flash("Perfil de empresa não encontrado.", 'error')
+        return redirect(url_for('index'))
+
+    # 3. Encontrar a vaga
+    vaga = Vaga.query.get(vaga_id)
+
+    if not vaga:
+        flash("Vaga não encontrada.", 'error')
+        # Supondo que a rota de acompanhamento das vagas seja 'minhas_vagas'
+        return redirect(url_for('minhas_vagas'))
+    
+    # 4. Verificar se a empresa logada é a dona da vaga
+    if vaga.empresa_id != empresa.id:
+        flash("Você não tem permissão para excluir esta vaga.", 'error')
+        return redirect(url_for('minhas_vagas'))
+
+    try:
+        # 5. Excluir candidaturas associadas (RECOMENDADO: Para evitar erros de chave estrangeira)
+        Candidatura.query.filter_by(vaga_id=vaga.id).delete()
+        
+        # 6. Excluir a vaga
+        db.session.delete(vaga)
+        db.session.commit()
+        
+        flash(f"Vaga '{vaga.titulo}' excluída com sucesso.", 'success')
+        
+    except Exception as e:
+        db.session.rollback()
+        print(f"Erro ao excluir vaga: {e}")
+        flash("Erro ao excluir vaga. Tente novamente.", 'error')
+        
+    # Redirecionar de volta para a página de acompanhamento
+    return redirect(url_for('minhas_vagas'))
+
 @app.route('/criar_banco')
 def criar_banco():
     db.create_all()

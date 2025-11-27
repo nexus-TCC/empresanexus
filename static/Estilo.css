@@ -1141,7 +1141,7 @@ img#setavoltar {
 
 #buttonVoltar{
      margin-top: 30px;
-     margin-left: 300px;
+     margin-left: 10px;
 }
 
 #titlesecao{
@@ -1166,12 +1166,22 @@ img#setavoltar {
      color: #317a7e;
      border-color: #c4c4c4;
      position: relative;
+     height: 35px;
 }
 
 #botaoDetalhesVaga:hover {
      background-color: #317a7e;
      color: white;
      border-color: #317a7e;
+}
+
+#verCandidatos{
+     color: white;
+    background-color: #317a7e;
+    border-color: #317a7e;
+    font-size: large;
+    text-align: center;
+    height: 35%;
 }
 
 #status{

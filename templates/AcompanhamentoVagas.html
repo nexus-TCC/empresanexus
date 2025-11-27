@@ -39,16 +39,21 @@
                     <p class="mb-1 text-muted">{{ vaga.local }} - Publicada em: {{
                         vaga.data_publicacao.strftime('%d/%m/%Y') if vaga.data_publicacao else 'N/A' }}</p>
                 </div>
-                <div class="text-start text-md-end d-flex flex-column flex-md-row gap-2">
-                    
-                    <a href="{{ url_for('candidatos_por_vaga', vaga_id=vaga.id) }}"
-                        class="btn btn-success btn-sm me-md-2" id="botaoPublicar">
-                        Ver Candidatos ({{ item.num_candidatos }})
-                    </a>
-                    
-                    <a href="{{ url_for('detalhe', tipo='vaga', id=vaga.id) }}" class="btn btn-info btn-sm" id="botaoDetalhesVaga">
-                        Detalhes da Vaga
-                    </a>
+                <div class="text-start text-md-end d-flex flex-column flex-md-row gap-2"> 
+                  <a href="{{ url_for('candidatos_por_vaga', vaga_id=vaga.id) }}"
+                  class="btn btn-success btn-sm me-md-2" id="verCandidatos">
+                    Ver Candidatos ({{ item.num_candidatos }})
+                  </a>
+    
+                  <a href="{{ url_for('detalhe', tipo='vaga', id=vaga.id) }}" class="btn btn-info btn-sm" id="botaoDetalhesVaga">
+                    Detalhes da Vaga
+                  </a>
+    
+                    <form action="{{ url_for('excluir_vaga', vaga_id=vaga.id) }}" method="POST" onsubmit="return confirm('ATENÇÃO: Tem certeza que deseja excluir a vaga {{ vaga.titulo }}? Esta ação é irreversível e removerá todos os candidatos associados.');">
+                        <button type="submit" class="btn btn-danger btn-sm">
+                        <i class="fa-solid fa-trash-can"></i> Excluir Vaga
+                        </button>
+                    </form>
                 </div>
             </div>
             {% endfor %}
