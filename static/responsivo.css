@@ -1,0 +1,330 @@
+@media (max-width: 992px) {
+    .container-tudo {
+        padding: 10px;
+        gap: 20px;
+    }
+    .texto {
+        width: 100%;
+        text-align: center;
+        padding: 0 10px;
+    }
+    .texto h1 {
+        font-size: 2rem;
+    }
+    .texto p {
+        font-size: 1rem;
+    }
+}
+/* ----------- Layout principal ----------- */
+@media (max-width: 992px) {
+    .container-tudo {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .imagem-lateral {
+        margin-top: 20px;
+        width: 100%;
+        max-width: 400px;
+    }
+    .imagem-lateral img {
+        width: 100%;
+        height: auto;
+    }
+}
+/* ----------- Botões ----------- */
+@media (max-width: 768px) {
+    .botoes {
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+        align-items: center;
+    }
+    .botoes a {
+        width: 90%;
+        text-align: center;
+        padding: 12px 0;
+        font-size: 1.1rem;
+    }
+}
+.cabecalho img,
+    header img,
+    .logo img {
+        max-width: 100%;
+        height: auto;
+    }
+/* ----------- Cabeçalho ----------- */
+@media (max-width: 768px) {
+    .cabecalho {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 10px 5px;
+    }
+    .cabecalho .logo h1 {
+        font-size: 1.6rem;
+        text-align: center;
+    }
+    .cabecalho nav ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .cabecalho nav a {
+        font-size: 1.1rem;
+    }
+}
+@media (max-width: 768px) {
+    .cabecalho img,
+    header img,
+    .logo img {
+        width: 80%;      /* reduz um pouco para caber no menu */
+        height: auto;
+        display: block;
+        margin: 0 auto;  /* centraliza */
+    }
+}
+
+/* ----------- Seção de empresas / profissionais ----------- */
+@media (max-width: 768px) {
+    .container-sobre {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .container-sobre img {
+        width: 100%;
+        max-width: 350px;
+        margin-bottom: 15px;
+    }
+    .container-sobre .texto-sobre {
+        text-align: center;
+        padding: 0 10px;
+    }
+}
+/* ----------- Cards ----------- */
+@media (max-width: 768px) {
+    .cards {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    .card {
+        width: 90%;
+        max-width: 350px;
+        margin: auto;
+    }
+}
+
+/* ----------- Rodapé ----------- */
+@media (max-width: 768px) {
+    .rodape {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    .rodape .links ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+@media (max-width: 768px) {
+    #cabecalhoIndex {
+        padding: 15px 0 !important;
+        height: auto !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #logoheader {
+        width: 55%;
+        max-width: 180px;
+        height: auto;
+    }
+}
+@media (max-width: 768px) {
+    #botaoPublicar {
+        width: 100%;
+        text-align: center;
+    }
+}
+@media (max-width: 768px) {
+
+    .list-group-item {
+        padding: 15px !important;
+        gap: 15px;
+    }
+
+    /* Bloco dos botões da vaga */
+    .list-group-item .text-start.text-md-end {
+        width: 100%;
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+
+    /* Botões ocupam a largura total */
+    .list-group-item .text-start.text-md-end a,
+    .list-group-item .text-start.text-md-end button {
+        width: 100% !important;
+    }
+
+    .list-group-item form {
+        width: 100%;
+    }
+}
+@media (max-width: 768px) {
+    .titulo-pagina {
+        font-size: 1.4rem;
+        text-align: center;
+    }
+
+    .btn-outline-dark {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+}
+/* ========== ACOMPANHAMENTO VAGAS - RESPONSIVO FLUIDO ========== */
+
+/* 1) Container principal: limite de largura para desktop, 100% em telas menores */
+main.container {
+  width: 100%;
+  max-width: 920px;    /* largura agradável em desktop */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 16px;
+  padding-right: 16px;
+  box-sizing: border-box;
+}
+
+/* 2) Não deixe os elementos encolherem com flex-shrink; permita wrap */
+.list-group-item {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;           /* permite quebrar em várias linhas */
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px;
+  box-sizing: border-box;
+}
+
+/* Conteúdo da vaga (título / meta) fica com flex: 1 para ocupar espaço */
+.list-group-item > div:first-child {
+  flex: 1 1 320px;           /* cresce, encolhe de forma controlada, base 320px */
+  min-width: 220px;
+  box-sizing: border-box;
+}
+
+/* Ações (botões) ficam em um container separado */
+.list-group-item .text-start.text-md-end {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 0 0 auto;            /* não encolhe além do necessário */
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
+/* Evita que os botões encolham demais */
+.list-group-item .text-start.text-md-end a,
+.list-group-item .text-start.text-md-end button,
+.list-group-item .text-start.text-md-end form {
+  flex: 0 0 auto;
+}
+
+/* 3) Em telas pequenas: empilhar ações e tornar botões full-width */
+@media (max-width: 768px) {
+
+  /* lista empilha verticalmente */
+  .list-group-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* conteúdo da vaga fica no topo */
+  .list-group-item > div:first-child {
+    width: 100%;
+    min-width: 0;
+    margin-bottom: 8px;
+  }
+
+  /* ações empilham em coluna e ocupam 100% */
+  .list-group-item .text-start.text-md-end {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .list-group-item .text-start.text-md-end a,
+  .list-group-item .text-start.text-md-end button,
+  .list-group-item .text-start.text-md-end form,
+  .list-group-item .text-start.text-md-end form button {
+    width: 100% !important;
+    display: block;
+  }
+
+  /* Ajuste do botão publicar: ocupar largura em celular */
+  #botaoPublicar {
+    width: 100%;
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  /* Voltar ocupa toda largura em mobile para evitar ficar minúsculo */
+  .btn-outline-dark {
+    width: 100%;
+  }
+
+  /* Títulos e textos com melhor legibilidade */
+  .titulo-pagina {
+    font-size: 1.6rem; /* legível em mobile */
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+
+  .list-group-item h5 {
+    font-size: 1.05rem;
+  }
+
+  .list-group-item p {
+    font-size: 0.95rem;
+  }
+}
+
+/* 4) Evita que imagens e logos usem larguras absolutas que forçam encolhimento */
+#logoheader,
+header img,
+.cabecalho img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 5) Melhor controle de fonte: não deixamos as fontes encolherem demais.
+   Usamos clamp para manter legibilidade (desktop -> mobile). */
+html { font-size: 16px; }
+h1, .titulo-pagina {
+  font-size: clamp(1.2rem, 1.6rem + 0.6vw, 2rem);
+}
+
+/* 6) Pequenos ajustes estéticos: espaçamentos e sombra mantidos */
+.list-group-item {
+  border-radius: 8px;
+  background: #fff;
+}
+
+/* 7) Caso algum botão esteja usando transform/scale no hover que reduz no mobile: */
+.list-group-item .btn {
+  transform: none;
+  transition: background-color .2s ease, color .2s ease, box-shadow .2s ease;
+}
+
+/* 8) Seporação entre itens */
+.list-group-item + .list-group-item {
+  margin-top: 10px;
+}
