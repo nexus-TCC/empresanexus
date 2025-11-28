@@ -42,18 +42,6 @@
             <p class="mb-0">{{ item.requisitos }}</p>
         </div>
         
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <div class="mb-4">
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ 'success' if category == 'success' else ('danger' if category == 'error' else 'warning') }} alert-dismissible fade show" role="alert">
-                            {{ message }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endwith %}
         
         {% if tipo_conta == 'profissional' %}
             <div class="text-center mt-5 mb-4"> 
@@ -73,8 +61,8 @@
             </div>
         {% elif tipo_conta == 'empresa' %}
             <div class="card p-4 shadow-sm bg-light text-center mt-5 mb-4">
-                <h5 class="text-primary mb-3">Ação Rápida</h5>
-                <a href="{{ url_for('candidatos_por_vaga', vaga_id=item.id) }}" class="btn btn-outline-primary btn-lg w-100">
+                <h5 class="text-dark mb-3">Ação Rápida</h5>
+                <a href="{{ url_for('candidatos_por_vaga', vaga_id=item.id) }}" class="btn btn-outline-dark btn-lg w-100">
                     <i class="fa-solid fa-users me-2"></i> Ver Candidatos
                 </a>
             </div>

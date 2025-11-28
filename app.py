@@ -304,14 +304,12 @@ def detalhe(tipo, id):
 @app.route('/candidatar/<int:vaga_id>', methods=['POST', 'GET'])
 def candidatar(vaga_id):
     if session.get('tipo_conta') != 'profissional':
-        flash('Acesso negado. Apenas profissionais podem se candidatar.', 'error')
         return redirect(url_for('index'))
     
     profissional = Profissional.query.filter_by(usuario_id=session['usuario_id']).first()
     vaga = Vaga.query.get(vaga_id)
     
     if not profissional or not vaga:
-        flash("Erro: Vaga ou perfil não encontrado.", 'error')
         return redirect(url_for('detalhe', tipo='vaga', id=vaga_id))
 
     try:
@@ -320,7 +318,6 @@ def candidatar(vaga_id):
         db.session.commit()
         
         # MENSAGEM DE SUCESSO
-        flash("Sua candidatura foi enviada com sucesso!", 'success')
         return redirect(url_for('detalhe', tipo='vaga', id=vaga_id))
         
     except Exception as e:
@@ -328,11 +325,8 @@ def candidatar(vaga_id):
         # Captura o erro de UniqueConstraint (candidatura duplicada)
         if 'UNIQUE constraint failed' in str(e):
             # MENSAGEM DE ERRO (DUPLICADA)
-            flash("Você já se candidatou a esta vaga.", 'warning')
-        else:
             print(f"Erro ao candidatar: {e}")
             # MENSAGEM DE ERRO GERAL
-            flash("Erro ao candidatar: Tente novamente mais tarde.", 'error')
             
         return redirect(url_for('detalhe', tipo='vaga', id=vaga_id))
 
@@ -434,13 +428,11 @@ def candidatos_por_vaga(vaga_id):
 @app.route('/cancelar_candidatura/<int:vaga_id>', methods=['POST'])
 def cancelar_candidatura(vaga_id):
     if session.get('tipo_conta') != 'profissional':
-        flash("Acesso não autorizado.", 'error')
         return redirect(url_for('index'))
     
     profissional = Profissional.query.filter_by(usuario_id=session['usuario_id']).first()
     
     if not profissional:
-        flash("Perfil de profissional não encontrado.", 'error')
         return redirect(url_for('index'))
 
     # 1. Encontrar a candidatura
@@ -454,13 +446,10 @@ def cancelar_candidatura(vaga_id):
             # 2. Deletar a candidatura
             db.session.delete(candidatura)
             db.session.commit()
-            flash("Candidatura cancelada com sucesso.", 'success')
         except Exception as e:
             db.session.rollback()
             print(f"Erro ao cancelar candidatura: {e}")
-            flash("Erro ao cancelar candidatura. Tente novamente.", 'error')
-    else:
-        flash("Candidatura não encontrada ou você não tem permissão para cancelá-la.", 'error')
+
         
     # Redirecionar de volta para a página de candidaturas
     return redirect(url_for('minhas_candidaturas'))
@@ -470,7 +459,6 @@ def acompanhamento_curriculo():
     # 1. Verifica autenticação
     usuario_id = session.get('usuario_id')
     if not usuario_id or session.get('tipo_conta') != 'profissional':
-        flash('Acesso negado. Apenas profissionais podem acessar esta página.', 'error')
         return redirect(url_for('index'))
 
     # 2. Busca o perfil do profissional e candidaturas
@@ -478,7 +466,6 @@ def acompanhamento_curriculo():
     
     # Se o perfil não existir (erro na criação da conta), redireciona para o formulário
     if perfil is None:
-        flash('Seu perfil profissional não foi encontrado. Por favor, complete seu cadastro.', 'warning')
         return redirect(url_for('editar_curriculo')) 
 
     # 3. Conta o número de candidaturas
@@ -498,7 +485,6 @@ def acompanhamento_curriculo():
 def editar_curriculo():
     usuario_id = session.get('usuario_id')
     if not usuario_id or session.get('tipo_conta') != 'profissional':
-        flash('Acesso negado.', 'error')
         return redirect(url_for('index'))
     
     # 1. Busca o perfil existente
@@ -731,14 +717,12 @@ def verificar_email():
 def salvar_curriculo():
     usuario_id = session.get('usuario_id')
     if not usuario_id or session.get('tipo_conta') != 'profissional':
-        flash('Acesso negado.', 'error')
         return redirect(url_for('index'))
     
     perfil = Profissional.query.filter_by(usuario_id=usuario_id).first()
     usuario = Usuario.query.get(usuario_id)
     
     if not perfil:
-        flash('Perfil profissional não encontrado para salvar.', 'error')
         return redirect(url_for('index'))
 
     # 1. Coleta os dados do formulário
@@ -762,14 +746,12 @@ def salvar_curriculo():
     try:
         db.session.commit()
         # REQUISITO: Exibe o alerta após salvar
-        flash('currículo criado com sucesso', 'success') 
         # Redireciona para a tela de acompanhamento
         return redirect(url_for('acompanhamento_curriculo'))
     
     except Exception as e:
         db.session.rollback()
         print(f"Erro ao salvar currículo: {e}")
-        flash("Erro ao salvar currículo. Tente novamente.", 'error')
         return redirect(url_for('editar_curriculo'))
 
 @app.route('/api/criar_empresa', methods=['POST'])
@@ -804,7 +786,6 @@ def logout():
     session.pop('usuario_id', None)
     session.pop('tipo_conta', None)
     session.pop('nome', None)
-    flash("Você foi desconectado com sucesso. Volte sempre!", 'info')
     return redirect(url_for('inicio'))
 
 @app.route('/meu_perfil', methods=['GET', 'POST'])
@@ -830,13 +811,11 @@ def meu_perfil():
 def criar_vaga():
     usuario_id = session.get('usuario_id')
     if not usuario_id or session.get('tipo_conta') != 'empresa':
-        flash('Acesso negado. Apenas empresas podem criar vagas.', 'error')
         return redirect(url_for('index'))
 
     if request.method == 'POST':
         empresa = Empresa.query.filter_by(usuario_id=usuario_id).first()
         if not empresa:
-            flash('Erro ao encontrar perfil da empresa.', 'error')
             return redirect(url_for('index'))
             
         empresa_id = empresa.id
@@ -846,7 +825,6 @@ def criar_vaga():
         local = request.form.get('local')
 
         if not all([titulo, descricao, requisitos, local]):
-            flash("Preencha todos os campos obrigatórios.", 'warning')
             return render_template('FormularioVaga.html')
 
         nova_vaga = Vaga(
@@ -861,14 +839,12 @@ def criar_vaga():
             db.session.commit()
             
             # MENSAGEM DE SUCESSO
-            flash(f"Vaga '{titulo}' publicada com sucesso!", 'success')
             return redirect(url_for('minhas_vagas'))
         
         except Exception as e:
             db.session.rollback()
             print(f"Erro ao criar vaga: {e}")
             # MENSAGEM DE ERRO GERAL
-            flash("Erro ao salvar a vaga. Tente novamente.", 'error')
             return render_template('FormularioVaga.html')
         
     return render_template('FormularioVaga.html')
@@ -877,27 +853,23 @@ def criar_vaga():
 def excluir_vaga(vaga_id):
     # 1. Verificar se o usuário é uma empresa e está logado
     if session.get('tipo_conta') != 'empresa':
-        flash("Acesso não autorizado.", 'error')
         return redirect(url_for('index'))
     
     # 2. Obter o perfil da empresa
     empresa = Empresa.query.filter_by(usuario_id=session['usuario_id']).first()
     
     if not empresa:
-        flash("Perfil de empresa não encontrado.", 'error')
         return redirect(url_for('index'))
 
     # 3. Encontrar a vaga
     vaga = Vaga.query.get(vaga_id)
 
     if not vaga:
-        flash("Vaga não encontrada.", 'error')
         # Supondo que a rota de acompanhamento das vagas seja 'minhas_vagas'
         return redirect(url_for('minhas_vagas'))
     
     # 4. Verificar se a empresa logada é a dona da vaga
     if vaga.empresa_id != empresa.id:
-        flash("Você não tem permissão para excluir esta vaga.", 'error')
         return redirect(url_for('minhas_vagas'))
 
     try:
@@ -908,12 +880,10 @@ def excluir_vaga(vaga_id):
         db.session.delete(vaga)
         db.session.commit()
         
-        flash(f"Vaga '{vaga.titulo}' excluída com sucesso.", 'success')
         
     except Exception as e:
         db.session.rollback()
         print(f"Erro ao excluir vaga: {e}")
-        flash("Erro ao excluir vaga. Tente novamente.", 'error')
         
     # Redirecionar de volta para a página de acompanhamento
     return redirect(url_for('minhas_vagas'))
