@@ -456,30 +456,31 @@ def cancelar_candidatura(vaga_id):
 
 @app.route('/acompanhamento_curriculo')
 def acompanhamento_curriculo():
-    # 1. Verifica autenticação
+    """Endpoint para exibir a página do currículo do profissional."""
     usuario_id = session.get('usuario_id')
     if not usuario_id or session.get('tipo_conta') != 'profissional':
         return redirect(url_for('index'))
 
-    # 2. Busca o perfil do profissional e candidaturas
+    # SIMULAÇÃO: No código real, você buscaria os dados do BD aqui
     perfil = Profissional.query.filter_by(usuario_id=usuario_id).first()
     
-    # Se o perfil não existir (erro na criação da conta), redireciona para o formulário
+    # Se o perfil não existir, simula um perfil vazio ou incompleto para testar o HTML
     if perfil is None:
-        return redirect(url_for('editar_curriculo')) 
-
-    # 3. Conta o número de candidaturas
-    num_candidaturas = Candidatura.query.filter_by(profissional_id=perfil.id).count()
-
-    # 4. Renderiza a tela de acompanhamento
+         # Simula um perfil vazio se não for encontrado para que o template não quebre
+         class MockPerfil:
+             nome_profissional = session.get('nome', 'Usuário')
+             experiencia = None
+             habilidades = None
+             cidade = None
+             telefone = None
+         perfil = MockPerfil()
+    
+    # Renderiza o template que contém o botão de exclusão
     return render_template(
         'AcompanhamentoCurriculo.html', 
         perfil=perfil, 
-        session_nome=session.get('nome'),
-        num_candidaturas=num_candidaturas
+        session_nome=session.get('nome', 'Profissional')
     )
-
-
 # ROTA NOVA: Exibir o formulário de cadastro/edição (FormularioCurriculo.html)
 @app.route('/editar_curriculo', methods=['GET'])
 def editar_curriculo():
@@ -507,6 +508,7 @@ def editar_curriculo():
 # ROTA DE EXCLUSÃO DO CURRÍCULO (Deve retornar JSON)
 @app.route('/excluir_curriculo', methods=['POST'])
 def excluir_curriculo():
+    """Endpoint POST para limpar (excluir) os dados de experiência do currículo via AJAX/Fetch."""
     usuario_id = session.get('usuario_id')
     if not usuario_id or session.get('tipo_conta') != 'profissional':
         return jsonify({"success": False, "error": "Acesso negado."}), 403
@@ -515,20 +517,19 @@ def excluir_curriculo():
     
     if perfil:
         try:
-            # Lógica para "limpar" os campos do currículo no banco de dados
-            perfil.nome_profissional = Profissional.query.filter_by(usuario_id=usuario_id).first().usuario.nome 
+            # Lógica para "limpar" os campos (manter o registro, mas remover o currículo)
             perfil.telefone = None
             perfil.cidade = None
             perfil.experiencia = None
             perfil.habilidades = None
             db.session.commit()
             
-            # RETORNO JSON: ESSENCIAL PARA O SWEETALERT NO FRONT-END
+            # RETORNO JSON: ESSENCIAL para o sucesso no JavaScript (Fetch API)
             return jsonify({"success": True, "message": "Currículo deletado com sucesso (campos limpos)."}), 200
 
         except Exception as e:
             db.session.rollback()
-            print(f"Erro ao excluir currículo: {e}")
+            # print(f"Erro ao excluir currículo: {e}")
             return jsonify({"success": False, "error": "Erro ao tentar limpar os campos do currículo."}), 500
             
     return jsonify({"success": False, "error": "Currículo não encontrado."}), 404

@@ -241,205 +241,262 @@ async function handleCredentialResponse(response) {
         if (tipoConta) {
             cadastrarComGoogle(email, nome, tipoConta);
         } else {
-            Swal.fire('Ops!', 'Seu e-mail não está cadastrado. Prossiga para o cadastro.', 'warning').then(() => {
+            Swal.fire({
+                title: 'Ops!',
+                text: 'Seu e-mail não está cadastrado. Prossiga para o cadastro.',
+                icon: 'warning', // Ícone
+                confirmButtonColor: '#0B6265',
+                confirmButtonText: 'Ok'
+            }).then(() => {
                 window.location.href = '/tipoConta?email=' + email + '&nome=' + nome;
             });
         }
     }
-}
 
-// --- UTILITÁRIOS (Filtros, Logout, etc) ---
-function formatString(value) {
-    return value.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-}
+    // --- UTILITÁRIOS ---
+    function formatString(value) {
+        return value.toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
 
-function filtrarLista(inputId) {
-    const value = formatString(document.getElementById(inputId).value);
-    const noResults = document.getElementById('no_results');
-    const items = document.querySelectorAll('.item-lista');
-    let hasResults = false;
+    function filtrarLista(inputId) {
+        const value = formatString(document.getElementById(inputId).value);
+        const noResults = document.getElementById('no_results');
+        const items = document.querySelectorAll('.item-lista');
+        let hasResults = false;
 
-    items.forEach(item => {
-        if (formatString(item.textContent).includes(value)) {
-            item.style.display = 'flex';
-            hasResults = true;
+        items.forEach(item => {
+            if (formatString(item.textContent).includes(value)) {
+                item.style.display = 'flex';
+                hasResults = true;
+            } else {
+                item.style.display = 'none';
+            }
+        });
+
+        if (noResults) {
+            noResults.style.display = hasResults ? 'none' : 'block';
+        }
+    }
+
+    function executarPesquisa() {
+        const searchInput = document.getElementById('search');
+        const termo = searchInput.value.trim();
+
+        if (termo) {
+            window.location.href = `/resultado_pesquisa?search=${encodeURIComponent(termo)}`;
         } else {
-            item.style.display = 'none';
+            window.location.href = `/index`;
         }
-    });
-
-    if (noResults) {
-        noResults.style.display = hasResults ? 'none' : 'block';
-    }
-}
-
-function executarPesquisa() {
-    const searchInput = document.getElementById('search');
-    const termo = searchInput.value.trim();
-
-    if (termo) {
-        window.location.href = `/resultado_pesquisa?search=${encodeURIComponent(termo)}`;
-    } else {
-        window.location.href = `/index`;
-    }
-}
-
-window.logout = function () {
-    if (typeof Swal === 'undefined') {
-        window.location.href = '/logout';
-        return false;
     }
 
-    Swal.fire({
-        title: 'Tem certeza?',
-        text: "Você será desconectado da sua conta.",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#0B6265',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Sim, sair!',
-        cancelButtonText: 'Cancelar'
-    }).then((result) => {
-        if (result.isConfirmed) {
+    window.logout = function () {
+        if (typeof Swal === 'undefined') {
             window.location.href = '/logout';
+            return false;
         }
-    });
-    return false;
-};
 
-// =========================================================================
-// BLOCO PRINCIPAL DE INICIALIZAÇÃO (ENTER KEY, PESQUISA, OFFCANVAS)
-// =========================================================================
-
-document.addEventListener('DOMContentLoaded', function () {
-    
-    // 1. Pesquisa e Offcanvas
-    const searchInput = document.getElementById('search');
-    const localizationInput = document.getElementById('localiza');
-    const searchIcon = document.querySelector('.search-container .fa-magnifying-glass');
-
-    if (searchInput) {
-        searchInput.addEventListener('input', () => filtrarLista('search'));
-        searchInput.addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                executarPesquisa();
-                e.preventDefault();
+        Swal.fire({
+            title: 'Tem certeza?',
+            text: "Você será desconectado da sua conta.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#0B6265',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim, sair!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/logout';
             }
         });
-        const params = new URLSearchParams(window.location.search);
-        const termoURL = params.get('search');
-        if (termoURL) {
-            searchInput.value = termoURL;
+        return false;
+    };
+
+    // Função de Exclusão de Vaga (Mantida)
+    window.excluirVagaComSwal = function (vagaId, vagaTitulo) {
+        if (typeof Swal === 'undefined') {
+            alert("Erro: SweetAlert2 não carregado. Ação cancelada.");
+            return;
         }
-    }
-    if (searchIcon) {
-        searchIcon.style.cursor = 'pointer';
-        searchIcon.addEventListener('click', executarPesquisa);
-    }
-    if (localizationInput) {
-        localizationInput.addEventListener('input', () => filtrarLista('localiza'));
-    }
 
-    var myOffcanvas = document.getElementById('offcanvasNavbar');
-    var toggleBtn = document.getElementById('offcanvasToggleBtn');
-    if (myOffcanvas && toggleBtn) {
-        myOffcanvas.addEventListener('show.bs.offcanvas', function () {
-            toggleBtn.style.visibility = 'hidden';
-        });
-        myOffcanvas.addEventListener('hide.bs.offcanvas', function () {
-            toggleBtn.style.visibility = 'visible';
-        });
-    }
-
-    const euLink = document.getElementById("euLink");
-    const submenu = document.getElementById("submenuEu");
-    if (euLink && submenu) {
-        euLink.addEventListener("click", function (e) {
-            e.preventDefault();
-            submenu.style.display = submenu.style.display === "block" ? "none" : "block";
-        });
-        document.addEventListener("click", function (e) {
-            if (!euLink.contains(e.target) && !submenu.contains(e.target)) {
-                submenu.style.display = "none";
-            }
-        });
-        submenu.style.display = "none";
-    }
-
-    // 2. LÓGICA DO "ENTER" (Unificada para Login e Cadastro)
-    
-    const btnEntrar = document.getElementById("botaoEntrar");     // Botão na tela de Login
-    const btnCriar = document.getElementById("botaoCriarConta");  // Botão nas telas de Cadastro
-
-    // Função que aciona o clique do botão quando a tecla Enter é pressionada
-    function acionarBotaoNoEnter(event, botao) {
-        if (event.key === "Enter") {
-            event.preventDefault(); // Impede recarregamento padrão
-            botao.click();          // Simula o clique
-        }
-    }
-
-    // A. Configuração para Tela de LOGIN
-    if (btnEntrar) {
-        const inputEmail = document.getElementById("email");
-        const inputSenha = document.getElementById("senha");
-
-        if (inputEmail) inputEmail.addEventListener("keypress", (e) => acionarBotaoNoEnter(e, btnEntrar));
-        if (inputSenha) inputSenha.addEventListener("keypress", (e) => acionarBotaoNoEnter(e, btnEntrar));
-    }
-
-    // B. Configuração para Telas de CADASTRO (Empresa e Profissional)
-    if (btnCriar) {
-        // IDs comuns nos formulários de cadastro
-        const camposCadastro = ["nome", "email", "senha", "endereco", "cidade", "estado", "cep"];
-
-        camposCadastro.forEach(id => {
-            const elemento = document.getElementById(id);
-            if (elemento) {
-                elemento.addEventListener("keypress", (e) => acionarBotaoNoEnter(e, btnCriar));
-            }
-        });
-    }
-    function confirmarExclusao(urlExclusao, urlRedirecionamento) {
-    Swal.fire({
-        title: 'Tem certeza?',
-        text: "Você irá excluir permanentemente seu currículo. Seus dados de experiência e habilidades serão apagados, mas sua conta será mantida.",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#0B6265', // Sua cor Nexus Teal
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Sim, excluir!',
-        cancelButtonText: 'Cancelar',
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Se confirmado, faz a requisição para a rota Flask de exclusão
-            fetch(urlExclusao, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Alerta de sucesso de exclusão
-                    Swal.fire({
-                        title: 'Deletado!',
-                        text: 'currículo deletado.',
-                        icon: 'success',
-                        confirmButtonText: 'Ok'
-                    }).then(() => {
-                        window.location.href = urlRedirecionamento;
-                    });
+        Swal.fire({
+            title: 'ATENÇÃO!',
+            text: `Tem certeza que deseja excluir a vaga "${vagaTitulo}"? Esta ação é irreversível e removerá todos os candidatos associados.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#0B6265',
+            confirmButtonText: 'Sim, EXCLUIR VAGA!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const form = document.getElementById(`form-excluir-vaga-${vagaId}`);
+                if (form) {
+                    form.submit();
                 } else {
-                    Swal.fire('Erro!', 'Erro ao tentar limpar os campos do currículo: ' + data.error, 'error');
+                    Swal.fire('Erro!', 'Formulário de exclusão não encontrado.', 'error');
                 }
-            })
-            .catch(error => {
-                console.error('Erro de rede:', error);
-                Swal.fire('Erro!', 'Erro de comunicação com o servidor ao deletar currículo.', 'error');
+            }
+        });
+    };
+
+    // Função de Exclusão de Currículo (Otimizada com Loading)
+    window.confirmarExclusao = function (urlExclusao, urlRedirecionamento) {
+        if (typeof Swal === 'undefined') {
+            alert("Erro: SweetAlert2 não carregado. Ação cancelada.");
+            return;
+        }
+
+        Swal.fire({
+            title: 'Tem certeza?',
+            text: "Ao confirmar, seus dados de experiência e habilidades serão permanentemente excluídos do seu currículo. Sua conta será mantida.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#0B6265',
+            confirmButtonText: 'Sim, EXCLUIR!',
+            cancelButtonText: 'Cancelar',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                Swal.fire({
+                    title: 'Excluindo...',
+                    text: 'Processando a exclusão do seu currículo. Aguarde.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                // Requisição POST via Fetch API
+                fetch(urlExclusao, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        Swal.close(); // Fecha o loading
+
+                        if (data.success) {
+                            Swal.fire({
+                                title: 'Currículo Deletado!',
+                                text: 'Os campos de experiência e habilidades foram limpos com sucesso.',
+                                icon: 'success',
+                                confirmButtonColor: '#0B6265',
+                                confirmButtonText: 'Ok'
+                            }).then(() => {
+                                window.location.href = urlRedirecionamento;
+                            });
+                        } else {
+                            Swal.fire('Erro!', 'Falha ao limpar o currículo: ' + (data.error || 'Erro desconhecido.'), 'error');
+                        }
+                    })
+                    .catch(error => {
+                        Swal.close();
+                        console.error('Erro de rede:', error);
+                        Swal.fire('Erro!', 'Erro de comunicação com o servidor ao deletar currículo.', 'error');
+                    });
+            }
+        });
+    };
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+        // 1. Pesquisa e Offcanvas
+        const searchInput = document.getElementById('search');
+        const localizationInput = document.getElementById('localiza');
+        const searchIcon = document.querySelector('.search-container .fa-magnifying-glass');
+
+        if (searchInput) {
+            searchInput.addEventListener('input', () => filtrarLista('search'));
+            searchInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    // Certifique-se que 'executarPesquisa' existe em outro lugar ou aqui
+                    // executarPesquisa(); 
+                    e.preventDefault();
+                }
+            });
+            const params = new URLSearchParams(window.location.search);
+            const termoURL = params.get('search');
+            if (termoURL) {
+                searchInput.value = termoURL;
+            }
+        }
+        if (searchIcon) {
+            searchIcon.style.cursor = 'pointer';
+            // searchIcon.addEventListener('click', executarPesquisa); 
+        }
+        if (localizationInput) {
+            localizationInput.addEventListener('input', () => filtrarLista('localiza'));
+        }
+
+        var myOffcanvas = document.getElementById('offcanvasNavbar');
+        var toggleBtn = document.getElementById('offcanvasToggleBtn');
+        if (myOffcanvas && toggleBtn) {
+            myOffcanvas.addEventListener('show.bs.offcanvas', function () {
+                toggleBtn.style.visibility = 'hidden';
+            });
+            myOffcanvas.addEventListener('hide.bs.offcanvas', function () {
+                toggleBtn.style.visibility = 'visible';
             });
         }
-    })
+
+        const euLink = document.getElementById("euLink");
+        const submenu = document.getElementById("submenuEu");
+        if (euLink && submenu) {
+            euLink.addEventListener("click", function (e) {
+                e.preventDefault();
+                submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+            });
+            document.addEventListener("click", function (e) {
+                if (!euLink.contains(e.target) && !submenu.contains(e.target)) {
+                    submenu.style.display = "none";
+                }
+            });
+            submenu.style.display = "none";
+        }
+
+
+        const btnEntrar = document.getElementById("botaoEntrar");
+        const btnCriar = document.getElementById("botaoCriarConta");
+
+        function acionarBotaoNoEnter(event, botao) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                botao.click();
+            }
+        }
+
+        if (btnEntrar) {
+            const inputEmail = document.getElementById("email");
+            const inputSenha = document.getElementById("senha");
+
+            if (inputEmail) inputEmail.addEventListener("keypress", (e) => acionarBotaoNoEnter(e, btnEntrar));
+            if (inputSenha) inputSenha.addEventListener("keypress", (e) => acionarBotaoNoEnter(e, btnEntrar));
+        }
+
+        if (btnCriar) {
+            const camposCadastro = ["nome", "email", "senha", "endereco", "cidade", "estado", "cep"];
+
+            camposCadastro.forEach(id => {
+                const elemento = document.getElementById(id);
+                if (elemento) {
+                    elemento.addEventListener("keypress", (e) => acionarBotaoNoEnter(e, btnCriar));
+                }
+            });
+        }
+
+        // LISTENER PARA EXCLUSÃO DE VAGA (AGORA DENTRO DO BLOCO CORRETO)
+        document.querySelectorAll('.btn-excluir-vaga').forEach(button => {
+            button.addEventListener('click', function () {
+                const vagaId = this.getAttribute('data-vaga-id');
+                const vagaTitulo = this.getAttribute('data-vaga-titulo');
+
+                excluirVagaComSwal(vagaId, vagaTitulo);
+            });
+        });
+    });
 }
-});

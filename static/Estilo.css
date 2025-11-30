@@ -884,7 +884,7 @@ img#setavoltar {
 
 #mainPRofissional{
     max-width: 700px;     
-    background-color: #96cdcf; 
+    background-color: #a3e0e4; 
     border-radius: 15px;  
     box-shadow: 30px 30px 30px rgba(0,0,0,0.1); 
     padding: 40px; 
@@ -1073,6 +1073,7 @@ img#setavoltar {
      color: #317a7e;
      border-color: #c4c4c4;
      position: relative;
+     height: auto;
 }
 
 #botaoDetalhesVaga:hover {
